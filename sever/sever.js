@@ -1,19 +1,22 @@
 var express = require('express');
-var router = require('./routes/routes.js')
 var path = require('path');
 var bodyParser = require('body-parser');
 var app = express();
 var mongoose = require('mongoose');
+var user = require('./routes/user');
+var route = require('./routes/route');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '../public'));
-app.use(express.static(path.join(__dirname, '../src')));
+app.use(express.static(path.join(__dirname, '../public')));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
 
-mongoose.connect('mongodb://quyen.tc:chautinhtri123@ds145083.mlab.com:45083/apartment_social_network');
+//mongoose.connect('mongodb://quyen.tc:chautinhtri123@ds145083.mlab.com:45083/apartment_social_network');
+mongoose.connect('mongodb://localhost:27017/apartment-social-network', { useNewUrlParser: true });
 
-app.use('/', router);
+app.use('/', route);
+app.use('/adduser', user);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

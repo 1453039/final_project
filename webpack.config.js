@@ -23,7 +23,7 @@ module.exports = {
       {
         test    : [/\.sass$/, /\.scss$/],
         loaders  : ['style-loader', 'css-loader', 'sass-loader'],
-        include : path.join(__dirname, 'src')
+        include : path.join(__dirname, 'public')
       },
       {
         test: /\.(js)$/,

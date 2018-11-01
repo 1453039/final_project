@@ -3,23 +3,25 @@ import { Button } from 'react-bootstrap';
 import Modal from 'react-modal';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-var querystring = require('querystring');
 
 class AddUser extends React.Component {
   constructor() {
     super();
     this.state = {
-      description: '',
-      amount: '',
-      month: '',
-      year: '',
+      email: '',
+      password: '',
+      name: '',
+      birthday: '',
+      sex: '',
+      room: '',
+      isAdmin: false,
       messageFromServer: '',
       modalIsOpen: false
     }
-    this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.handleOptionChange = this.handleOptionChange.bind(this);
     this.onClick = this.onClick.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
-    this.insertNewExpense = this.insertNewExpense.bind(this);
+    this.insertNewUser = this.insertNewUser.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
@@ -31,131 +33,145 @@ class AddUser extends React.Component {
   closeModal() {
     this.setState({
       modalIsOpen: false,
-      description: '',
-      amount: '',
-      month: 'Jan',
-      year: 2016,
       messageFromServer: ''
     });
   }
   componentDidMount() {
-    this.setState({
-      month: this.props.selectedMonth
-    });
-    this.setState({
-      year: this.props.selectedYear
-    });
-  }
-  handleSelectChange(e) {
-    if (e.target.name == 'month') {
-      this.setState({
-        month: e.target.value
-      });
-    }
-    if (e.target.name == 'year') {
-      this.setState({
-        year: e.target.value
-      });
-    }
   }
   onClick(e) {
-    this.insertNewExpense(this);
+    this.insertNewUser(this);
   }
-  insertNewExpense(e) {
-    axios.post('/insert',
-      querystring.stringify({
-        desc: e.state.description,
-        amount: e.state.amount,
-        month: e.state.month,
-        year: e.state.year
-      }), {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      }).then(function (response) {
+  insertNewUser(e) {
+    axios.post('/adduser/insert', {
+      email: e.state.email,
+      password: e.state.password,
+      name: e.state.name,
+      birthday: e.state.birthday,
+      sex: e.state.sex,
+      room: e.state.room,
+      isAdmin: e.state.isAdmin
+    })
+      .then(function (response) {
         e.setState({
           messageFromServer: response.data
         });
+      })
+      .catch(error => {
+        console.log(error.response);
       });
   }
   handleTextChange(e) {
-    if (e.target.name == "description") {
+    if (e.target.name == "email") {
       this.setState({
-        description: e.target.value
+        email: e.target.email
       });
     }
-    if (e.target.name == "amount") {
+    if (e.target.name == "password") {
       this.setState({
-        amount: e.target.value
+        password: e.target.value
+      });
+    }
+    if (e.target.name == "name") {
+      this.setState({
+        name: e.target.value
+      });
+    }
+    if (e.target.name == "room") {
+      this.setState({
+        room: e.target.value
+      });
+    }
+    if (e.target.name == "birthday") {
+      this.setState({
+        birthday: e.target.value
+      });
+    }
+  }
+
+  str2bool(value) {
+    if (value && typeof value === 'string') {
+      if (value === "true") return true;
+      if (value === "false") return false;
+    }
+    return value;
+  }
+
+  handleOptionChange(e) {
+    if (e.target.name == "gender1") {
+      this.setState({
+        sex: e.target.value
+      });
+    }
+    if (e.target.name == "gender2") {
+      this.setState({
+        sex: e.target.value
+      });
+    }
+    if (e.target.name == "admin1") {
+      this.setState({
+        isAdmin: this.str2bool(e.target.value)
+      });
+    }
+    if (e.target.name == "admin2") {
+      this.setState({
+        isAdmin: this.str2bool(e.target.value)
       });
     }
   }
   render() {
     if (this.state.messageFromServer == '') {
-      return (
-        <div>
-          <Button bsStyle="success" bsSize="small" onClick={this.openModal}><span className="glyphicon glyphicon-plus"></span></Button>
-          <Modal
-            isOpen={this.state.modalIsOpen}
-            onRequestClose={this.closeModal}
-            contentLabel="Add Expense"
-            className="Modal">
-            <Link to={{ pathname: '/', search: '' }} style={{ textDecoration: 'none' }}>
-              <Button bsStyle="danger" bsSize="mini" onClick={this.closeModal}><span className="closebtn glyphicon glyphicon-remove"></span></Button>
-            </Link><br />
-            <fieldset>
-              <label for="description">Description:</label><input type="text" id="description" name="description" value={this.state.description} onChange={this.handleTextChange}></input>
-              <label for="amount">Amount:</label><input type="number" id="amount" name="amount" value={this.state.amount} onChange={this.handleTextChange}></input>
-              <label for="month">Month:</label><select id="month" name="month" value={this.state.month} onChange={this.handleSelectChange}>
-                <option value="Jan" id="Jan">January</option>
-                <option value="Feb" id="Feb">Febrary</option>
-                <option value="Mar" id="Mar">March</option>
-                <option value="Apr" id="Apr">April</option>
-                <option value="May" id="May">May</option>
-                <option value="Jun" id="Jun">June</option>
-                <option value="Jul" id="Jul">July</option>
-                <option value="Aug" id="Aug">August</option>
-                <option value="Sep" id="Sep">September</option>
-                <option value="Oct" id="Oct">October</option>
-                <option value="Nov" id="Nov">November</option>
-                <option value="Dec" id="Dec">December</option>
-              </select>
-              <label for="year">Year:</label><select id="year" name="year" value={this.state.year} onChange={this.handleSelectChange}>
-                <option value="2016" id="16">2016</option>
-                <option value="2017" id="17">2017</option>
-                <option value="2018" id="18">2018</option>
-                <option value="2019" id="19">2019</option>
-                <option value="2020" id="20">2020</option>
-              </select>
-            </fieldset>
-            <div className='button-center'>
-              <br />
-              <Button bsStyle="success" bsSize="small" onClick={this.onClick}>Add New Expense</Button>
-            </div>
-          </Modal>
-        </div>
-      )
+      return pug`
+        div
+          Button(bsStyle="success", bsSize="small", onClick=this.openModal)
+            span(className="glyphicon glyphicon-plus")
+          Modal(isOpen=this.state.modalIsOpen, onRequestClose=this.closeModal, contentLabel="Add User", className="Modal")
+            Link(to={ pathname: '/adduser', search: '' } style={ textDecoration: 'none' })
+              Button(bsStyle="danger", bsSize="xs", onClick=this.closeModal)
+                span(className="closebtn glyphicon glyphicon-remove")
+            fieldset
+              label(for="email") Email:
+                input(type="text", id="email", name="email", value=this.state.email, onChange=this.handleTextChange)
+              label(for="password") Password:
+                input(type="password", id="password", name="password", value=this.state.password, onChange=this.handleTextChange)
+              label(for="name") Name:
+                input(type="text", id="name", name="name", value=this.state.name, onChange=this.handleTextChange)
+              label(for='birthday') Date of birth
+                input#birthday.form-control.input-group-lg(type='date', name='birthday', title='Enter birthday', placeholder='birthday', value=this.state.birthday, onChange=this.handleTextChange)
+              .form-group.gender
+                span.custom-label 
+                  strong Gender:  
+                label#female.radio-inline Female
+                  input(type='radio', name='gender1', value='female', checked=this.state.sex === 'female', onChange=this.handleOptionChange)
+                label#male.radio-inline Male
+                  input(type='radio', name='gender2', value='male', checked=this.state.sex === 'male', onChange=this.handleOptionChange)
+              label(for="room") Room:
+                input(type="text", id="room", name="room", value=this.state.room, onChange=this.handleTextChange)
+              .form-group.gender
+                span.custom-label 
+                  strong Admin:  
+                label#female.radio-inline Yes
+                  input(type='radio', name='admin1', value='true', checked=this.state.isAdmin === true, onChange=this.handleOptionChange)
+                label#male.radio-inline No
+                  input(type='radio', name='admin2', value='false', checked=this.state.isAdmin === false, onChange=this.handleOptionChange)
+            div(className='button-center')
+              Button(bsStyle="success", bsSize="small", onClick=this.onClick) Add New User
+      `;
     }
     else {
-      return (
-        <div>
-          <Button bsStyle="success" bsSize="small" onClick={this.openModal}><span className="glyphicon glyphicon-plus"></span></Button>
-          <Modal
-            isOpen={this.state.modalIsOpen}
-            onAfterOpen={this.afterOpenModal}
-            onRequestClose={this.closeModal}
-            contentLabel="Add Expense"
-            className="Modal">
-            <div className='button-center'>
-              <h3>{this.state.messageFromServer}</h3>
-              <Link to={{ pathname: '/', search: '' }} style={{ textDecoration: 'none' }}>
-                <Button bsStyle="success" bsSize="mini" onClick={this.closeModal}>Close the Dialog</Button>
-              </Link>
-            </div>
-          </Modal>
-        </div>
-      )
+      return pug`
+        div
+          Button(bsStyle="success", bsSize="small", onClick=this.openModal)
+            span(className="glyphicon glyphicon-plus")
+          Modal(isOpen=this.state.modalIsOpen, onAfterOpen=this.afterOpenModal, onRequestClose=this.closeModal, contentLabel="Add User", className="Modal")
+            div(className='button-center')
+              h3 this.state.messageFromServer
+              Link(to={ pathname: '/', search: '' }, style={ textDecoration: 'none' })
+                Button(bsStyle="success", bsSize="mini", onClick=this.closeModal) Close the Dialog
+      `;
     }
   }
 }
+
+Modal.setAppElement('#root');
+
 export default AddUser;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import '../../styles/PageContents.scss';
-import '../../styles/Info.scss';
+import '../../../public/styles/PageContents.scss';
+import '../../../public/styles/Info.scss';
 import BasicInfoPage from '../../containers/BasicInfoPage';
 import { BrowserRouter as Router, Route, Link,withRouter } from 'react-router-dom';
 

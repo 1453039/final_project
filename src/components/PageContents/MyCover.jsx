@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Link} from 'react-router-dom';
-import '../../styles/PageContents.scss';
-import '../../styles/ResidentList.scss';
+import '../../../public/styles/PageContents.scss';
+import '../../../public/styles/ResidentList.scss';
 
 class ResidentList extends Component {
   render() {
