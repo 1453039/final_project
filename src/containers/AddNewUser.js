@@ -8,7 +8,6 @@ class AddNewUser extends React.Component {
     super();
     this.state = { data: [] };
     this.getData = this.getData.bind(this);
-    this.showData = this.showData.bind(this);
   }
   componentDidMount() {
     this.getData(this);
@@ -27,10 +26,11 @@ class AddNewUser extends React.Component {
         console.log(error.response);
       });
   }
-  showData() {
-    console.log("here",this.state.data);
-    
-    return this.state.data.map((exp) => pug `
+
+  render() {
+    const showData = () => {
+      console.log("here",this.state.data);
+      return this.state.data.map((exp) => pug `
       tr
         td(className='counterCell')
         td(className='email-col') #{exp.email}
@@ -41,9 +41,7 @@ class AddNewUser extends React.Component {
         td(className='room-col') #{exp.room}
         td(className='admin-col') #{exp.isAdmin}
       `);
-  }
-
-  render() {
+    }
     return pug`
       div
         AddUser
@@ -59,7 +57,7 @@ class AddNewUser extends React.Component {
               th(className='room-col') Room
               th(className='admin-col') Admin
           tbody
-            // this.showData()
+            showData()
     `;
   }
 }

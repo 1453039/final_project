@@ -25,4 +25,8 @@ router.get('/changepassword', function (req, res) {
   res.render('index')
 });
 
+router.get('/friend', function (req, res) {
+  res.render('index')
+});
+
 module.exports = router;

@@ -8,7 +8,7 @@ const UserSchema = new Schema({
 	pass: String,
 	name: String,
 	birthday: Date,
-	sex: {type: String, enum: ['Male', 'Female']},
+	sex: String,
 	room: String,
 	isAdmin: Boolean
 });

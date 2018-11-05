@@ -3,21 +3,21 @@ var router = express.Router();
 var User = require('../models/User');
 
 router.get('/', function (req, res) {
-  res.render('index')
+  res.render('index.pug')
 });
 
 router.route('/insert')
   .post(function (req, res) {
     var user = new User();
     user.email = req.body.email;
-    user.apartment = req.body.apartment ? req.body.apartment : "";
+    user.apartment = req.body.id;
     user.password = req.body.password ? req.body.password : "";
     user.name = req.body.name ? req.body.name : "";
     user.birthday = req.body.birthday ? req.body.birthday : "";
     user.sex = req.body.sex ? req.body.sex : "";
     user.room = req.body.room ? req.body.room : "";
     user.isAdmin = req.body.isAdmin ? req.body.isAdmin : false;
-    User.save(function (err) {
+    user.save(function (err) {
       if (err)
         res.send(err);
       res.send('User successfully added!');

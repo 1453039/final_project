@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap';
 import Modal from 'react-modal';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+var querystring = require('querystring');
 
 class AddUser extends React.Component {
   constructor() {
@@ -42,16 +43,21 @@ class AddUser extends React.Component {
     this.insertNewUser(this);
   }
   insertNewUser(e) {
-    axios.post('/adduser/insert', {
-      email: e.state.email,
-      password: e.state.password,
-      name: e.state.name,
-      birthday: e.state.birthday,
-      sex: e.state.sex,
-      room: e.state.room,
-      isAdmin: e.state.isAdmin
-    })
-      .then(function (response) {
+    axios.post('/adduser/insert',
+      querystring.stringify({
+        email: e.state.email,
+        password: e.state.password,
+        name: e.state.name,
+        birthday: e.state.birthday,
+        sex: e.state.sex,
+        room: e.state.room,
+        isAdmin: e.state.isAdmin,
+        id: '5bdff073d91fab88e2fd01f0'
+      }), {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }).then(function (response) {
         e.setState({
           messageFromServer: response.data
         });
@@ -119,7 +125,8 @@ class AddUser extends React.Component {
     }
   }
   render() {
-    if (this.state.messageFromServer == '') {
+    const mess = this.state.messageFromServer;
+    if (mess == '') {
       return pug`
         div
           Button(bsStyle="success", bsSize="small", onClick=this.openModal)
@@ -164,9 +171,9 @@ class AddUser extends React.Component {
             span(className="glyphicon glyphicon-plus")
           Modal(isOpen=this.state.modalIsOpen, onAfterOpen=this.afterOpenModal, onRequestClose=this.closeModal, contentLabel="Add User", className="Modal")
             div(className='button-center')
-              h3 this.state.messageFromServer
-              Link(to={ pathname: '/', search: '' }, style={ textDecoration: 'none' })
-                Button(bsStyle="success", bsSize="mini", onClick=this.closeModal) Close the Dialog
+              h3 #{mess.message}
+              Link(to={ pathname: '/adduser', search: '' }, style={ textDecoration: 'none' })
+                Button(bsStyle="success", bsSize="xs", onClick=this.closeModal) Close the Dialog
       `;
     }
   }
