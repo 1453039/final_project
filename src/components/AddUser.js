@@ -69,7 +69,7 @@ class AddUser extends React.Component {
   handleTextChange(e) {
     if (e.target.name == "email") {
       this.setState({
-        email: e.target.email
+        email: e.target.value
       });
     }
     if (e.target.name == "password") {
@@ -171,7 +171,7 @@ class AddUser extends React.Component {
             span(className="glyphicon glyphicon-plus")
           Modal(isOpen=this.state.modalIsOpen, onAfterOpen=this.afterOpenModal, onRequestClose=this.closeModal, contentLabel="Add User", className="Modal")
             div(className='button-center')
-              h3 #{mess.message}
+              h3 #{mess}
               Link(to={ pathname: '/adduser', search: '' }, style={ textDecoration: 'none' })
                 Button(bsStyle="success", bsSize="xs", onClick=this.closeModal) Close the Dialog
       `;

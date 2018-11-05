@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-import Apartment from './Apartment'
-import User from './User'
+import apartments from './Apartment'
+import users from './User'
 
 const PostSchema = new Schema({
-	apartment: {type: Schema.Types.ObjectID, ref: Apartment},
-  author: {type: Schema.Types.ObjectID, ref: User},
+	apartment: {type: Schema.Types.ObjectID, ref: apartments},
+  author: {type: Schema.Types.ObjectID, ref: users},
 	isAdmin: Boolean,
 	time: {type: Date, default: Date.now},
 	description: String,

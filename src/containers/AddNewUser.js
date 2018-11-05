@@ -13,7 +13,7 @@ class AddNewUser extends React.Component {
     this.getData(this);
   }
   
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nexProps) {
     this.getData(this);
   }
 
@@ -31,7 +31,7 @@ class AddNewUser extends React.Component {
     const showData = () => {
       console.log("here",this.state.data);
       return this.state.data.map((exp) => pug `
-      tr
+      tr(key=exp._id)
         td(className='counterCell')
         td(className='email-col') #{exp.email}
         td(className='password-col') #{exp.password}
@@ -49,7 +49,7 @@ class AddNewUser extends React.Component {
           thead
             tr
               th
-              th(className='email-col') Description
+              th(className='email-col') Email
               th(className='password-col') Password
               th(className='name-col') Name
               th(className='birthday-col') Birthday

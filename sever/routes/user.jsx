@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../models/User');
+var users = require('../models/User');
 
 router.get('/', function (req, res) {
   res.render('index.pug')
@@ -8,7 +8,7 @@ router.get('/', function (req, res) {
 
 router.route('/insert')
   .post(function (req, res) {
-    var user = new User();
+    var user = new users();
     user.email = req.body.email;
     user.apartment = req.body.id;
     user.password = req.body.password ? req.body.password : "";
@@ -27,7 +27,7 @@ router.route('/insert')
 router.route('/update_password/:id')
   .post(function (req, res) {
     const password = req.body.password;
-    User.update({ _id: req.params.id }, password, function (err, result) {
+    users.update({ _id: req.params.id }, password, function (err, result) {
       if (err)
         res.send(err);
       res.send('User password successfully updated!');
@@ -42,7 +42,7 @@ router.route('/update_info/:id')
       sex: req.body.sex
     };
     console.log(doc);
-    User.update({ _id: req.params.id }, doc, function (err, result) {
+    users.update({ _id: req.params.id }, doc, function (err, result) {
       if (err)
         res.send(err);
       res.send('User info successfully updated!');
@@ -51,7 +51,7 @@ router.route('/update_info/:id')
 
 router.get('/delete', function (req, res) {
   var id = req.query.id;
-  User.find({ _id: id }).remove().exec(function (err, result) {
+  users.find({ _id: id }).remove().exec(function (err, result) {
     if (err)
       res.send(err)
     res.send('User successfully deleted!');
@@ -59,7 +59,7 @@ router.get('/delete', function (req, res) {
 });
 
 router.get('/getAll', function (req, res) {
-  User.find(function (err, users) {
+  users.find({}, function (err, users) {
     if (err)
       res.send(err);
     res.json(users);
@@ -68,7 +68,7 @@ router.get('/getAll', function (req, res) {
 
 router.get('/get-resident-of-apartment/:id', function (req, res) {
   var id = req.params.id;
-  User.find({ apartment: id }, function (err, users) {
+  users.find({ apartment: id }, function (err, users) {
     if (err)
       res.send(err);
     res.json(users);

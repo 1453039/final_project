@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-import Apartment from './Apartment';
-import User from './User';
+import apartments from './Apartment';
+import users from './User';
 
 const PaymentSchema = new Schema({
-  resident: {type: Schema.Types.ObjectId, ref: User},
-  apartment: {type: Schema.Types.ObjectId, ref: Apartment},
+  resident: {type: Schema.Types.ObjectId, ref: users},
+  apartment: {type: Schema.Types.ObjectId, ref: apartments},
   electricVolume: Decimal,
   waterVolume: Decimal,
   parkingFee: Number,

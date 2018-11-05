@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-import Apartment from './Apartment'
+import apartments from './Apartment'
 
 const UserSchema = new Schema({
   email: String,
-  apartment: {type: Schema.Types.ObjectId, ref: Apartment},
+  apartment: {type: Schema.Types.ObjectId, ref: apartments},
 	pass: String,
 	name: String,
 	birthday: Date,
@@ -13,4 +13,4 @@ const UserSchema = new Schema({
 	isAdmin: Boolean
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('users', UserSchema);

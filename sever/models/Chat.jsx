@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-import User from './User';
+import users from './User';
 
 const ChatSchema = new Schema({
-	from: {type: Schema.Types.ObjectId, ref: User},
-	to: {type: Schema.Types.ObjectId, ref: User},
+	from: {type: Schema.Types.ObjectId, ref: users},
+	to: {type: Schema.Types.ObjectId, ref: users},
 	detail: String,
 	time: {type: Date, default: Date.now}
 });
 
-module.exports = mongoose.model('Chat', ChatSchema);
+module.exports = mongoose.model('chats', ChatSchema);

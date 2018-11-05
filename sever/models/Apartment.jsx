@@ -6,4 +6,4 @@ const ApartmentSchema = new Schema({
 	address: String
 });
 
-module.exports = mongoose.model('Apartment', ApartmentSchema);
+module.exports = mongoose.model('apartments', ApartmentSchema);

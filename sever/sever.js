@@ -12,7 +12,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
 
-//mongoose.connect('mongodb://quyen.tc:chautinhtri123@ds145083.mlab.com:45083/apartment_social_network');
+// mongoose.connect('mongodb://quyen.tc:chautinhtri123@ds145083.mlab.com:45083/apartment_social_network', { useNewUrlParser: true });
 mongoose.connect('mongodb://localhost:27017/apartment-social-network', { useNewUrlParser: true });
 
 app.use('/', route);
