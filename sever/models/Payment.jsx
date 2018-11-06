@@ -15,4 +15,4 @@ const PaymentSchema = new Schema({
 	isPaid: Boolean
 });
 
-module.exports = mongoose.model('Payment', PaymentSchema);
+module.exports = mongoose.model('payments', PaymentSchema);

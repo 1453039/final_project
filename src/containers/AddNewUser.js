@@ -12,7 +12,7 @@ class AddNewUser extends React.Component {
   componentDidMount() {
     this.getData(this);
   }
-  
+
   componentWillReceiveProps(nexProps) {
     this.getData(this);
   }
@@ -28,20 +28,6 @@ class AddNewUser extends React.Component {
   }
 
   render() {
-    const showData = () => {
-      console.log("here",this.state.data);
-      return this.state.data.map((exp) => pug `
-      tr(key=exp._id)
-        td(className='counterCell')
-        td(className='email-col') #{exp.email}
-        td(className='password-col') #{exp.password}
-        td(className='name-col') #{exp.name}
-        td(className='birthday-col') #{exp.birthday}
-        td(className='sex-col') #{exp.sex}
-        td(className='room-col') #{exp.room}
-        td(className='admin-col') #{exp.isAdmin}
-      `);
-    }
     return pug`
       div
         AddUser
@@ -57,7 +43,16 @@ class AddNewUser extends React.Component {
               th(className='room-col') Room
               th(className='admin-col') Admin
           tbody
-            showData()
+            each user in this.state.data
+              tr(key=user._id)
+                td(className='counterCell')
+                td(className='email-col') #{user.email}
+                td(className='password-col') #{user.password}
+                td(className='name-col') #{user.name}
+                td(className='birthday-col') #{user.birthday}
+                td(className='sex-col') #{user.sex}
+                td(className='room-col') #{user.room}
+                td(className='admin-col') #{user.isAdmin}
     `;
   }
 }
