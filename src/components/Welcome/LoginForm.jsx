@@ -25,60 +25,57 @@ class LoginForm extends React.Component {
   }
 
   handleClickNext() {
-    this.getListUser();
-    // this.getListApart();
-    // if (this.state.email)
-    //   this.setState({
-    //     isClick: true,
-    //   });
-  }
+    var seft = this
+    let listUsers = []
+    let listApart = []
+    this.getListUser().then(function (response) {
+      listUsers = response.data
+      for (var id in listUsers)
+        seft.getListApart(listUsers[id]).then(function (response) {
+          listApart.push(response)
+        });
+      seft.setState({
+        listUsers,
+        listApart
+      });
+    });
 
-  getListUser() {
-    const myThis = this
-    axios.get('/apartment/get-list-apartment', {
-      params: {
-        email: this.state.email
-      }
-    }).then(function (response) {
-      if (response.data && response.data.length > 0)
-      for (var user in response.data)
-        axios.get('/apartment/get-apartment', {
-          params: {
-            id_apartment: user.apartment
-          }
-        }).then(function (res) {
-          console.log("response", res.data);
-          myThis.state.listApart.push(res.data)
-        })
-          .catch(error => {
-            console.log(error);
-          });
-    })
-      .catch(error => {
-        console.log("error", error);
+    if (this.state.email)
+      this.setState({
+        isClick: true,
       });
   }
 
-  // getListApart() {
-  //   const myThis = this
-  //   if (this.state.listUsers && this.state.listUsers.length > 0)
-  //     for (var user in this.state.listUsers)
-  //       axios.get('/apartment/get-apartment', {
-  //         params: {
-  //           id_apartment: user.apartment
-  //         }
-  //       }).then(function (response) {
-  //         console.log("response", response.data);
-  //         myThis.state.listApart.push(response.data)
-  //       })
-  //         .catch(error => {
-  //           console.log(error.response);
-  //         });
-  // }
+  async getListUser() {
+    try {
+      let result = await axios.get('/apartment/get-list-apartment', {
+        params: {
+          email: this.state.email
+        }
+      });
+      return result;
+    }
+    catch (error) {
+      console.log("error", error);
+    }
+  }
+
+  async getListApart(user) {
+    try {
+      let result = await axios.get('/apartment/get-apartment', {
+        params: {
+          id_apartment: user.apartment
+        }
+      });
+      return result.data;
+    }
+    catch (error) {
+      console.log("error", error);
+    };
+  }
 
   render() {
-
-    const { isClick } = this.state;
+    const { isClick, listUsers, listApart } = this.state;
     return pug`
 			if !isClick
 				.login-form.col-md-5.col-sm-5
@@ -90,7 +87,7 @@ class LoginForm extends React.Component {
 							button.btn-secondary(onClick=this.handleClickNext)
 								span Next
 			else
-				ListApart(listApart=this.state.listApart, listUsers = this.state.listUsers)
+				ListApart(listApart=listApart, listUsers = listUsers)
 		`;
   }
 }

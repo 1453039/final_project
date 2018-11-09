@@ -3,9 +3,8 @@ var router = express.Router();
 var apartments = require('../models/Apartment');
 var users = require('../models/User');
 
-router.get('/get-apartment/:id_apartment', function(req, res) {
-  console.log("id", req.params.id_apartment);
-  var id = req.params.id_apartment;
+router.get('/get-apartment', function(req, res) {
+  var id = req.query.id_apartment;
   apartments.findById(id, function(err, apartment) {
     if (err)
       console.log("err", err);

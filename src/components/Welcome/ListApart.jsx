@@ -7,26 +7,26 @@ class ListApart extends React.Component {
     this.state = {
       isClick: false
     }
-    this.handleClickApart = this.handleClickApart.bind(this);
+    // this.handleClickApart = this.handleClickApart.bind(this);
   }
-  handleClickApart() {
-    this.setState({
-      isClick: true,
-    });
-  }
+  // handleClickApart() {
+  //   this.setState({
+  //     isClick: true,
+  //   });
+  // }
   render() {
     const isClick = this.state.isClick;
     const { listApart, listUsers } = this.props;
     return pug`
-			.list-apart.col-md-5.col-sm-5
-				#wrapper
-					h2.text-white Please choose your Aparment
-					.line-divider
-					each item in listApart
-						button(key=item._id, onClick=this.handleClickApart) 
-							i.fa.fa-building
-							p #{item.name}
-								b #{item.position}
+      .list-apart.col-md-5.col-sm-5
+        #wrapper
+          h2.text-white Please choose your Aparment
+          .line-divider
+          each item in listApart
+            button(key=item._id)
+              i.fa.fa-building
+              p #{item.name}
+                b Resident
 		`;
   }
 }
