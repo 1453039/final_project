@@ -24,6 +24,7 @@ class LoginForm extends React.Component {
     });
   }
 
+<<<<<<< HEAD
   async handleClickNext (e) {
     e.preventDefault()
     var seft = this
@@ -43,9 +44,59 @@ class LoginForm extends React.Component {
             isClick: true,})
         });
       }
+=======
+  handleClickNext() {
+    var seft = this
+    let listUsers = []
+    let listApart = []
+    this.getListUser().then(function (response) {
+      listUsers = response.data
+      for (var id in listUsers)
+        seft.getListApart(listUsers[id]).then(function (response) {
+          listApart.push(response)
+        });
+      seft.setState({
+        listUsers,
+        listApart
+      });
+>>>>>>> 9d377cbf6eaaef32ad15c2329cd229288ac97470
     });
+
+    if (this.state.email)
+      this.setState({
+        isClick: true,
+      });
   }
 
+  async getListUser() {
+    try {
+      let result = await axios.get('/apartment/get-list-apartment', {
+        params: {
+          email: this.state.email
+        }
+      });
+      return result;
+    }
+    catch (error) {
+      console.log("error", error);
+    }
+  }
+
+  async getListApart(user) {
+    try {
+      let result = await axios.get('/apartment/get-apartment', {
+        params: {
+          id_apartment: user.apartment
+        }
+      });
+      return result.data;
+    }
+    catch (error) {
+      console.log("error", error);
+    };
+  }
+
+<<<<<<< HEAD
   isAdmin(listUser,item){
     let index = _.findIndex(listUser,{"apartment":item._id})
     return listUser[index].isAdmin
@@ -82,6 +133,10 @@ class LoginForm extends React.Component {
   render() {
     const { isClick, listApart, email } = this.state
     let disabled = email?false:true
+=======
+  render() {
+    const { isClick, listUsers, listApart } = this.state;
+>>>>>>> 9d377cbf6eaaef32ad15c2329cd229288ac97470
     return pug`
 			if !isClick 
 				.login-form.col-md-5.col-sm-5
@@ -93,7 +148,11 @@ class LoginForm extends React.Component {
 							button.btn-secondary(disabled=disabled)
 								span Next
 			else
+<<<<<<< HEAD
 				ListApart(listApart=listApart)
+=======
+				ListApart(listApart=listApart, listUsers = listUsers)
+>>>>>>> 9d377cbf6eaaef32ad15c2329cd229288ac97470
 		`;
   }
 }

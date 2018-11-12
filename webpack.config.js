@@ -8,7 +8,7 @@ module.exports = {
   mode: 'development',  
   entry: ['babel-polyfill', './src/index.js'],
   output: {
-    path       : path.join(__dirname, 'public'),
+    path       : path.join(__dirname, 'public/output'),
     filename   : 'bundle.js'
   },
   devtool: 'eval-source-map',
