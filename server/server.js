@@ -6,12 +6,9 @@ var mongoose = require('mongoose');
 var user = require('./routes/user');
 var route = require('./routes/route');
 var apartment = require('./routes/apartment');
-<<<<<<< HEAD:server/server.js
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var MongoStore = require('connect-mongo')(session);
-=======
->>>>>>> 9d377cbf6eaaef32ad15c2329cd229288ac97470:server/server.js
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '../public'));

@@ -24,7 +24,6 @@ class LoginForm extends React.Component {
     });
   }
 
-<<<<<<< HEAD
   async handleClickNext (e) {
     e.preventDefault()
     var seft = this
@@ -44,7 +43,7 @@ class LoginForm extends React.Component {
             isClick: true,})
         });
       }
-=======
+	  
   handleClickNext() {
     var seft = this
     let listUsers = []
@@ -59,7 +58,6 @@ class LoginForm extends React.Component {
         listUsers,
         listApart
       });
->>>>>>> 9d377cbf6eaaef32ad15c2329cd229288ac97470
     });
 
     if (this.state.email)
@@ -96,7 +94,6 @@ class LoginForm extends React.Component {
     };
   }
 
-<<<<<<< HEAD
   isAdmin(listUser,item){
     let index = _.findIndex(listUser,{"apartment":item._id})
     return listUser[index].isAdmin
@@ -136,7 +133,6 @@ class LoginForm extends React.Component {
 =======
   render() {
     const { isClick, listUsers, listApart } = this.state;
->>>>>>> 9d377cbf6eaaef32ad15c2329cd229288ac97470
     return pug`
 			if !isClick 
 				.login-form.col-md-5.col-sm-5
@@ -148,11 +144,9 @@ class LoginForm extends React.Component {
 							button.btn-secondary(disabled=disabled)
 								span Next
 			else
-<<<<<<< HEAD
 				ListApart(listApart=listApart)
 =======
 				ListApart(listApart=listApart, listUsers = listUsers)
->>>>>>> 9d377cbf6eaaef32ad15c2329cd229288ac97470
 		`;
   }
 }
