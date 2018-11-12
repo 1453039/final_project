@@ -5,7 +5,24 @@ import InfoMenu from './InfoMenu.jsx'
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 class MyInfo extends Component {
+	constructor(){
+		super();
+		this.state={
+			name: '',
+			email: '',
+			birthday: '',
+			room:'',
+			sex:''
+		}
+	}
+	onChangeName(e) {
+		this.setState({name: e.target.value});
+	}
+	onChangeBirthday(e) {
+		this.setState({birthday: e.target.value});
+	}
   render() {
+		//const {profile} = this.state;
     return pug`
 			#page-contents
 				.row
@@ -22,31 +39,27 @@ class MyInfo extends Component {
 								.row
 									.form-group.col-xs-12
 										label(for='fullname') My full name
-										input#fullname.form-control.input-group-lg(type='text', name='fullname', title='Enter full name', placeholder='Full name', value='Tran Gia Bao Thy')
+										input#fullname.form-control.input-group-lg(type='text', name='fullname', title='Enter full name', placeholder='Full name', onChange=this.onChangeName.bind(this), value=this.state.name, required)
 								.row
 									.form-group.col-xs-12
 										label(for='email') My email
-										input#email.form-control.input-group-lg(type='text', name='email', title='Enter email', placeholder='Email', value='trangiabaothy.96@gmail.com', disabled)
+										input#email.form-control.input-group-lg(type='text', name='email', title='Enter email', placeholder='Email', value=this.state.email, disabled)
 								.row
-									p.custom-label
-										strong Date of birth
-									.form-group.col-sm-3.col-xs-6  
-										label.sr-only(for='day')
-										input#day.form-control(type='text', name='day', title='Enter day', placeholder='Day', value='21')
-									.form-group.col-sm-3.col-xs-6  
-										label.sr-only(for='month')
-										input#month.form-control(type='text', name='month', title='Enter month', placeholder='Month', value='04')
-									.form-group.col-sm-3.col-xs-6  
-										label.sr-only(for='year')
-										input#year.form-control(type='text', name='year', title='Enter year', placeholder='Year', value='1996')
+									.form-group.col-xs-12
+										label(for='room') My room
+										input#room.form-control.input-group-lg(type='text', name='room', title='Enter room', placeholder='Room', value=this.state.room, disabled)
+								.row
+									.form-group.col-xs-12
+										label(for='birthday') Date of birth
+										input#birthday.form-control.input-group-lg(type='date', name='birthday', title='Enter birthday', placeholder='birthday', value=this.state.birthday, onChange=this.onChangeBirthday.bind(this), required)
 								.form-group.gender
 									span.custom-label 
 										strong I am a:
 									label#female.radio-inline Female
-										input(type='radio', name='optradio', value='female')
+										input(type='radio', name='optradio', value='female', checked)
 									label#male.radio-inline Male
 										input(type='radio', name='optradio', value='male')
-								button.btn.btn-primary(method='post') Save change
+								button.info.btn.btn-primary(method='post', type='submit') Save change
 								
 		`;
   }

@@ -4,7 +4,11 @@ import '../../../public/styles/PageContents.scss';
 import '../../../public/styles/ResidentList.scss';
 
 class ResidentList extends Component {
+  getLink(link){
+    return  "/@"+this.props.id+"?"+link
+  }
   render() {
+    const {id} = this.props
     return pug`
       .timeline-cover
         .timeline-nav-bar.hidden-sm.hidden-xs
@@ -17,14 +21,11 @@ class ResidentList extends Component {
             .col-md-9
               ul.list-inline.profile-menu
                 li
-                  Router
-                    Link(to='MyTimeline.jsx') My Timeline
+                  Link(to=this.getLink("timeline")) My Timeline
                 li
-                  Router
-                    Link(to='MyTimeline.jsx') About
+                  Link(to=this.getLink("info")) About
                 li
-                  Router
-                    Link(to='ResidentPage.js') Friends
+                  Link(to=this.getLink("member")) Friends
         .navbar-mobile.hidden-lg.hidden-md
           .profile-info
             img(src='http://placehold.it/300x300', alt='').img-responsive.profile-photo
@@ -33,14 +34,11 @@ class ResidentList extends Component {
           .mobile-menu
             ul.list-inline
               li
-                Router
-                  Link(to='MyTimeline.jsx') My Timeline
+                Link(to=this.getLink("timeline")) My Timeline
               li
-                Router
-                  Link(to='MyTimeline.jsx') About
+                Link(to=this.getLink("info")) About
               li
-                Router
-                  Link(to='ResidentPage.js') Friend
+                Link(to=this.getLink("member")) Friend
     `;
   }
 }

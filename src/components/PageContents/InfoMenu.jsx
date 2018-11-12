@@ -8,23 +8,18 @@ class InfoMenu extends Component {
 	constructor (){
     super();
   }
-  handleClickLink(){
-    this.props.history.push("/info")
-  }
   render() {
     return pug`
       ul.edit-menu
         li
           i.icon.ion-ios-information-outline
-          a(onClick=this.handleClickLink.bind(this)) Basic Information
+          Link(to='/:id?info') Basic Information
         li
           i.icon.ion-ios-settings
-          Router
-            Link(to='/accountsetting') Account Settings
+          Link(to='/account-setting') Account Settings
         li
           i.icon.ion-ios-locked-outline
-          Router
-            Link(to='/changepassword') Change Password								
+          Link(to='/:id?change-password') Change Password								
 		`;
   }
 }
