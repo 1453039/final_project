@@ -13,11 +13,11 @@ router.route('/insert')
     var user = new users();
     user.email = req.body.email;
     user.apartment = req.body.id;
-    user.password = req.body.password ? req.body.password : "";
-    user.name = req.body.name ? req.body.name : "";
-    user.birthday = req.body.birthday ? req.body.birthday : "";
-    user.sex = req.body.sex ? req.body.sex : "";
-    user.room = req.body.room ? req.body.room : "";
+    user.password = "";
+    user.name = "";
+    user.birthday = "";
+    user.sex = "";
+    user.room = req.body.room;
     user.isAdmin = req.body.isAdmin ? req.body.isAdmin : false;
     user.save(function (err) {
       if (err)
@@ -28,8 +28,6 @@ router.route('/insert')
 
 router.route('/send')
   .post(function (req, res) {
-    console.log('send', req.body.email);
-
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       secureConnection: false,
@@ -50,11 +48,13 @@ router.route('/send')
       }
     });
 
+    let text = "Your apartment domain is localhost:3000/@" + req.body.id
+
     let mailOptions = {
       from: creds.USER, // sender address
       to: req.body.email,
       subject: "Welcome to AP Social", // Subject line
-      text: "Your apartment domain is localhost:3000"
+      text: text
     };
     
     transporter.sendMail(mailOptions, (err, data) => {
@@ -71,14 +71,19 @@ router.route('/send')
 
   })
 
-router.route('/update_password/:id')
+router.route('/update_password')
   .post(function (req, res) {
-    const password = req.body.password;
-    users.update({ _id: req.params.id }, password, function (err, result) {
-      if (err)
+    const id = req.body.id
+    users.findById(id, function(err, user){
+      if(err)
         res.send(err);
-      res.send('User password successfully updated!');
-    });
+      const password = user.encryptPassword(req.body.password);
+      users.update({ _id: id }, {password: password}, function (err, result) {
+        if (err)
+          res.send(err);
+        res.send('User password successfully updated!');
+      });
+    })
   });
 
 router.route('/update_info/:id')
@@ -131,17 +136,19 @@ router.get('/get-resident-of-apartment/:id', function (req, res) {
   });
 });
 
-router.get('/save_into_session', function (req, res) {
-  id = res.query.id;
+router.post('/save_into_session', function (req, res) {
+  id = res.body.id;
   users.findById(id, function (err, user) {
     if (err)
       res.send(err);
-    req.user = user;
+    req.session.user = user;
+    res.send("Save user to session successfully")
   });
 });
 
 router.get('/get_user_from_session', function (req, res) {
-  res.json(req.user);
+  console.log("req.session", req.session)
+  res.json(req.session.user);
 });
 
 module.exports = router;

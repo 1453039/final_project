@@ -6,13 +6,14 @@ import Footer from '../components/Footer.jsx'
 
 class Resident extends Component {
   render() {
+    const {id} = this.props
     return pug`
       Header
       div(className="Resident")
         .container
           .timeline
-            MyCover
-            ResidentList
+            MyCover(id = id)
+            ResidentList(id = id)
       Footer
     `;
   }

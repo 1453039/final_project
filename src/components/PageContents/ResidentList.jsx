@@ -8,8 +8,8 @@ import Friends from './Friends.jsx';
 import AddUser from './AddUser.jsx'
 
 class ResidentList extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			data: [],
 			role: 'admin',
@@ -28,7 +28,8 @@ class ResidentList extends Component {
 					linkImg: 'http://placehold.it/300x300',
 					linkCover: 'http://placehold.it/1030x360'
 				}
-			]
+      ],
+      id: this.props.id
 		}
 		this.getData = this.getData.bind(this);
 	}
@@ -46,7 +47,7 @@ class ResidentList extends Component {
         e.setState({ data: response.data });
       })
       .catch(error => {
-        console.log(error.response);
+        console.log("error", error);
       });
   }
 
@@ -56,7 +57,7 @@ class ResidentList extends Component {
 				.row
 					.col-md-3
 						if(this.state.role =='admin')
-							AddUser
+							AddUser(id = this.state.id)
 					.col-md-9
 						.friend-list
 							Friends(friends=this.state.friends)

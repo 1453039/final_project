@@ -10,10 +10,6 @@ class LoginPage extends Component {
       #welcome
         PassForm(id=id)
         Banner
-    return pug`
-			#welcome
-				LoginPage
-				Banner
 		`;
   }
 }

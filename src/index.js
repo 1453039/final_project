@@ -1,8 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-<<<<<<< HEAD
-=======
-import App from './App';
 import Main from './router';
 import {Provider} from 'react-redux';
 import {store} from './store';

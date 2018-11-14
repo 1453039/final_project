@@ -3,19 +3,20 @@ import { Button } from 'react-bootstrap';
 import Modal from 'react-modal';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-var querystring = require('querystring');
 import '../../../public/styles/AddUser.scss';
 
 class AddUser extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       email: '',
       room: '',
       isAdmin: false,
       messageFromServer: '',
-      modalIsOpen: false
+      modalIsOpen: false,
+      id: this.props.id
     }
+    this.getLink = this.getLink.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.onClick = this.onClick.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
@@ -24,6 +25,11 @@ class AddUser extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.sendMail = this.sendMail.bind(this);
   }
+
+  getLink(link){
+    return  "/@"+this.state.id+"?"+link
+  }
+
   openModal() {
     this.setState({
       modalIsOpen: true
@@ -42,38 +48,39 @@ class AddUser extends React.Component {
     this.insertNewUser(this);
     this.sendMail(this);
   }
-  insertNewUser(e) {
-    axios.post('/members/insert',
-      querystring.stringify({
+  async insertNewUser(e) {
+    try {
+      await axios.post('/members/insert', {
         email: e.state.email,
         room: e.state.room,
         isAdmin: e.state.isAdmin,
-        id: '5be40332a4aa5bc40cdbe0d9'
-      }), {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      }).then(function (response) {
-        e.setState({
+        id: e.state.id
+      }).then(async function (response) {
+        await e.setState({
           messageFromServer: response.data
         });
       })
-      .catch(error => {
-        console.log(error.response);
-      });
+    }
+    catch(error) {
+        console.log("error", error);
+    }
   }
-  sendMail(e) {
-    axios.post('/members/send',{
-      email: e.state.email
+  async sendMail(e) {
+    try {
+      await axios.post('/members/send',{
+      email: e.state.email,
+      id: e.state.id
     }).then((response) => {
         if (response.data.msg === 'success') {
           alert("Message Sent.");
         } else if (response.data.msg === 'fail') {
           alert("Message failed to send.")
         }
-      }).catch(err => {
-        console.log(err);
-      });
+      })
+    }
+    catch(err) {
+        console.log("err", err);
+      }
   }
   handleTextChange(e) {
     if (e.target.name == "email") {
@@ -115,7 +122,7 @@ class AddUser extends React.Component {
         div
           Button(onClick=this.openModal)#add-member.btn.btn-primary Add member
           Modal(isOpen=this.state.modalIsOpen, onRequestClose=this.closeModal, contentLabel="Add User").Modal
-            Link(to={ pathname: '/members', search: '' } style={ textDecoration: 'none' })
+            Link(to=this.getLink("members") style={ textDecoration: 'none' })
               Button(onClick=this.closeModal)
                 span(className="closebtn glyphicon glyphicon-remove")
             fieldset#form
@@ -141,7 +148,7 @@ class AddUser extends React.Component {
           Modal(isOpen=this.state.modalIsOpen, onAfterOpen=this.afterOpenModal, onRequestClose=this.closeModal, contentLabel="Add User").Modal
             div(className='button-center')
               h3 #{mess}
-              Link(to={ pathname: '/members', search: '' }, style={ textDecoration: 'none' })
+              Link(to=this.getLink("members") style={ textDecoration: 'none' })
                 Button(onClick=this.closeModal) Close the Dialog
       `;
     }
