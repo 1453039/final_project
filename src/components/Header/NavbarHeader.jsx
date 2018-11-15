@@ -23,6 +23,8 @@ class NavbarHeader extends React.Component {
           span(class="icon-bar")
         Link(className="navbar-brand", to=this.getLink("newfeeds"))
           img(src=logo, alt="logo")
+      Menu
+      Search
     `;
   }
 }

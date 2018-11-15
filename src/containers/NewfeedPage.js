@@ -8,11 +8,10 @@ class NewfeedPage extends Component {
     super(props)
   }
   render() {
-    const {id} = this.props
     return pug`
-      Header(id = id)
+      Header
       div(className="newfeed")
-        PageContents(id = id)
+        PageContents
       Footer
     `;
   }

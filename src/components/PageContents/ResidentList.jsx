@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import '../../../public/styles/PageContents.scss';
 import '../../../public/styles/ResidentList.scss';
 import '../../../public/styles/AddUser.scss';
-//import '../../../public/styles/Info.scss';
 import Friends from './Friends.jsx';
 import AddUser from './AddUser.jsx'
 
@@ -28,13 +26,13 @@ class ResidentList extends Component {
 					linkImg: 'http://placehold.it/300x300',
 					linkCover: 'http://placehold.it/1030x360'
 				}
-      ]
+			]
 		}
 		this.getData = this.getData.bind(this);
 	}
 	componentDidMount() {
     this.getData(this);
-  }
+	}
 
   componentWillReceiveProps(nexProps) {
     this.getData(this);
@@ -46,13 +44,15 @@ class ResidentList extends Component {
         e.setState({ data: response.data });
       })
       .catch(error => {
-        console.log("error", error);
+        console.log(error.response);
       });
   }
 
   render() {
 		return pug`
 			#page-contents
+				if(this.state.modalIsOpen)
+					.overlay
 				.row
 					.col-md-3
 						if(this.state.role =='admin')

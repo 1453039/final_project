@@ -13,7 +13,7 @@ const PostSchema = new Schema({
 	numDislike: {type: Number, default: 0},
 	linkImg: String,
 	linkVideo: String,
-	type: {type: String, enum: ['Post', 'Event', 'Trading']},
+	type: {type: String, enum: ['Post', 'Event']},
 	attendent: {type: Number, default: 0}
 });
 

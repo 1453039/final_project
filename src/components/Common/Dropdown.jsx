@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Link, withRouter} from 'react-router-dom';
+import {BrowserRouter as Router, Link} from 'react-router-dom';
 import DownArrow from '../../../public/images/down-arrow.png';
 
 class Dropdown extends Component {
@@ -7,15 +7,10 @@ class Dropdown extends Component {
     super (props);
     this.state = {
       listOpen: false,
-      headerTitle: this.props.title
+      headerTitle: this.props.title,
     };
     this.toggleListTmp = this.toggleList.bind (this);
     this.handleClickOutside = this.handleClickOutside.bind (this);
-    this.getLink = this.getLink.bind(this);
-  }
-
-  getLink(link){
-    return  "/@"+this.props.match.params.id+"?"+link
   }
 
   handleClickOutside () {
@@ -26,13 +21,10 @@ class Dropdown extends Component {
 
   toggleList () {
     if (!this.state.listOpen) {
-      document.addEventListener('click', this.handleClickOutside, true);
+      document.addEventListener ('click', this.handleClickOutside, true);
     } else {
-      document.removeEventListener('click', this.handleClickOutside, false);
+      document.removeEventListener ('click', this.handleClickOutside, false);
     }
-
-    if (this.props.link)
-      this.props.history.push(this.props.link)
 
     this.setState (prevState => ({
       listOpen: !prevState.listOpen,
@@ -40,18 +32,21 @@ class Dropdown extends Component {
   }
 
   render () {
-    const{list} = this.props
+    const{list, link} = this.props
     const{listOpen, headerTitle} = this.state
     return pug`
       li.dropdown
-        div(className="dropdown-toggle", onClick=this.toggleListTmp) #{headerTitle}
-        if listOpen
-          ul(className="dropdown-menu")
-            each item in list
-              li(key=item.id)
-                Link(to=this.getLink(item.link)) #{item.title}
-        `;
+        if (list)
+          div(className="dropdown-toggle", onClick=this.toggleListTmp) #{headerTitle}
+            if (listOpen)
+              ul(className="dropdown-menu")
+                each item in list
+                  li(key=item.id)
+                    Link(to=item.link) #{item.title}
+        else 
+          Link(to=link).dropdown-toggle #{headerTitle}
+    `;
   }
 }
 
-export default withRouter(Dropdown);
+export default Dropdown;

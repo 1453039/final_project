@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../../../public/styles/PageContents.scss';
 import '../../../public/styles/Info.scss';
 import InfoMenu from './InfoMenu.jsx'
 import { BrowserRouter as Router, Link } from 'react-router-dom';
@@ -11,7 +10,7 @@ class MyInfo extends Component {
 			name: '',
 			email: '',
 			birthday: '',
-			room:'',
+			flat:'',
 			sex:''
 		}
 	}
@@ -22,7 +21,6 @@ class MyInfo extends Component {
 		this.setState({birthday: e.target.value});
 	}
   render() {
-		//const {profile} = this.state;
     return pug`
 			#page-contents
 				.row
@@ -46,8 +44,8 @@ class MyInfo extends Component {
 										input#email.form-control.input-group-lg(type='text', name='email', title='Enter email', placeholder='Email', value=this.state.email, disabled)
 								.row
 									.form-group.col-xs-12
-										label(for='room') My room
-										input#room.form-control.input-group-lg(type='text', name='room', title='Enter room', placeholder='Room', value=this.state.room, disabled)
+										label(for='room') My flat
+										input#room.form-control.input-group-lg(type='text', name='room', title='Enter flat', placeholder='Flat', value=this.state.flat, disabled)
 								.row
 									.form-group.col-xs-12
 										label(for='birthday') Date of birth
@@ -60,7 +58,6 @@ class MyInfo extends Component {
 									label#male.radio-inline Male
 										input(type='radio', name='optradio', value='male')
 								button.info.btn.btn-primary(method='post', type='submit') Save change
-								
 		`;
   }
 }
