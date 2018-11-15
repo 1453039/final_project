@@ -6,14 +6,13 @@ import Footer from '../components/Footer.jsx'
 
 class MyTimelinePage extends Component {
   render() {
-    const {id} = this.props
     return pug`
       Header
       div(className="MyTimelinePage")
         .container
           .timeline
-            MyCover(id = id)
-            MyTimeline(id = id)
+            MyCover
+            MyTimeline
       Footer
     `;
   }

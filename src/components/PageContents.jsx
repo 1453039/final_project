@@ -1,15 +1,18 @@
 import React, {Component} from 'react';
+import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 import SideBarLeft from './PageContents/SideBarLeft.jsx';
 import SideBarRight from './PageContents/SideBarRight.jsx';
 import PostCreateBox from './PageContents/PostCreateBox.jsx';
 import PostContent from './PageContents/PostContent.jsx';
 import '../../public/styles/PageContents.scss';
-import Video from '../../public/videos/1.mp4';
+
 
 class PageContents extends Component {
-  constructor () {
-    super ();
+  constructor (props) {
+    super (props);
     this.state = {
+      user: [],
 			page: 'content',
 			post1: {
 				user: 'Trần Nguyễn Ái Nhân',
@@ -33,14 +36,30 @@ class PageContents extends Component {
 				]
 			}
     }
+    this.getUserFromSession = this.getUserFromSession.bind(this);
+  }
+
+  componentDidMount() {
+    this.getUserFromSession(this);
+  }
+
+  async getUserFromSession(e) {
+    await axios.get("/members/get_user_from_session").then((response) => {
+      e.setState({
+        user: response.data
+      })
+    }).catch(err =>{
+      console.log("err", err);
+    })
   }
 
   render () {
+    const id = this.props.match.params.id
     return pug`
     #page-contents
       .container
         .row
-          SideBarLeft
+          SideBarLeft(id = id, user = this.state.user)
           .col-md-7
             PostCreateBox
             PostContent(post=this.state.post1, page=this.state.page)
@@ -49,4 +68,4 @@ class PageContents extends Component {
   }
 }
 
-export default PageContents;
+export default withRouter(PageContents);

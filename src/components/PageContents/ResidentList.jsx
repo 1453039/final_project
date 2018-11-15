@@ -28,8 +28,7 @@ class ResidentList extends Component {
 					linkImg: 'http://placehold.it/300x300',
 					linkCover: 'http://placehold.it/1030x360'
 				}
-      ],
-      id: this.props.id
+      ]
 		}
 		this.getData = this.getData.bind(this);
 	}
@@ -57,7 +56,7 @@ class ResidentList extends Component {
 				.row
 					.col-md-3
 						if(this.state.role =='admin')
-							AddUser(id = this.state.id)
+							AddUser
 					.col-md-9
 						.friend-list
 							Friends(friends=this.state.friends)

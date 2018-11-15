@@ -28,43 +28,43 @@ class Root extends React.Component {
     switch (patch) {
       case "?info":
         return pug`
-          BasicInfoPage(id=id)
+          BasicInfoPage
         `
       case "?timeline":
         return pug`
-          MyTimelinePage(id=id)
+          MyTimelinePage
         `
       case "?members":
         return pug`
-          ResidentPage(id=id)
+          ResidentPage
         `
       case "?change-password":
         return pug`
-          EditPassPage(id=id)
+          EditPassPage
         `
       case "?messages":
         return pug`
-          MessagePage(id=id)
+          MessagePage
         `
       case "?admin-noti":
         return pug`
-          AdminNotiPage(id=id)
+          AdminNotiPage
         `
       case "?member-noti":
         return pug`
-          MemsNotiPage(id=id)
+          MemsNotiPage
         `
       case "?reports":
         return pug`
-          ReportPage(id=id)
+          ReportPage
         `
       case "?newfeeds":
         return pug`
-          NewfeedPage(id=id)
+          NewfeedPage
         `
       default:
         return pug`
-          LoginPage(id=id)
+          LoginPage
         `
     }
   }

@@ -136,13 +136,13 @@ router.get('/get-resident-of-apartment/:id', function (req, res) {
   });
 });
 
-router.post('/save_into_session', function (req, res) {
-  id = res.body.id;
+router.post('/save_to_session', function (req, res) {
+  const id = req.body.id;
   users.findById(id, function (err, user) {
     if (err)
       res.send(err);
     req.session.user = user;
-    res.send("Save user to session successfully")
+    res.send("Save user to session successfully!")
   });
 });
 

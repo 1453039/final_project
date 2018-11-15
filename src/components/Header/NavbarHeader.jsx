@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Link, withRouter } from 'react-router-dom';
 import logo from '../../../public/images/logo.png';
 
 class NavbarHeader extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: this.props.match.params.id
+    }
+    this.getLink = this.getLink.bind(this)
+  }
+  getLink(link){
+    return  "/@"+this.state.id+"?"+link
+  }
   render() {
     return pug`
       .navbar-header
@@ -11,10 +21,10 @@ class NavbarHeader extends React.Component {
           span(class="icon-bar")
           span(class="icon-bar")
           span(class="icon-bar")
-        Link(className="navbar-brand", to="/newfeeds")
+        Link(className="navbar-brand", to=this.getLink("newfeeds"))
           img(src=logo, alt="logo")
     `;
   }
 }
 
-export default NavbarHeader;
+export default withRouter(NavbarHeader);

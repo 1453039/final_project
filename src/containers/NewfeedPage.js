@@ -4,11 +4,15 @@ import PageContents from '../components/PageContents.jsx'
 import Footer from '../components/Footer.jsx'
 
 class NewfeedPage extends Component {
+  constructor(props) {
+    super(props)
+  }
   render() {
+    const {id} = this.props
     return pug`
-      Header
+      Header(id = id)
       div(className="newfeed")
-        PageContents
+        PageContents(id = id)
       Footer
     `;
   }

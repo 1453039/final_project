@@ -6,14 +6,13 @@ import Footer from '../components/Footer.jsx'
 
 class EditPassPage extends Component {
   render() {
-    const {id} = this.props
     return pug`
       Header
       div(className="EditPassPage")
         .container
           .timeline
-            MyCover(id = id)
-            EditPass(id = id)
+            MyCover
+            EditPass
       Footer
     `;
   }

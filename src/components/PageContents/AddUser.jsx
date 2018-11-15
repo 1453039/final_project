@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import Modal from 'react-modal';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import '../../../public/styles/AddUser.scss';
 
 class AddUser extends React.Component {
@@ -14,7 +14,7 @@ class AddUser extends React.Component {
       isAdmin: false,
       messageFromServer: '',
       modalIsOpen: false,
-      id: this.props.id
+      id: this.props.match.params.id
     }
     this.getLink = this.getLink.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
@@ -157,4 +157,4 @@ class AddUser extends React.Component {
 
 Modal.setAppElement('#root');
 
-export default AddUser;
+export default withRouter(AddUser);

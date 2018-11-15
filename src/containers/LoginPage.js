@@ -5,10 +5,9 @@ import '../../public/styles/Welcome.scss';
 
 class LoginPage extends Component {
   render() {
-    const {id} = this.props
     return pug`
       #welcome
-        PassForm(id=id)
+        PassForm
         Banner
 		`;
   }

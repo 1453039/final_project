@@ -9,6 +9,7 @@ import '../../public/styles/ReportForm.scss';
 
 class ReportPage extends Component {
   render() {
+    const {id} = this.props
     return pug`
       Header
       #page-contents
