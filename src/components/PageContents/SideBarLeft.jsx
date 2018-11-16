@@ -27,7 +27,8 @@ class SideBarLeft extends React.Component {
   render() {
     const {users} = this.state;
     const user = this.props.user
-    let name = user.name? user.name : "User Name"    return pug`
+    let name = user.name? user.name : "User Name"    
+    return pug`
       .col-md-3.static
         .profile-card
           img(src="http://placehold.it/300x300", alt="user").profile-photo
@@ -41,11 +42,11 @@ class SideBarLeft extends React.Component {
           li
             i.icon.ion-ios-paper 
             div
-              Link(to="/timeline") My Timeline
+              Link(to=this.getLink("timeline")) My Timeline
           li
             i.icon.ion-ios-contact 
             div
-              Link(to="/info") My Account
+              Link(to=this.getLink("info")) My Account
           li
             i.icon.ion-ios-people-outline
             div

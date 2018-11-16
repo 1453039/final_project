@@ -10,22 +10,20 @@ import MessagePage from './containers/MessagePage';
 import ReportPage from './containers/ReportPage';
 import AdminNotiPage from './containers/AdminNotiPage';
 import MemsNotiPage from './containers/MemsNotiPage';
-import PaymentPage from './containers/PaymentPage';
-
+import ROOT from "./root"
 class Main extends Component {
   render() {
   return pug `
     Switch
-      Route(path='/newfeeds', component=NewfeedPage)
-      Route(path='/timeline', component=MyTimelinePage)
-      Route(path='/info', component=BasicInfoPage)
-      Route(path='/members', component=ResidentPage)
-      Route(path='/change-password', component=EditPassPage)
-      Route(path='/messages', component=MessagePage)
-      Route(path='/admin-noti', component=AdminNotiPage)
-      Route(path='/member-noti', component=MemsNotiPage)
-      Route(path='/reports', component=ReportPage)
-      Route(path='/payments', component=PaymentPage)
+      // Route(path='/@:id/timeline', component=MyTimelinePage)
+      // Route(path='/@:id/info', component=BasicInfoPage)
+      // Route(path='/@:id/members', component=ResidentPage)
+      // Route(path='/@:id/change-password', component=EditPassPage)
+      // Route(path='/@:id/messages', component=MessagePage)
+      // Route(path='/@:id/admin-noti', component=AdminNotiPage)
+      // Route(path='/@:id/member-noti', component=MemsNotiPage)
+      // Route(path='/@:id/reports', component=ReportPage)
+      Route(exact path='/@:id', component=ROOT)
       Route(path='/', component=WelcomePage)
       Route(exact component=WelcomePage)
     `;
@@ -33,4 +31,3 @@ class Main extends Component {
 }
 
 export default Main;
-

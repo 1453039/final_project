@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 import apartments from './Apartment';
-import flats from './Flat'
 var bcrypt = require('bcrypt-nodejs')
 
 const UserSchema = new Schema({
@@ -11,7 +10,8 @@ const UserSchema = new Schema({
 	name: String,
 	birthday: Date,
 	sex: String,
-	avatar: String,
+  avatar: String,
+  cover: String,
 	flat: String,
 	status: {type: Boolean, default: false},
 	isAdmin: {type: Boolean, default: false},

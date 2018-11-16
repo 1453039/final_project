@@ -147,7 +147,6 @@ router.post('/save_to_session', function (req, res) {
 });
 
 router.get('/get_user_from_session', function (req, res) {
-  console.log("req.session", req.session)
   res.json(req.session.user);
 });
 

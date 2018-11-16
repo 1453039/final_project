@@ -18,7 +18,8 @@ class ResidentList extends Component {
     return  "/@"+this.props.match.params.id+"?"+link
   }
   render() {
-    const {id} = this.props.match.params.id    return pug`
+    const {id} = this.props.match.params.id    
+    return pug`
       .timeline-cover
         .timeline-nav-bar.hidden-sm.hidden-xs
           .row
@@ -29,7 +30,7 @@ class ResidentList extends Component {
                 p.text-muted Flat: #{this.state.flat}
             .col-md-9
               ul.list-inline.profile-menu
-                         li
+                li
                   Link(to=this.getLink("timeline")) My Timeline
                 li
                   Link(to=this.getLink("info")) About
