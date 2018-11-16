@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Link, withRouter  } from 'react-router-dom';
+import axios from 'axios';
 
 class SideBarLeft extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: [],
       users: [
 				{
 					id: 0,
@@ -18,7 +20,22 @@ class SideBarLeft extends React.Component {
 				},
 			],
 			id: this.props.match.params.id    }
-	this.getLink = this.getLink.bind(this)
+    this.getLink = this.getLink.bind(this)
+    this.getUserFromSession = this.getUserFromSession.bind(this);
+  }
+
+  componentWillMount() {
+    this.getUserFromSession(this);
+  }
+
+  async getUserFromSession(e) {
+    await axios.get("/members/get_user_from_session").then((response) => {
+      e.setState({
+        user: response.data
+      })
+    }).catch(err =>{
+      console.log("err", err);
+    })
   }
 
   getLink(link){
@@ -26,12 +43,12 @@ class SideBarLeft extends React.Component {
   }
   render() {
     const {users} = this.state;
-    const user = this.props.user
+    const user = this.state.user
     let name = user.name? user.name : "User Name"    
     return pug`
       .col-md-3.static
         .profile-card
-          img(src="http://placehold.it/300x300", alt="user").profile-photo
+          img(src=user.avatar, alt="user").profile-photo
           h5 
             Link(className="text-white", to=this.getLink("timeline")) #{name}
         ul.nav-news-feed

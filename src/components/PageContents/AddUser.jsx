@@ -4,13 +4,15 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
 import '../../../public/styles/AddUser.scss';
+import DEFAULT_AVATAR from '../../../public/images/avatar-default.png'
+import DEFAULT_COVER from '../../../public/images/default-cover.jpg'
 
 class AddUser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      room: '',
+      flat: '',
       isAdmin: false,
       messageFromServer: '',
       modalIsOpen: false,
@@ -38,7 +40,7 @@ class AddUser extends React.Component {
   closeModal() {
     this.setState({
       email: '',
-      room: '',
+      flat: '',
       isAdmin: false,
       modalIsOpen: false,
       messageFromServer: ''
@@ -46,15 +48,18 @@ class AddUser extends React.Component {
   }
   onClick(e) {
     this.insertNewUser(this);
-    this.sendMail(this);
+    // this.sendMail(this);
   }
   async insertNewUser(e) {
     try {
       await axios.post('/members/insert', {
         email: e.state.email,
-        room: e.state.room,
+        flat: e.state.flat,
         isAdmin: e.state.isAdmin,
-        id: e.state.id
+        id: e.state.id,
+        avatar: DEFAULT_AVATAR,
+        cover: DEFAULT_COVER
+
       }).then(async function (response) {
         await e.setState({
           messageFromServer: response.data
@@ -88,9 +93,9 @@ class AddUser extends React.Component {
         email: e.target.value
       });
     }
-    if (e.target.name == "room") {
+    if (e.target.name == "flat") {
       this.setState({
-        room: e.target.value
+        flat: e.target.value
       });
     }
   }
@@ -128,8 +133,8 @@ class AddUser extends React.Component {
             fieldset#form
               label(for="email").full-screen Email:
                 input(type="text", name="email", value=this.state.email, onChange=this.handleTextChange, required)#email.form-control.input-group-lg
-              label(for="room").full-screen Room:
-                input(type="text", name="room", value=this.state.room, onChange=this.handleTextChange, required)#room.form-control.input-group-lg
+              label(for="room").full-screen Flat:
+                input(type="text", name="flat", value=this.state.room, onChange=this.handleTextChange, required)#room.form-control.input-group-lg
               .form-group.isAdmin
                 span.custom-label 
                   strong Admin:  

@@ -1,26 +1,56 @@
 import React, { Component } from 'react';
 import '../../../public/styles/Info.scss';
 import InfoMenu from './InfoMenu.jsx'
+import axios from 'axios';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 class MyInfo extends Component {
 	constructor(){
 		super();
-		this.state={
-			name: '',
-			email: '',
-			birthday: '',
-			flat:'',
-			sex:''
-		}
-	}
+		this.state= {
+      user:[]
+    }
+    this.getUserFromSession = this.getUserFromSession.bind(this);
+    this.onChangeName = this.onChangeName.bind(this);
+    this.onChangeBirthday = this.onChangeBirthday.bind(this);
+    this.onChangeGender = this.onChangeGender.bind(this);
+  }
+
 	onChangeName(e) {
-		this.setState({name: e.target.value});
+		this.setState({ user: {name : e.target.value}});
 	}
 	onChangeBirthday(e) {
-		this.setState({birthday: e.target.value});
-	}
+		this.setState({ user: {birthday : e.target.value}});
+  }
+  onChangeGender(e) {
+    if (e.target.name == "female") {
+      this.setState({
+        user: {sex : e.target.value}
+      })
+    }
+    if (e.target.name == "male") {
+      this.setState({
+        user: {sex : e.target.value}
+      })
+    }
+  }
+  
+  componentWillMount() {
+    this.getUserFromSession(this);
+  }
+
+  async getUserFromSession(e) {
+    await axios.get("/members/get_user_from_session").then((response) => {
+      e.setState({
+        user: response.data
+      })
+    }).catch(err =>{
+      console.log("err", err);
+    })
+  }
+
   render() {
+    const user = this.state.user
     return pug`
 			#page-contents
 				.row
@@ -37,26 +67,26 @@ class MyInfo extends Component {
 								.row
 									.form-group.col-xs-12
 										label(for='fullname') My full name
-										input#fullname.form-control.input-group-lg(type='text', name='fullname', title='Enter full name', placeholder='Full name', onChange=this.onChangeName.bind(this), value=this.state.name, required)
+										input#fullname.form-control.input-group-lg(type='text', name='fullname', title='Enter full name', placeholder='Full name', onChange=this.onChangeName, value=user.name)
 								.row
 									.form-group.col-xs-12
 										label(for='email') My email
-										input#email.form-control.input-group-lg(type='text', name='email', title='Enter email', placeholder='Email', value=this.state.email, disabled)
+										input#email.form-control.input-group-lg(type='text', name='email', title='Enter email', placeholder='Email', value=user.email, disabled)
 								.row
 									.form-group.col-xs-12
 										label(for='room') My flat
-										input#room.form-control.input-group-lg(type='text', name='room', title='Enter flat', placeholder='Flat', value=this.state.flat, disabled)
+										input#room.form-control.input-group-lg(type='text', name='room', title='Enter flat', placeholder='Flat', value=user.flat, disabled)
 								.row
 									.form-group.col-xs-12
 										label(for='birthday') Date of birth
-										input#birthday.form-control.input-group-lg(type='date', name='birthday', title='Enter birthday', placeholder='birthday', value=this.state.birthday, onChange=this.onChangeBirthday.bind(this), required)
+										input#birthday.form-control.input-group-lg(type='date', name='birthday', title='Enter birthday', placeholder='birthday', value=user.birthday, onChange=this.onChangeBirthday)
 								.form-group.gender
 									span.custom-label 
 										strong I am a:
 									label#female.radio-inline Female
-										input(type='radio', name='optradio', value='female', checked)
+										input(type='radio', name='female', value='female', onChange=this.onChangeGender, checked=user.sex=='female')
 									label#male.radio-inline Male
-										input(type='radio', name='optradio', value='male')
+										input(type='radio', name='male', value='male',  onChange=this.onChangeGender, checked=user.sex=='male')
 								button.info.btn.btn-primary(method='post', type='submit') Save change
 		`;
   }

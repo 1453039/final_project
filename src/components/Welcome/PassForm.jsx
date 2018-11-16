@@ -22,18 +22,14 @@ class PassForm extends React.Component {
     this.getApartment(this);
   }
 
-  componentWillUnmount(){
-    this.saveToSession(this);
-  }
-
 	handlePassChange (e) {
 		this.setState ({
       password: e.target.value,
 		});
   }
 
-  saveToSession(e) {
-    axios.post("/members/save_to_session", {
+  async saveToSession(e) {
+    await axios.post("/members/save_to_session", {
       id: e.state.id_user
     }).then((response) => {
       console.log(response.data)
@@ -42,9 +38,9 @@ class PassForm extends React.Component {
     })
   }
 
-  updatePasswordUser() {
+  async updatePasswordUser() {
     let seft = this
-    axios.post("/members/update_password", {
+    await axios.post("/members/update_password", {
         id : seft.state.id_user,
         password: seft.state.password
     }).then((response) => {
@@ -54,8 +50,8 @@ class PassForm extends React.Component {
     })
   }
 
-  getApartment(e) {
-    axios.get("/apartment/get-apartment", {
+  async getApartment(e) {
+    await axios.get("/apartment/get-apartment", {
       params: {
         id_apartment : e.state.id
       }
@@ -68,10 +64,11 @@ class PassForm extends React.Component {
     })
   }
   
-	handleClickNext(e) {
+	async handleClickNext(e) {
     e.preventDefault()
-    this.updatePasswordUser()
-    this.props.history.push('@'+ this.state.id + '?newfeeds');
+    await this.updatePasswordUser()
+    await this.saveToSession(this);
+    await this.props.history.push('@'+ this.state.id + '?newfeeds');
   }
   
   render() {

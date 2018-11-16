@@ -4,6 +4,7 @@ var users = require('../models/User');
 var nodemailer = require('nodemailer');
 const creds = require('../config/config');
 
+
 router.get('/', function (req, res) {
   res.render('index')
 });
@@ -17,7 +18,10 @@ router.route('/insert')
     user.name = "";
     user.birthday = "";
     user.sex = "";
-    user.room = req.body.room;
+    user.avatar = req.body.avatar;
+    user.cover = req.body.cover;
+    user.flat = req.body.room;
+    user.status = false;
     user.isAdmin = req.body.isAdmin ? req.body.isAdmin : false;
     user.save(function (err) {
       if (err)

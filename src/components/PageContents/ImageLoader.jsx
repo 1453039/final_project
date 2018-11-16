@@ -6,9 +6,15 @@ class ImageLoader extends React.Component {
   constructor(props) {
     super(props);
     this.state= {
-      selectedFile: 'http://placehold.it/300x300',
+      selectedFile: ''
     }
     this.onImageChange = this.onImageChange.bind(this);
+  }
+
+  componentWillMount(){
+    this.setState({
+      selectedFile: this.props.avatar
+    })
   }
 
   onImageChange(event) {
@@ -29,7 +35,7 @@ class ImageLoader extends React.Component {
           .btn-choose
             i.ion-images
             span Upload file
-        img.selectedFile(src=this.state.selectedFile)
+        img.selectedFile(src=selectedFile)
       else 
         if(this.props.page == 'info')
           input#file(type='file', onChange=this.onImageChange)
