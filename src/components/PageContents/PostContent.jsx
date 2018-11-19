@@ -1,53 +1,74 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
+import axios from 'axios'
 
 class PostContent extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      user: [],
+      post: this.props.post,
+      page: window.location.search
+    }
+    this.getPostUser = this.getPostUser.bind(this)
   }
 
+  componentWillMount() {
+    this.getPostUser(this)
+  }
+
+  async getPostUser(e) {
+    await axios.get("/members/get-user", {
+      params: {
+        id : e.state.post.author
+      }
+    }).then(async (response) => {
+      await e.setState({
+        user: response.data
+      })
+    }).catch(err => {
+      console.log("err", err)
+    })
+  }
+  
   render() {
-    const post = this.props.post;
-    const page = this.props.page;
     return pug`
 			.post-content
-				if (page == 'timeline')
+				if (this.state.page == '?timeline')
 					.post-date.hidden-xs.hidden-sm
 						h5 Trần Gia Bảo Thy
-						p.text-grey #{post.time}
-				if post.linkImg
-					img.img-responsive.post-image(src=post.linkImg, alt="post-image")
-				if post.linkVideo
+						p.text-grey #{this.state.post.time}
+				if this.state.post.linkImg
+					img.img-responsive.post-image(src=this.state.post.linkImg, alt="post-image")
+				if this.state.post.linkVideo
 					video.post-video(controls)
-						source(src=post.linkVideo, type="video/mp4")
+						source(src=this.state.post.linkVideo, type="video/mp4")
 				.post-container
 					img.profile-photo-md.pull-left(src="http://placehold.it/300x300", alt="user")
 					.post-detail
 						.user-info
 							h5
-								Link.profile-link(to="/") #{post.user}
-							p.text-muted #{post.time}
+								Link.profile-link(to="/") #{this.state.post.author}
+							p.text-muted #{this.state.post.time}
 						.reaction
 							Link.btn.text-green(to='/') 
-								i.fa.fa-thumbs-up 
-								span #{post.like}
+								i.icon.ion-thumbsup #{this.state.post.numLike}
 							Link.btn.text-red(to='/') 
-								i.fa.fa-thumbs-down 
-								span #{post.dislike}
+								i.fa.fa-thumbs-down #{this.state.post.numDislike}
 						.line-divider
 						.post-text
-							p #{post.postDetail}
+							p #{this.state.post.description}
 						.line-divider
-						each comment in post.comments
+						each comment in this.state.post.comments
 							.post-comment(key=comment.id)
 								img.profile-photo-sm(src="http://placehold.it/300x300", alt="")
 								Link.profile-link(to="/") #{comment.user}
-								span.text-muted #{comment.time}
 								p #{comment.commentDetail}
 						.post-comment
+							img.profile-photo-sm(src="http://placehold.it/300x300", alt="")
 							input.form-control(type="text", placeholder="Post a comment")
 		`;
   }
 }
 
-export default PostContent;
+export default withRouter(PostContent);

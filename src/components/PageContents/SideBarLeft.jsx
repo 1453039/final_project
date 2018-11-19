@@ -50,7 +50,7 @@ class SideBarLeft extends React.Component {
         .profile-card
           img(src=user.avatar, alt="user").profile-photo
           h5 
-            Link(className="text-white", to=this.getLink("timeline")) #{name}
+            Link(className="text-white", to=this.getLink("info")) #{name}
         ul.nav-news-feed
           li
             i.icon.ion-ios-home

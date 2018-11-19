@@ -159,7 +159,6 @@
   width: 100%;
   min-height: 90px;
   padding: 20px;
-  margin-bottom: 20px;
   border-bottom: 1px solid #f1f2f2;
   .form-group {
     margin-bottom: 0;
@@ -192,7 +191,11 @@
 		}
 		#publish.btn {
 			outline: none;
-			width: 50%;
+      width: 50%;
+      &:disabled {
+        background-color: #cccccc;
+        color: #666666;
+      }
 		}
   }
 }
@@ -234,8 +237,7 @@
 				top: 0;
 				i {
 					margin-right: 5px;
-				}
-			}
+				}			}
 			.post-comment {
 				display: inline-block;
 				margin: 10px auto;
@@ -245,8 +247,7 @@
 				}
 				span {
 					float: right;
-				}
-				img.profile-photo-md {
+				}				img.profile-photo-md {
 					margin-right: 10px;
 					height: 50px;
 					width: 50px;

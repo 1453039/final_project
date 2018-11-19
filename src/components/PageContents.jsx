@@ -12,35 +12,27 @@ class PageContents extends Component {
   constructor (props) {
     super (props);
     this.state = {
-      user: [],
-			page: 'content',
-			post1: {
-				user: 'Trần Nguyễn Ái Nhân',
-				time: 'Published a photo about 3 mins ago',
-				linkImg: 'http://placehold.it/300x300',
-				linkVideo: '',
-				postDetail: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-				like: '13',
-				dislike: '0',
-				comments: [
-					{
-						id: 0,
-						user: 'Võ Trân Châu',
-						time: '2 mins ago',
-						commentDetail: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud'
-					},
-					{
-						id: 1,
-						user: 'Nguyễn Ngô Phú Vinh',
-						time: '30 secs ago',
-						commentDetail: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud'
-					}
-				]
-			}
+			posts: []
     }
+    this.getAllPost = this.getAllPost.bind(this)
+  }
+
+  componentWillMount() {
+    this.getAllPost(this)
+  }
+
+  async getAllPost(e) {
+    await axios.get("/post/get-all").then(async (response) => {
+      await e.setState({
+        posts: response.data
+      })
+    }).catch(err => {
+      console.log("err", err)
+    })
   }
 
   render () {
+    console.log("this.state.posts", this.state.posts)
     return pug`
     #page-contents
       .container
@@ -48,7 +40,8 @@ class PageContents extends Component {
           SideBarLeft
           .col-md-7
             PostCreateBox
-            PostContent(post=this.state.post1, page=this.state.page)
+            each post in this.state.posts
+              PostContent(key=post._id, post=post)
           SideBarRight
     `;
   }
