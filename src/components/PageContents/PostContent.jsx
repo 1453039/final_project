@@ -52,9 +52,11 @@ class PostContent extends React.Component {
 							p.text-muted #{this.state.post.time}
 						.reaction
 							Link.btn.text-green(to='/') 
-								i.icon.ion-thumbsup #{this.state.post.numLike}
+								i.icon.ion-thumbsup 
+								span #{this.state.post.numLike}
 							Link.btn.text-red(to='/') 
-								i.fa.fa-thumbs-down #{this.state.post.numDislike}
+								i.fa.fa-thumbs-down 
+								span #{this.state.post.numDislike}
 						.line-divider
 						.post-text
 							p #{this.state.post.description}
@@ -63,9 +65,9 @@ class PostContent extends React.Component {
 							.post-comment(key=comment.id)
 								img.profile-photo-sm(src="http://placehold.it/300x300", alt="")
 								Link.profile-link(to="/") #{comment.user}
+								span.text-mute #{comment.time}
 								p #{comment.commentDetail}
 						.post-comment
-							img.profile-photo-sm(src="http://placehold.it/300x300", alt="")
 							input.form-control(type="text", placeholder="Post a comment")
 		`;
   }
