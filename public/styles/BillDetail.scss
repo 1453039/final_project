@@ -5,6 +5,10 @@
   }
   h4 {
     margin: 20px 0 0 !important;
+    float: right;
+     span {
+      margin-left: 20px;
+     }
   }
   table {
     width: 100%;
@@ -13,16 +17,16 @@
       text-align: center;
     }
     td.id {
-      width: 10%;
+      width: 5%;
     }
     td.service-name {
       width: 40%;
     }
-    td.fee, td.unit{
+    td.fee, td.unit, td.flat-num{
       width: 20%;
     } 
-    td.amount {
-      width: 10%;
+    td.amount, td.isPaid {
+      width: 15%;
     }
   } 
   button {

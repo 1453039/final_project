@@ -26,11 +26,13 @@ class PageContents extends Component {
 					{
 						id: 0,
 						user: 'Võ Trân Châu',
+						time: '2 mins ago',
 						commentDetail: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud'
 					},
 					{
 						id: 1,
 						user: 'Nguyễn Ngô Phú Vinh',
+						time: '30 secs ago',
 						commentDetail: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud'
 					}
 				]

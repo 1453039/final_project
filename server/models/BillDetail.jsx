@@ -5,9 +5,9 @@ import users from './User'
 import bills from './Bill'
 
 const SellItemSchema = new Schema({
-  service: {type: Schema.Types.ObjectID, ref: services},
-  seller: {type: Schema.Types.ObjectID, ref: users},
-  bill: {type: Schema.Types.ObjectID, ref: bills},
+  service: {type: Schema.Types.ObjectId, ref: services},
+  seller: {type: Schema.Types.ObjectId, ref: users},
+  bill: {type: Schema.Types.ObjectId, ref: bills},
   amount: {type: Number, default: 0}
 });
 

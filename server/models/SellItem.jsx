@@ -4,8 +4,8 @@ import apartments from './Apartment'
 import users from './User'
 
 const SellItemSchema = new Schema({
-	apartment: {type: Schema.Types.ObjectID, ref: apartments},
-  seller: {type: Schema.Types.ObjectID, ref: users},
+	apartment: {type: Schema.Types.ObjectId, ref: apartments},
+  seller: {type: Schema.Types.ObjectId, ref: users},
   name: String,
 	time: {type: Date, default: Date.now},
 	description: String,

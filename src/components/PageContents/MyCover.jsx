@@ -54,7 +54,7 @@ class MyCover extends Component {
               li
                 Link(to=this.getLink("timeline")) My Timeline
               li
-                Link(to=this.getLink("info")) About
+                Link(to=this.getLink("info")) My Account
               li
                 Link(to=this.getLink("members")) Members
       .navbar-mobile.hidden-lg.hidden-md
@@ -65,11 +65,11 @@ class MyCover extends Component {
         .mobile-menu
           ul.list-inline
             li
-              Link(to='/timeline') My Timeline
+              Link(to=this.getLink("timeline")) My Timeline
             li
-              Link(to='/info') About
+              Link(to=this.getLink("info")) My Account
             li
-              Link(to='/members') Members
+              Link(to=this.getLink("members")) Members
     `;
   }
 }
