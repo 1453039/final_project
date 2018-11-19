@@ -22,7 +22,7 @@ router.route('/insert')
     user.cover = req.body.cover;
     user.flat = req.body.room;
     user.status = false;
-    user.isAdmin = req.body.isAdmin ? req.body.isAdmin : false;
+    user.isAdmin = req.body.isAdmin;
     user.save(function (err) {
       if (err)
         res.send(err);

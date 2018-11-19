@@ -6,7 +6,7 @@ class ImageLoader extends React.Component {
   constructor(props) {
     super(props);
     this.state= {
-      selectedFile: ''
+      selectedFile: this.props.avatar
     }
     this.onImageChange = this.onImageChange.bind(this);
   }
@@ -28,6 +28,9 @@ class ImageLoader extends React.Component {
   }
 
   render() {
+    console.log("this.props", this.props)
+    const {selectedFile} = this.state
+    console.log("selectedFile", selectedFile)
     return pug`
       if(this.props.page == 'popup-create-post')
         input#file(type='file', onChange=this.onImageChange)

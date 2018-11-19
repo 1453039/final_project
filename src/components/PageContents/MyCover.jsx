@@ -38,7 +38,6 @@ class MyCover extends Component {
 
   render() {
     const {user} = this.state
-    console.log("Hàm render được chạy")  
     return pug`
       .timeline-cover
         .timeline-nav-bar.hidden-sm.hidden-xs

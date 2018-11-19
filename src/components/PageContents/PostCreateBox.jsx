@@ -32,10 +32,10 @@ class PostCreateBox extends React.Component {
                   i.ion-compose
                 li(onClick=this.togglePopup.bind(this))#image-post
                   i.ion-images
-                li(onClick=this.togglePopup.bind(this))#trading-post
-                  i.ion-ios-cart
                 li(onClick=this.togglePopup.bind(this))#event-post
-                  i.ion-ios-body       
+                  i.ion-ios-body
+                li(onClick=this.togglePopup.bind(this))#trading-post
+                  i.ion-ios-cart       
               button#publish.btn.btn-primary.pull-right(type='submit') Publish
         if (this.state.showPopup) 
           CreatePopup(closePopup=this.togglePopup.bind(this), user=this.state)

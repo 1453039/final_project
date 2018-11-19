@@ -5,6 +5,7 @@ var app = express();
 var mongoose = require('mongoose');
 var user = require('./routes/user');
 var route = require('./routes/route');
+var post = require('./routes/post')
 var apartment = require('./routes/apartment');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
@@ -29,6 +30,7 @@ app.use(session({
 
 app.use('/', route);
 app.use('/members', user);
+app.use('/post', post)
 app.use('/apartment', apartment);
 
 // catch 404 and forward to error handler

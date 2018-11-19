@@ -4,8 +4,8 @@ import apartments from './Apartment'
 import users from './User'
 
 const PostSchema = new Schema({
-	apartment: {type: Schema.Types.ObjectID, ref: apartments},
-  author: {type: Schema.Types.ObjectID, ref: users},
+	apartment: {type: Schema.Types.ObjectId, ref: apartments},
+  author: {type: Schema.Types.ObjectId, ref: users},
 	isAdmin: Boolean,
 	time: {type: Date, default: Date.now},
 	description: String,

@@ -58,8 +58,7 @@ class AddUser extends React.Component {
         isAdmin: e.state.isAdmin,
         id: e.state.id,
         avatar: DEFAULT_AVATAR,
-        cover: DEFAULT_COVER
-
+        cover: DEFAULT_COVERs
       }).then(async function (response) {
         await e.setState({
           messageFromServer: response.data
@@ -133,8 +132,8 @@ class AddUser extends React.Component {
             fieldset#form
               label(for="email").full-screen Email:
                 input(type="text", name="email", value=this.state.email, onChange=this.handleTextChange, required)#email.form-control.input-group-lg
-              label(for="room").full-screen Flat:
-                input(type="text", name="flat", value=this.state.room, onChange=this.handleTextChange, required)#room.form-control.input-group-lg
+              label(for="flat").full-screen Flat:
+                input(type="text", name="flat", value=this.state.flat, onChange=this.handleTextChange, required)#room.form-control.input-group-lg
               .form-group.isAdmin
                 span.custom-label 
                   strong Admin:  
