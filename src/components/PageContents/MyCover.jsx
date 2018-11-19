@@ -11,6 +11,7 @@ class MyCover extends Component {
       user:[],
       name: 'Trần Gia Bảo Thy',
       imgLink: 'http://placehold.it/300x300',
+      coverLink: 'http://placehold.it/1300x360',
       flat: 'A19.08',
       page: 'info'
     }
@@ -40,35 +41,35 @@ class MyCover extends Component {
     const {user} = this.state
     return pug`
     .timeline-cover
-    ImageLoader(page=this.state.page, id='cover', imgDefault=this.state.coverLink)
-    .timeline-nav-bar.hidden-sm.hidden-xs
-      .row
-        .col-md-3
-          .profile-info
-            ImageLoader(page=this.state.page, id='avt', imgDefault=this.state.imgLink)
-            h3 #{this.state.name}
-            p.text-muted Flat: #{this.state.flat}
-        .col-md-9
-          ul.list-inline.profile-menu
+      ImageLoader(page=this.state.page, id='cover', imgDefault=this.state.coverLink)
+      .timeline-nav-bar.hidden-sm.hidden-xs
+        .row
+          .col-md-3
+            .profile-info
+              ImageLoader(page=this.state.page, id='avt', imgDefault=this.state.imgLink)
+              h3 #{user.name}
+              p.text-muted Flat: #{user.flat}
+          .col-md-9
+            ul.list-inline.profile-menu
+              li
+                Link(to=this.getLink("timeline")) My Timeline
+              li
+                Link(to=this.getLink("info")) About
+              li
+                Link(to=this.getLink("members")) Members
+      .navbar-mobile.hidden-lg.hidden-md
+        .profile-info
+          ImageLoader(page=this.state.page, id='avt', imgDefault=this.state.imgLink)
+          h4 #{this.state.name}
+          p.text-muted Flat: #{this.state.flat}
+        .mobile-menu
+          ul.list-inline
             li
               Link(to='/timeline') My Timeline
             li
               Link(to='/info') About
             li
               Link(to='/members') Members
-    .navbar-mobile.hidden-lg.hidden-md
-      .profile-info
-        ImageLoader(page=this.state.page, id='avt', imgDefault=this.state.imgLink)
-        h4 #{this.state.name}
-        p.text-muted Flat: #{this.state.flat}
-      .mobile-menu
-        ul.list-inline
-          li
-            Link(to='/timeline') My Timeline
-          li
-            Link(to='/info') About
-          li
-            Link(to='/members') Members
     `;
   }
 }

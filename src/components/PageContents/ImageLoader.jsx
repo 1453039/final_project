@@ -6,16 +6,16 @@ class ImageLoader extends React.Component {
   constructor(props) {
     super(props);
     this.state= {
-      selectedFile: this.props.avatar
+      selectedFile: this.props.imgDefault
     }
     this.onImageChange = this.onImageChange.bind(this);
   }
 
-  componentWillMount(){
-    this.setState({
-      selectedFile: this.props.avatar
-    })
-  }
+  // componentWillMount(){
+  //   this.setState({
+  //     selectedFile: this.props.avatar
+  //   })
+  // }
 
   onImageChange(event) {
     if (event.target.files && event.target.files[0]) {
@@ -28,9 +28,6 @@ class ImageLoader extends React.Component {
   }
 
   render() {
-    console.log("this.props", this.props)
-    const {selectedFile} = this.state
-    console.log("selectedFile", selectedFile)
     return pug`
     if(this.props.page == 'popup-create-post')
       input#file(type='file', onChange=this.onImageChange)

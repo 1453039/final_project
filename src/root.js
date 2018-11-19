@@ -10,6 +10,7 @@ import ReportPage from './containers/ReportPage';
 import AdminNotiPage from './containers/AdminNotiPage';
 import MemsNotiPage from './containers/MemsNotiPage';
 import LoginPage from './containers/LoginPage';
+import PaymentPage from './containers/PaymentPage';
 
 class Root extends React.Component {
   componentWillMount() {
@@ -61,6 +62,10 @@ class Root extends React.Component {
       case "?newfeeds":
         return pug`
           NewfeedPage
+        `
+      case "?payments":
+        return pug `
+          PaymentPage
         `
       default:
         return pug`

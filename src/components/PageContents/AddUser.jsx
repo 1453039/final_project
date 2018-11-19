@@ -128,7 +128,7 @@ class AddUser extends React.Component {
           if(this.state.modalIsOpen)
             .overlay
               .Modal(isOpen=this.state.modalIsOpen, onRequestClose=this.closeModal, contentLabel="Add User")
-                Link(to={ pathname: '/members', search: '' } style={ textDecoration: 'none' })
+                Link(to={ pathname: this.getLink("members"), search: '' } style={ textDecoration: 'none' })
                   Button(onClick=this.closeModal).close-btn
                     span.closebtn.glyphicon.glyphicon-remove
                 fieldset#form
@@ -155,7 +155,7 @@ class AddUser extends React.Component {
           .Modal(isOpen=this.state.modalIsOpen, onAfterOpen=this.afterOpenModal, onRequestClose=this.closeModal, contentLabel="Add User")
             div(className='button-center')
               h3 #{mess}
-              Link(to={ pathname: '/members', search: '' }, style={ textDecoration: 'none' })
+              Link(to={ pathname: this.getLink("members"), search: '' }, style={ textDecoration: 'none' })
                 Button(onClick=this.closeModal) Close the Dialog
       `;
     }

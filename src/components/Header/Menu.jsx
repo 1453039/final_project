@@ -32,8 +32,8 @@ class Menu extends React.Component {
       ul.nav.navbar-nav.navbar-right.main-menu
         Dropdown(title="Home", link=this.getLink("newfeeds"))
         Dropdown(title="Notification", list=this.state.notification) 
-        Dropdown(title="Payment", link=this.getLink("payment"))
-        Dropdown(title="Trading", link=this.getLink("trading"))
+        Dropdown(title="Payment", link=this.getLink("payments"))
+        Dropdown(title="Trading", link=this.getLink("tradings"))
     `;
   }
 }

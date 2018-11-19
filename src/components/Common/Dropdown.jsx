@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Link} from 'react-router-dom';
+import {withRouter, Link} from 'react-router-dom';
 import DownArrow from '../../../public/images/down-arrow.png';
 
 class Dropdown extends Component {
@@ -42,11 +42,11 @@ class Dropdown extends Component {
               ul(className="dropdown-menu")
                 each item in list
                   li(key=item.id)
-                    Link(to=item.link) #{item.title}
+                    Link(to='@' + this.props.match.params.id + '?' + item.link) #{item.title}
         else 
           Link(to=link).dropdown-toggle #{headerTitle}
     `;
   }
 }
 
-export default Dropdown;
+export default withRouter(Dropdown);
