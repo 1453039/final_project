@@ -28,8 +28,8 @@ class AddUser extends React.Component {
     this.sendMail = this.sendMail.bind(this);
   }
 
-  getLink(link){
-    return  "/@"+this.state.id+"?"+link
+  getLink(link) {
+    return "/@" + this.state.id + "?" + link
   }
 
   openModal() {
@@ -65,16 +65,16 @@ class AddUser extends React.Component {
         });
       })
     }
-    catch(error) {
-        console.log("error", error);
+    catch (error) {
+      console.log("error", error);
     }
   }
   async sendMail(e) {
     try {
-      await axios.post('/members/send',{
-      email: e.state.email,
-      id: e.state.id
-    }).then((response) => {
+      await axios.post('/members/send', {
+        email: e.state.email,
+        id: e.state.id
+      }).then((response) => {
         if (response.data.msg === 'success') {
           alert("Message Sent.");
         } else if (response.data.msg === 'fail') {
@@ -82,9 +82,9 @@ class AddUser extends React.Component {
         }
       })
     }
-    catch(err) {
-        console.log("err", err);
-      }
+    catch (err) {
+      console.log("err", err);
+    }
   }
   handleTextChange(e) {
     if (e.target.name == "email") {
@@ -128,14 +128,14 @@ class AddUser extends React.Component {
           if(this.state.modalIsOpen)
             .overlay
               .Modal(isOpen=this.state.modalIsOpen, onRequestClose=this.closeModal, contentLabel="Add User")
-                Link(to={ pathname: this.getLink("members"), search: '' } style={ textDecoration: 'none' })
-                  Button(onClick=this.closeModal).close-btn
-                    span.closebtn.glyphicon.glyphicon-remove
+                Link(to=this.getLink("members") style={ textDecoration: 'none' })
+                  Button(onClick=this.closeModal)
+                    span(className="closebtn glyphicon glyphicon-remove")
                 fieldset#form
                   label(for="email").full-screen Email:
                     input(type="text", name="email", value=this.state.email, onChange=this.handleTextChange, required)#email.form-control.input-group-lg
-                  label(for="room").full-screen Room:
-                    input(type="text", name="room", value=this.state.room, onChange=this.handleTextChange, required)#room.form-control.input-group-lg
+                  label(for="flat").full-screen Flat:
+                    input(type="text", name="flat", value=this.state.isAdmin ? '' : this.state.flat, onChange=this.handleTextChange, disabled=this.state.isAdmin)#room.form-control.input-group-lg
                   .form-group.isAdmin
                     span.custom-label 
                       strong Admin:  

@@ -20,7 +20,7 @@ router.route('/insert')
     user.sex = "";
     user.avatar = req.body.avatar;
     user.cover = req.body.cover;
-    user.flat = req.body.room;
+    user.flat = req.body.isAdmin ? "" : req.body.flat;
     user.status = false;
     user.isAdmin = req.body.isAdmin;
     user.save(function (err) {
