@@ -32,18 +32,23 @@ class ImageLoader extends React.Component {
     const {selectedFile} = this.state
     console.log("selectedFile", selectedFile)
     return pug`
-      if(this.props.page == 'popup-create-post')
+    if(this.props.page == 'popup-create-post')
+      input#file(type='file', onChange=this.onImageChange)
+      label(for='file')
+        .btn-choose
+          i.ion-images
+          span Upload file
+      img.selectedFile(src=this.state.selectedFile)
+    else 
+      if(this.props.page == 'info' && this.props.id == 'avt')
         input#file(type='file', onChange=this.onImageChange)
         label(for='file')
-          .btn-choose
-            i.ion-images
-            span Upload file
-        img.selectedFile(src=selectedFile)
-      else 
-        if(this.props.page == 'info')
+          img(src=this.state.selectedFile, alt='Your Image').img-responsive.profile-photo
+      else
+        if(this.props.page == 'info' && this.props.id == 'cover')
           input#file(type='file', onChange=this.onImageChange)
           label(for='file')
-            img(src=this.state.selectedFile, alt='Your Image').img-responsive.profile-photo
+            img(src=this.state.selectedFile, alt='Your Cover')
     `;
   }
 }

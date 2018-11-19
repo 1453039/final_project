@@ -7,12 +7,20 @@
 	}
 }
 .timeline-cover {
-  background: url(http://placehold.it/1030x360) no-repeat;
-  background-position: center;
-  background-size: cover;
   min-height: 360px;
   border-radius: 0 0 4px 4px;
-  position: relative;
+	position: relative;
+	input {
+		display: none;
+	}
+	
+	label {
+		width: 100%;
+	}
+	img {
+		object-fit: fill;
+		width: 100%;
+	}
   .timeline-nav-bar {
     background: rgba(0, 0, 0, .7);
     width: 100%;
