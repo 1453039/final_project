@@ -15,9 +15,10 @@ class PageContents extends Component {
 			posts: []
     }
     this.getAllPost = this.getAllPost.bind(this)
+    this.sortPostByDate = this.sortPostByDate.bind(this)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getAllPost(this)
   }
 
@@ -31,8 +32,14 @@ class PageContents extends Component {
     })
   }
 
+  sortPostByDate(array) {
+    let sortedArray = array.sort(function (a, b) {
+      return new Date(b.time) - new Date(a.time);
+    })
+    return sortedArray
+  }
+
   render () {
-    console.log("this.state.posts", this.state.posts)
     return pug`
     #page-contents
       .container
@@ -40,7 +47,7 @@ class PageContents extends Component {
           SideBarLeft
           .col-md-7
             PostCreateBox
-            each post in this.state.posts
+            each post in this.sortPostByDate(this.state.posts)
               PostContent(key=post._id, post=post)
           SideBarRight
     `;

@@ -90,7 +90,7 @@ router.route('/update_password')
     })
   });
 
-router.route('/update_info/:id')
+router.route('/update-info/:id')
   .post(function (req, res) {
     const doc = {
       name: req.body.name,
@@ -122,8 +122,8 @@ router.get('/getAll', function (req, res) {
   });
 });
 
-router.get('/get_user', function (req, res) {
-  id = res.query.id;
+router.get('/get-user', function (req, res) {
+  let id = req.query.id;
   users.findById(id, function (err, user) {
     if (err)
       res.send(err);
@@ -131,8 +131,8 @@ router.get('/get_user', function (req, res) {
   });
 });
 
-router.get('/get-resident-of-apartment/:id', function (req, res) {
-  var id = req.params.id;
+router.get('/get-resident-of-apartment', function (req, res) {
+  var id = req.query.id;
   users.find({ apartment: id }, function (err, users) {
     if (err)
       res.send(err);

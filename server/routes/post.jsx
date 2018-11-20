@@ -35,11 +35,12 @@ router.post('/insert', function(req, res) {
   post.isAdmin = req.body.isAdmin
   post.time = now
   post.description = req.body.description
-  post.numLike = 0
-  post.numDislike = 0
+  post.like = []
+  post.dislike = []
   post.linkImg = req.body.linkImg ? req.body.linkImg : ""
   post.linkVideo = req.body.linkVideo ? req.body.linkVideo : ""
   post.type = req.body.type
+  post.cost = 0
   post.save(function (err) {
     if (err)
       res.json(err);
@@ -47,11 +48,20 @@ router.post('/insert', function(req, res) {
   });
 });
 
-/* UPDATE POST */
-router.put('/:id', function(req, res) {
-  posts.findByIdAndUpdate(req.params.id, req.body, function (err) {
+/* UPDATE POST LiKE*/
+router.put('/update-like', function(req, res) {
+  console.log("req.query", req.query)
+  posts.findByIdAndUpdate(req.query.id, {numLike: req.query.numLike}, function (err) {
     if (err) res.send(err);
-    res.send("Update post sucessfully!");
+    res.send("Update post like sucessfully!");
+  });
+});
+
+/* UPDATE POST LIKE AND DISLIKE*/
+router.put('/update-reaction', function(req, res) {
+  posts.updateOne({_id: req.body.id},{$set: {like: req.body.like, dislike: req.body.dislike}}, function (err) {
+    if (err) res.send(err);
+    res.json("Update post reaction sucessfully!");
   });
 });
 
@@ -59,7 +69,7 @@ router.put('/:id', function(req, res) {
 router.delete('/:id', function(req, res) {
   posts.findByIdAndRemove(req.params.id, req.body, function (err) {
     if (err) res.send(err);
-    res.send("Delete Post sucessfully!");
+    res.json("Delete Post sucessfully!");
   });
 });
 
