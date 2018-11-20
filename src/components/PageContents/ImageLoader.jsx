@@ -11,12 +11,6 @@ class ImageLoader extends React.Component {
     this.onImageChange = this.onImageChange.bind(this);
   }
 
-  // componentWillMount(){
-  //   this.setState({
-  //     selectedFile: this.props.avatar
-  //   })
-  // }
-
   onImageChange(event) {
     if (event.target.files && event.target.files[0]) {
       let reader = new FileReader();
@@ -30,21 +24,21 @@ class ImageLoader extends React.Component {
   render() {
     return pug`
     if(this.props.page == 'popup-create-post')
-      input#file(type='file', onChange=this.onImageChange)
-      label(for='file')
+      input#input-img.input-type-file(type='file', onChange=this.onImageChange)
+      label(for='input-img')
         .btn-choose
           i.ion-images
           span Upload file
       img.selectedFile(src=this.state.selectedFile)
     else 
       if(this.props.page == 'info' && this.props.id == 'avt')
-        input#file(type='file', onChange=this.onImageChange)
-        label(for='file')
+        input#ava-img.input-type-file(type='file', onChange=this.onImageChange)
+        label(for='ava-img')
           img(src=this.state.selectedFile, alt='Your Image').img-responsive.profile-photo
       else
         if(this.props.page == 'info' && this.props.id == 'cover')
-          input#file(type='file', onChange=this.onImageChange)
-          label(for='file')
+          input#cover-img.input-type-file(type='file', onChange=this.onImageChange)
+          label(for='cover-img')
             img(src=this.state.selectedFile, alt='Your Cover')
     `;
   }

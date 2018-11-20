@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 class BillDetail extends React.Component {
   constructor(){
     super();
     this.state={
-      roll: 'member',
+      roll: 'admin',
       list:[
         {
           id: 0,
@@ -115,6 +116,19 @@ class BillDetail extends React.Component {
                   td.flat-num #{mem.flat}
                   td.total #{this.calculateBill(mem.id)} VND
                   td.isPaid #{mem.isPaid}
+        .pagi-block
+          ul.pagination
+            li.page-item.disabled
+              Link(to='/').page-link &larr;
+            li.page-item.active
+              Link(to='/').page-link 1
+            li.page-item
+              Link(to='/').page-link 2
+            li.page-item
+              Link(to='/').page-link 3
+            li.page-item
+              Link(to='/').page-link &rarr;
+
     `;
   }
 }

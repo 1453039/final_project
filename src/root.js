@@ -11,6 +11,7 @@ import AdminNotiPage from './containers/AdminNotiPage';
 import MemsNotiPage from './containers/MemsNotiPage';
 import LoginPage from './containers/LoginPage';
 import PaymentPage from './containers/PaymentPage';
+import EventPage from './containers/EventPage';
 
 class Root extends React.Component {
   componentWillMount() {
@@ -66,6 +67,10 @@ class Root extends React.Component {
       case "?payments":
         return pug `
           PaymentPage
+        `
+      case "?events":
+        return pug `
+          EventPage
         `
       default:
         return pug`

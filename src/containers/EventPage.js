@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
 import SideBarLeft from '../components/PageContents/SideBarLeft.jsx'
 import SideBarRight from '../components/PageContents/SideBarRight.jsx'
-import MessageList from '../components/PageContents/MessageList.jsx'
+import Event from '../components/PageContents/Event.jsx'
 
-class MessagePage extends Component {
+class EventPage extends Component {
   render() {
     return pug`
       Header
@@ -13,11 +13,12 @@ class MessagePage extends Component {
         .container
           .row
             SideBarLeft
-            .col-md-9
-              MessageList
+            .col-md-7
+              Event  
+            SideBarRight
       Footer
     `;
   }
 }
 
-export default MessagePage;
+export default EventPage;

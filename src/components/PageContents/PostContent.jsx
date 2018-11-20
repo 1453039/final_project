@@ -36,7 +36,7 @@ class PostContent extends React.Component {
 			.post-content
 				if (this.state.page == '?timeline')
 					.post-date.hidden-xs.hidden-sm
-						h5 Trần Gia Bảo Thy
+						h5 #{this.state.post.name}
 						p.text-grey #{this.state.post.time}
 				if this.state.post.linkImg
 					img.img-responsive.post-image(src=this.state.post.linkImg, alt="post-image")
@@ -49,12 +49,15 @@ class PostContent extends React.Component {
 						.user-info
 							h5
 								Link.profile-link(to="/") #{this.state.post.author}
+								if(this.state.post.isAdmin)
+									span.text-muted
+										i.icon.ion-android-checkmark-circle Admin
 							p.text-muted #{this.state.post.time}
 						.reaction
-							Link.btn.text-green(to='/') 
-								i.icon.ion-thumbsup 
+							.btn.text-green
+								i.fa.fa-thumbs-up 
 								span #{this.state.post.numLike}
-							Link.btn.text-red(to='/') 
+							.btn.text-red
 								i.fa.fa-thumbs-down 
 								span #{this.state.post.numDislike}
 						.line-divider

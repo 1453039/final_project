@@ -31,7 +31,7 @@ class EditPass extends Component {
 										input#email.form-control.input-group-lg(type='password', name='password', title='Enter password', placeholder='Confirm password', required)
 								p
 									Link(to='/') Forgot password?
-								button.btn.btn-primary(method='post', type='submit') Update password
+								button.btn.btn-primary.info(method='post', type='submit') Update password
 		`;
   }
 }

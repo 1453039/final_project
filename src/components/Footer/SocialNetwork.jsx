@@ -6,7 +6,6 @@ class SocialNetwork extends React.Component {
   constructor(props) {
     super(props);
   }
-
   render() {
     const {socialNetworks} = this.props;
     return pug`
