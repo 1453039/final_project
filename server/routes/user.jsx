@@ -105,6 +105,28 @@ router.route('/update-info')
     });
   });
 
+router.put('/update-avatar', function(req, res) {
+  console.log("req.body.avatar", req.body.avatar)
+  let avatar = req.body.avatar
+  users.updateOne({ _id: req.body.id }, {$set: {avatar: avatar}}, function (err, result) {
+    if (err)
+      res.send(err);
+    req.session.user.avatar = avatar
+    res.json('User avatar successfully updated!');
+  });
+})
+
+router.put('/update-cover', function(req, res) {
+  console.log("req.body.cover", req.body.cover)
+  let cover = req.body.cover
+  users.updateOne({ _id: req.body.id }, {$set: {cover: cover}}, function (err, result) {
+    if (err)
+      res.send(err);
+    req.session.user.cover = cover
+    res.json('User cover successfully updated!');
+  });
+})
+
 router.get('/delete', function (req, res) {
   var id = req.query.id;
   users.find({ _id: id }).remove().exec(function (err, result) {

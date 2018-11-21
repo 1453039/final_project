@@ -1,24 +1,78 @@
 import React from 'react';
 import axios from 'axios';
-import { Form } from 'semantic-ui-react';
- 
+
 class ImageLoader extends React.Component {
   constructor(props) {
     super(props);
-    this.state= {
-      selectedFile: this.props.imgDefault
+    this.state = {
+      user: [],
+      selectedFile: '',
+      isUpdated: false
     }
     this.onImageChange = this.onImageChange.bind(this);
+    this.getUserFromSession = this.getUserFromSession.bind(this);
+    this.updateAvatar = this.updateAvatar.bind(this)
+    this.updateCover = this.updateCover.bind(this)
+  }
+
+  async componentWillMount() {
+    await this.getUserFromSession(this)
+    let selectedFile = ''
+    if (this.props.id == 'avt')
+      selectedFile = this.state.user.avatar
+    if (this.props.id == 'cover')
+      selectedFile = this.state.user.cover
+    await this.setState({ selectedFile })
+  }
+
+  async componentDidUpdate() {
+    if (this.props.id == 'avt' && this.state.isUpdated == true) {
+      await this.updateAvatar(this)
+    }
+    if (this.props.id == 'cover' && this.state.isUpdated == true) {
+      await this.updateCover(this)
+    }
+  }
+
+
+
+  async updateAvatar(e) {
+    await axios.put("/members/update-avatar", {
+      id: e.state.user._id,
+      avatar: e.state.selectedFile
+    }).then((response) => {
+      alert(response.data)
+    }).catch(err => {
+      console.log("err", err)
+    })
+  }
+
+  async updateCover(e) {
+    await axios.put("/members/update-cover", {
+      id: e.state.user._id,
+      cover: e.state.selectedFile
+    }).then((response) => {
+      alert(response.data)
+    }).catch(err => {
+      console.log("err", err)
+    })
   }
 
   onImageChange(event) {
-    if (event.target.files && event.target.files[0]) {
-      let reader = new FileReader();
-      reader.onload = (e) => {
-          this.setState({selectedFile: e.target.result});
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
+    this.setState({
+      selectedFile: URL.createObjectURL(event.target.files[0]),
+      isUpdated: true
+    })
+  }
+
+  async getUserFromSession(e) {
+    await axios.get("/members/get_user_from_session").then(async (response) => {
+      await e.setState({
+        user: response.data
+      })
+    }).catch(err => {
+      console.log("err", err);
+    })
   }
 
   render() {

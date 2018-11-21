@@ -18,7 +18,7 @@ class PageContents extends Component {
     this.sortPostByDate = this.sortPostByDate.bind(this)
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.getAllPost(this)
   }
 

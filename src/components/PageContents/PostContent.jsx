@@ -75,14 +75,16 @@ class PostContent extends React.Component {
       else
         return (Math.floor(timeDiff / (1000 * 3600)) + ' hours ago')
     else {
+      let monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"];
       let day = postTime.getDate()
       let month = postTime.getMonth()
       let hour = postTime.getHours()
       let minute = postTime.getMinutes()
-      if (Math.floor(timeDiff) / (1000 * 3600 * 24) == 1)
+      if (Math.floor((timeDiff) / (1000 * 3600 * 24)) == 1)
         return ('Yesterday at ' + hour + ':' + minute)
       else
-        return (day + '/' + month + ' at ' + hour + ':' + minute)
+        return (monthNames[month] + ' ' + day + ' at ' + hour + ':' + minute)
     }
   }
 

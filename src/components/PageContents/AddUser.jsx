@@ -58,7 +58,7 @@ class AddUser extends React.Component {
         isAdmin: e.state.isAdmin,
         id: e.state.id,
         avatar: DEFAULT_AVATAR,
-        cover: DEFAULT_COVERs
+        cover: DEFAULT_COVER
       }).then(async function (response) {
         await e.setState({
           messageFromServer: response.data

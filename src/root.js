@@ -62,11 +62,11 @@ class Root extends React.Component {
           NewfeedPage
         `
       case "?payments":
-        return pug `
+        return pug`
           PaymentPage
         `
       case "?events":
-        return pug `
+        return pug`
           EventPage
         `
       default:
