@@ -12,7 +12,6 @@ import MemsNotiPage from './containers/MemsNotiPage';
 import LoginPage from './containers/LoginPage';
 import PaymentPage from './containers/PaymentPage';
 import EventPage from './containers/EventPage';
-
 class Root extends React.Component {
   componentWillMount() {
     let patch = window.location.search
@@ -25,9 +24,7 @@ class Root extends React.Component {
     this.setState({ patch, id })
   }
   render() {
-    const { patch, id } = this.state
-    console.log("patch", patch)
-    switch (patch) {
+    switch (this.state.patch) {
       case "?info":
         return pug`
           BasicInfoPage

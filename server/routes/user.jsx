@@ -90,18 +90,18 @@ router.route('/update_password')
     })
   });
 
-router.route('/update-info/:id')
-  .post(function (req, res) {
-    const doc = {
-      name: req.body.name,
-      birthday: req.body.birthday,
-      sex: req.body.sex
-    };
-    console.log(doc);
-    users.update({ _id: req.params.id }, doc, function (err, result) {
+router.route('/update-info')
+  .put(function (req, res) {
+    let name = req.body.name
+    let birthday = req.body.birthday
+    let sex = req.body.sex
+    users.updateOne({ _id: req.body.id }, {$set: {name: name, birthday: birthday, sex: sex}}, function (err, result) {
       if (err)
         res.send(err);
-      res.send('User info successfully updated!');
+      req.session.user.name = name
+      req.session.user.birthday = birthday
+      req.session.user.sex = sex
+      res.json('User info successfully updated!');
     });
   });
 

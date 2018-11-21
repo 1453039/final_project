@@ -23,10 +23,14 @@ class PostContent extends React.Component {
     this.getUserFromSession(this)
   }
 
+  componentWillUpdate() {
+    this.getPostUser(this)
+  }
+
   async getPostUser(e) {
     await axios.get("/members/get-user", {
       params: {
-        id : e.state.post.author
+        id: e.state.post.author
       }
     }).then(async (response) => {
       await e.setState({
@@ -49,9 +53,9 @@ class PostContent extends React.Component {
 
   async updateReaction(e) {
     await axios.put("/post/update-reaction", {
-        id: e.state.post._id,
-        like: e.state.post.like,
-        dislike: e.state.post.dislike
+      id: e.state.post._id,
+      like: e.state.post.like,
+      dislike: e.state.post.dislike
     }).then((response) => {
       alert(response.data)
     }).catch(err => {
@@ -65,36 +69,55 @@ class PostContent extends React.Component {
     var timeDiff = Math.abs(now.getTime() - postTime.getTime())
     if (timeDiff / (1000 * 3600 * 24) < 1)
       if (timeDiff / (1000 * 3600) < 1)
-        return (Math.ceil(timeDiff / (1000 * 60)) + ' minutes ago')
+        if (timeDiff / (1000 * 60) < 1)
+          return ('Just now')
+        else return (Math.floor(timeDiff / (1000 * 60)) + ' minutes ago')
       else
         return (Math.floor(timeDiff / (1000 * 3600)) + ' hours ago')
     else {
-      let day = postTime.getDay()
+      let day = postTime.getDate()
       let month = postTime.getMonth()
       let hour = postTime.getHours()
       let minute = postTime.getMinutes()
-      if (Math.floor(timeDiff) / (1000 * 3600 * 24) == 1) 
+      if (Math.floor(timeDiff) / (1000 * 3600 * 24) == 1)
         return ('Yesterday at ' + hour + ':' + minute)
       else
         return (day + '/' + month + ' at ' + hour + ':' + minute)
-    }  
+    }
   }
 
   async onClickReaction(e) {
-    let currentUserId = this.state.currentUser._id 
-    let indexOfLike = _.findIndex(this.state.post.like, {"id": currentUserId})
-    let indexOfDislike = _.findIndex(this.state.post.dislike, {"id": currentUserId})
-    if (indexOfLike)
-      _.pull(this.state.post.like, currentUserId)
-    if (indexOfDislike)
-      _.pull(this.state.post.dislike, currentUserId)
+    let currentUserId = this.state.currentUser._id
+    let indexOfLike = _.findIndex(this.state.post.like, function(id) {
+      return id === currentUserId
+    })
+    let indexOfDislike = _.findIndex(this.state.post.dislike, function(id) {
+      return id === currentUserId
+    })
+    console.log("e.target.id", e.target.id)
     if (e.target.id == 'like')
-      this.state.post.like.push(currentUserId)
-    if (e.target.id == 'dislike')
-      this.state.post.dislike.push(currentUserId)
+      if (indexOfLike >= 0) {
+        _.pull(this.state.post.like, currentUserId)
+      } else if (indexOfDislike >= 0) {
+        _.pull(this.state.post.dislike, currentUserId)
+        this.state.post.like.push(currentUserId)
+      }
+      else {
+        this.state.post.like.push(currentUserId)
+      }
+    else if (e.target.id == 'dislike')
+      if (indexOfDislike >= 0) {
+        _.pull(this.state.post.dislike, currentUserId)
+      } else if (indexOfLike >= 0) {
+        _.pull(this.state.post.like, currentUserId)
+        this.state.post.dislike.push(currentUserId)
+      }
+      else {
+        this.state.post.dislike.push(currentUserId)
+      }
     await this.updateReaction(this)
   }
-  
+
   render() {
     return pug`
 			.post-content
@@ -114,8 +137,7 @@ class PostContent extends React.Component {
 							h5
 								Link.profile-link(to="/") #{this.state.postUser.name}
 								if(this.state.post.isAdmin)
-									i.icon.ion-android-checkmark-circle
-							p.text-muted #{this.handlePostTime(this.state.post.time)}
+									i.icon.ion-android-checkmark-circle							p.text-muted #{this.handlePostTime(this.state.post.time)}
 						.reaction
 							div.btn.text-green#like(onClick=this.onClickReaction) 
 								i.fa.fa-thumbs-up#like 

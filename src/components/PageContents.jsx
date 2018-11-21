@@ -22,6 +22,10 @@ class PageContents extends Component {
     this.getAllPost(this)
   }
 
+  componentWillUpdate() {
+    this.getAllPost(this)
+  }
+
   async getAllPost(e) {
     await axios.get("/post/get-all").then(async (response) => {
       await e.setState({
