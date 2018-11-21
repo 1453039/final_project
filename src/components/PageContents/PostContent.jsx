@@ -120,44 +120,45 @@ class PostContent extends React.Component {
 
   render() {
     return pug`
-			.post-content
-				if (this.state.page == '?timeline')
-					.post-date.hidden-xs.hidden-sm
-						h5 #{this.state.postUser.name}
-						p.text-grey #{this.state.post.time}
-				if this.state.post.linkImg
-					img.img-responsive.post-image(src=this.state.post.linkImg, alt="post-image")
-				if this.state.post.linkVideo
-					video.post-video(controls)
-						source(src=this.state.post.linkVideo, type="video/mp4")
-				.post-container
-					img.profile-photo-md.pull-left(src=this.state.postUser.avatar, alt="user")
-					.post-detail
-						.user-info
-							h5
-								Link.profile-link(to="/") #{this.state.postUser.name}
-								if(this.state.post.isAdmin)
-									i.icon.ion-android-checkmark-circle							p.text-muted #{this.handlePostTime(this.state.post.time)}
-						.reaction
-							div.btn.text-green#like(onClick=this.onClickReaction) 
-								i.fa.fa-thumbs-up#like 
-								span#like #{this.state.post.like.length}
-							div.btn.text-red#dislike(onClick=this.onClickReaction) 
-								i.fa.fa-thumbs-down#dislike 
-								span#dislike #{this.state.post.dislike.length}
-						.line-divider
-						.post-text
-							p #{this.state.post.description}
-						.line-divider
-						each comment in this.state.post.comments
-							.post-comment(key=comment.id)
-								img.profile-photo-sm(src="http://placehold.it/300x300", alt="")
-								Link.profile-link(to="/") #{comment.user}
-								span.text-mute #{comment.time}
-								p #{comment.commentDetail}
-						.post-comment
-							input.form-control(type="text", placeholder="Post a comment")
-		`;
+      .post-content
+        if (this.state.page == '?timeline')
+          .post-date.hidden-xs.hidden-sm
+            h5 #{this.state.postUser.name}
+            p.text-grey #{this.state.post.time}
+        if this.state.post.linkImg
+          img.img-responsive.post-image(src=this.state.post.linkImg, alt="post-image")
+        if this.state.post.linkVideo
+          video.post-video(controls)
+            source(src=this.state.post.linkVideo, type="video/mp4")
+        .post-container
+          img.profile-photo-md.pull-left(src=this.state.postUser.avatar, alt="user")
+          .post-detail
+            .user-info
+              h5
+                Link.profile-link(to="/") #{this.state.postUser.name}
+                if(this.state.post.isAdmin)
+                  i.icon.ion-android-checkmark-circle
+                p.text-muted #{this.handlePostTime(this.state.post.time)}
+            .reaction
+              .btn.text-green#like(onClick=this.onClickReaction) 
+                i.fa.fa-thumbs-up#like 
+                span#like #{this.state.post.like.length}
+              div.btn.text-red#dislike(onClick=this.onClickReaction) 
+                i.fa.fa-thumbs-down#dislike 
+                span#dislike #{this.state.post.dislike.length}
+            .line-divider
+            .post-text
+              p #{this.state.post.description}
+            .line-divider
+            each comment in this.state.post.comments
+              .post-comment(key=comment.id)
+                img.profile-photo-sm(src="http://placehold.it/300x300", alt="")
+                Link.profile-link(to="/") #{comment.user}
+                span.text-mute #{comment.time}
+                p #{comment.commentDetail}
+            .post-comment
+              input.form-control(type="text", placeholder="Post a comment")
+    `;
   }
 }
 
