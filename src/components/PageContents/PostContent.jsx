@@ -114,12 +114,11 @@ class PostContent extends React.Component {
 							h5
 								Link.profile-link(to="/") #{this.state.postUser.name}
 								if(this.state.post.isAdmin)
-									span.text-muted
-										i.icon.ion-android-checkmark-circle Admin
+									i.icon.ion-android-checkmark-circle
 							p.text-muted #{this.handlePostTime(this.state.post.time)}
 						.reaction
 							div.btn.text-green#like(onClick=this.onClickReaction) 
-								i.icon.ion-thumbsup#like 
+								i.fa.fa-thumbs-up#like 
 								span#like #{this.state.post.like.length}
 							div.btn.text-red#dislike(onClick=this.onClickReaction) 
 								i.fa.fa-thumbs-down#dislike 

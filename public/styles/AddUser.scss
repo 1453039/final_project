@@ -28,11 +28,11 @@ table {
 
 .Modal {
   z-index: 10;
-  position: relative;
+  position: absolute;
   top: 35%;
-  left: 35%;
+  left: 30%;
+  right: 30%;
   background-color: #F5F5F5;
-  width: 500px;
   border: 1px solid #cccccc;
   border-radius: 4px;
   padding: 20px;
@@ -64,6 +64,7 @@ label.radio-inline {
 }
 
 fieldset {
+  clear: both;
   margin: 0 10px;
 }
 

@@ -3,6 +3,7 @@ import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
 import SideBarLeft from '../components/PageContents/SideBarLeft.jsx'
 import SideBarRight from '../components/PageContents/SideBarRight.jsx'
+import PostCreatBox from '../components/PageContents/PostCreateBox.jsx'
 import Event from '../components/PageContents/Event.jsx'
 
 class EventPage extends Component {
@@ -14,6 +15,7 @@ class EventPage extends Component {
           .row
             SideBarLeft
             .col-md-7
+              PostCreatBox
               Event  
             SideBarRight
       Footer

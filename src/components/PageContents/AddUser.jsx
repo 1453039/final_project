@@ -129,7 +129,7 @@ class AddUser extends React.Component {
             .overlay
               .Modal(isOpen=this.state.modalIsOpen, onRequestClose=this.closeModal, contentLabel="Add User")
                 Link(to=this.getLink("members") style={ textDecoration: 'none' })
-                  Button(onClick=this.closeModal)
+                  Button.close-btn(onClick=this.closeModal)
                     span(className="closebtn glyphicon glyphicon-remove")
                 fieldset#form
                   label(for="email").full-screen Email:
