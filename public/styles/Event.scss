@@ -1,0 +1,39 @@
+.post-container {
+  clear: both;
+}
+.post-detail {
+  position: relative;
+  .author-info {
+    float: left;
+    h5#author-name {
+      margin: 15px 0;     
+    }
+  }
+  .event-image {
+    padding: 20px 0 0;
+  }
+  .reaction {
+    #attendent {
+      background-color: #8dc63f;
+      margin: 10px;
+      color: #fff;
+    }
+  }
+  .event-text {
+    position: relative;
+    h3.desc {
+      position: absolute;
+      bottom: 10%;
+      left: 3%;
+      margin: 20px;
+    }
+    h4.cost {
+      float: left;
+      margin: 20px;
+    }
+    h4.date {
+      float: right;
+      margin: 20px;
+    }
+  }
+}
