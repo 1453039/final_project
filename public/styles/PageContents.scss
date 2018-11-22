@@ -239,13 +239,21 @@
 				position: absolute;
 				right: 0;
 				top: 0;
+				.btn {
+					border: 1px solid #ccc;
+					margin: 0 2px;
+				}
 				i {
 					margin-right: 5px;
 				}	
-				.liked, .disliked {
+				.liked {
 					background-color: #8dc63f;
 					color: #fff;
-				}		
+				}	
+				.disliked {
+					background-color: #ef4136;
+					color: #fff;
+				}	
 			}
 			.post-comment {
 				display: inline-block;

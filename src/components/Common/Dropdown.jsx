@@ -37,14 +37,14 @@ class Dropdown extends Component {
     return pug`
       li.dropdown
         if (list)
-          div(className="dropdown-toggle", onClick=this.toggleListTmp) #{headerTitle}
+          div.dropdown-toggle(onClick=this.toggleListTmp) #{headerTitle}
             if (listOpen)
-              ul(className="dropdown-menu")
+              ul.dropdown-menu
                 each item in list
                   li(key=item.id)
                     Link(to='@' + this.props.match.params.id + '?' + item.link) #{item.title}
         else 
-          Link(to=link).dropdown-toggle #{headerTitle}
+          Link.dropdown-toggle(to=link) #{headerTitle}
     `;
   }
 }

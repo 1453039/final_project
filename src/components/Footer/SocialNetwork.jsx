@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Link, withRouter } from 'react-router-dom';
 import footerLogo from '../../../public/images/logo-black.png';
 
 class SocialNetwork extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      id: this.props.match.params.id
+    }
+    this.getLink = this.getLink.bind(this)
   }
-
+  getLink(link){
+    return  "/@"+this.state.id+"?"+link
+  }
   render() {
     const {socialNetworks} = this.props;
     return pug`
       .col-md-4.col-sm-4
-        Link(to="/")
+        Link(to=this.getLink("newfeeds"))
           img(src=footerLogo, alt="logo-img").footer-logo
         ul.list-inline.social-icons
           each item in socialNetworks
@@ -22,4 +28,4 @@ class SocialNetwork extends React.Component {
   }
 }
 
-export default SocialNetwork;
+export default withRouter(SocialNetwork);

@@ -10,21 +10,42 @@ class PostContent extends React.Component {
       postUser: [],
       currentUser: [],
       post: this.props.post,
-      page: window.location.search
+      page: window.location.search,
+      like: '',
+      dislike: ''
     }
     this.getUserFromSession = this.getUserFromSession.bind(this)
     this.getPostUser = this.getPostUser.bind(this)
     this.handlePostTime = this.handlePostTime.bind(this)
     this.onClickReaction = this.onClickReaction.bind(this)
+    this.initializeState = this.initializeState.bind(this)
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.getPostUser(this)
     this.getUserFromSession(this)
   }
 
+  componentDidMount() {
+    this.initializeState()
+  }
+
   componentWillUpdate() {
     this.getPostUser(this)
+  }
+
+  initializeState() {
+    let currentUserId = this.state.currentUser._id
+    let indexOfLike = _.findIndex(this.state.post.like, function(id) {
+      return id === currentUserId
+    })
+    let indexOfDislike = _.findIndex(this.state.post.dislike, function(id) {
+      return id === currentUserId
+    })
+    if (indexOfLike >= 0)
+      this.setState({ like: 'liked'})
+    if (indexOfDislike >= 0)
+      this.setState({ dislike: 'dislike'})
   }
 
   async getPostUser(e) {
@@ -49,6 +70,8 @@ class PostContent extends React.Component {
     }).catch(err => {
       console.log("err", err);
     })
+
+
   }
 
   async updateReaction(e) {
@@ -96,26 +119,31 @@ class PostContent extends React.Component {
     let indexOfDislike = _.findIndex(this.state.post.dislike, function(id) {
       return id === currentUserId
     })
-    console.log("e.target.id", e.target.id)
     if (e.target.id == 'like')
       if (indexOfLike >= 0) {
         _.pull(this.state.post.like, currentUserId)
+        this.setState({like:''})
       } else if (indexOfDislike >= 0) {
         _.pull(this.state.post.dislike, currentUserId)
         this.state.post.like.push(currentUserId)
+        this.setState({like:'liked', dislike: ''})
       }
       else {
         this.state.post.like.push(currentUserId)
+        this.setState({like:'liked'})
       }
     else if (e.target.id == 'dislike')
       if (indexOfDislike >= 0) {
         _.pull(this.state.post.dislike, currentUserId)
+        this.setState({dislike:''})
       } else if (indexOfLike >= 0) {
         _.pull(this.state.post.like, currentUserId)
         this.state.post.dislike.push(currentUserId)
+        this.setState({dislike:'disliked', like: ''})
       }
       else {
         this.state.post.dislike.push(currentUserId)
+        this.setState({dislike:'disliked'})
       }
     await this.updateReaction(this)
   }
@@ -142,11 +170,11 @@ class PostContent extends React.Component {
                   i.icon.ion-android-checkmark-circle
                 p.text-muted #{this.handlePostTime(this.state.post.time)}
             .reaction
-              .btn.text-green#like(onClick=this.onClickReaction) 
+              .btn.text-green#like(className=this.state.like, onClick=this.onClickReaction) 
                 i.fa.fa-thumbs-up#like 
                 span#like #{this.state.post.like.length}
-              div.btn.text-red#dislike(onClick=this.onClickReaction) 
-                i.fa.fa-thumbs-down#dislike 
+              .btn.text-red#dislike(className=this.state.dislike, onClick=this.onClickReaction) 
+                i.fa.fa-thumbs-down#dislike
                 span#dislike #{this.state.post.dislike.length}
             .line-divider
             .post-text

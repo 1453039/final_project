@@ -13,27 +13,32 @@
     padding: 20px 0 0;
   }
   .reaction {
+    .attending {
+      background-color: #8dc63f !important;
+      color: #fff !important;
+    }
     #attendent {
-      background-color: #8dc63f;
+      border: 1px solid #ccc;
+      background-color: #f8f8f8;
+      color: #8dc63f;
       margin: 10px;
-      color: #fff;
     }
   }
   .event-text {
-    position: relative;
+    overflow: hidden;
     h3.desc {
       position: absolute;
-      bottom: 10%;
-      left: 3%;
+      bottom: 15%;
+      left: 2%;
       margin: 20px;
     }
     h4.cost {
       float: left;
-      margin: 20px;
+      margin: 20px 0 0;
     }
     h4.date {
       float: right;
-      margin: 20px;
+      margin: 20px 0 0;
     }
   }
 }
