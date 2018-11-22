@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-class ImageLoader extends React.Component {
+class ImageLoader extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,6 +32,12 @@ class ImageLoader extends React.Component {
     if (this.props.id == 'cover' && this.state.isUpdated == true) {
       await this.updateCover(this)
     }
+    if (this.props.page == 'popup-create-post' && this.state.isUpdated == true) {
+      this.props.handleImgChange(this.state.selectedFile)
+      this.setState({
+        isUpdated: false
+      })
+    }
   }
 
 
@@ -59,10 +65,13 @@ class ImageLoader extends React.Component {
   }
 
   onImageChange(event) {
-    this.setState({
-      selectedFile: URL.createObjectURL(event.target.files[0]),
-      isUpdated: true
-    })
+    if (event.target.files && event.target.files[0]) {
+      let reader = new FileReader();
+      reader.onload = (e) => {
+          this.setState({selectedFile: e.target.result, isUpdated: true});
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
   }
 
   async getUserFromSession(e) {

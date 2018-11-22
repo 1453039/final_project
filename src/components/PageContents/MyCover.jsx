@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import '../../../public/styles/ResidentList.scss';
 import axios from 'axios';
 import ImageLoader from './ImageLoader.jsx'
 
-class MyCover extends Component {
+class MyCover extends PureComponent {
   constructor() {
     super();
     this.state={

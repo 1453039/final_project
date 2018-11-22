@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import axios from 'axios'
 import _ from 'lodash'
 
-class PostContent extends React.Component {
+class PostContent extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,20 +18,17 @@ class PostContent extends React.Component {
     this.getPostUser = this.getPostUser.bind(this)
     this.handlePostTime = this.handlePostTime.bind(this)
     this.onClickReaction = this.onClickReaction.bind(this)
-    this.initializeState = this.initializeState.bind(this)
-  }
+    this.initializeState = this.initializeState.bind(this)  }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getPostUser(this)
     this.getUserFromSession(this)
   }
 
-  componentDidMount() {
-    this.initializeState()
-  }
-
-  componentWillUpdate() {
-    this.getPostUser(this)
+  shouldComponentUpdate(nextProps, nextState) {
+    if ((this.state.post != nextState.post) || (this.state.postUser != nextState.postUser))
+      return true
+    return false
   }
 
   initializeState() {
@@ -70,8 +67,6 @@ class PostContent extends React.Component {
     }).catch(err => {
       console.log("err", err);
     })
-
-
   }
 
   async updateReaction(e) {
@@ -104,10 +99,7 @@ class PostContent extends React.Component {
       let month = postTime.getMonth()
       let hour = postTime.getHours()
       let minute = postTime.getMinutes()
-      if (Math.floor((timeDiff) / (1000 * 3600 * 24)) == 1)
-        return ('Yesterday at ' + hour + ':' + minute)
-      else
-        return (monthNames[month] + ' ' + day + ' at ' + hour + ':' + minute)
+      return (monthNames[month] + ' ' + day + ' at ' + hour + ':' + minute)
     }
   }
 
@@ -146,6 +138,7 @@ class PostContent extends React.Component {
         this.setState({dislike:'disliked'})
       }
     await this.updateReaction(this)
+    await this.getPostUser(this)
   }
 
   render() {

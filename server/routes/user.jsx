@@ -106,7 +106,6 @@ router.route('/update-info')
   });
 
 router.put('/update-avatar', function(req, res) {
-  console.log("req.body.avatar", req.body.avatar)
   let avatar = req.body.avatar
   users.updateOne({ _id: req.body.id }, {$set: {avatar: avatar}}, function (err, result) {
     if (err)
@@ -117,7 +116,6 @@ router.put('/update-avatar', function(req, res) {
 })
 
 router.put('/update-cover', function(req, res) {
-  console.log("req.body.cover", req.body.cover)
   let cover = req.body.cover
   users.updateOne({ _id: req.body.id }, {$set: {cover: cover}}, function (err, result) {
     if (err)

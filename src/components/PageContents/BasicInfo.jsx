@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import '../../../public/styles/Info.scss';
 import InfoMenu from './InfoMenu.jsx'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-class MyInfo extends Component {
+class MyInfo extends PureComponent {
 	constructor(){
 		super();
 		this.state= {

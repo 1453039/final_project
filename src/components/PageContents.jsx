@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import SideBarLeft from './PageContents/SideBarLeft.jsx';
@@ -8,22 +8,23 @@ import PostContent from './PageContents/PostContent.jsx';
 import '../../public/styles/PageContents.scss';
 
 
-class PageContents extends Component {
+class PageContents extends PureComponent {
   constructor (props) {
     super (props);
     this.state = {
-			posts: []
+      posts: []
     }
     this.getAllPost = this.getAllPost.bind(this)
     this.sortPostByDate = this.sortPostByDate.bind(this)
+    this.reloadPostList = this.reloadPostList.bind(this)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getAllPost(this)
   }
 
-  componentWillUpdate() {
-    this.getAllPost(this)
+  reloadPostList() {
+      this.getAllPost(this)
   }
 
   async getAllPost(e) {
@@ -50,7 +51,7 @@ class PageContents extends Component {
         .row
           SideBarLeft
           .col-md-7
-            PostCreateBox
+            PostCreateBox(reloadPostList = this.reloadPostList)
             each post in this.sortPostByDate(this.state.posts)
               PostContent(key=post._id, post=post)
           SideBarRight

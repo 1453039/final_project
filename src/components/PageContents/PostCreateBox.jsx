@@ -4,9 +4,9 @@ import axios from 'axios';
 import CreatePopup from './CreatePopup.jsx'
 import '../../../public/styles/CreatePopup.scss'
 
-class PostCreateBox extends React.Component {
-  constructor(){
-    super();
+class PostCreateBox extends React.PureComponent {
+  constructor(props){
+    super(props);
     this.state= {
       user: [],
       description: '',
@@ -21,6 +21,7 @@ class PostCreateBox extends React.Component {
     this.createPost = this.createPost.bind(this)
     this.handleTypeOfPost = this.handleTypeOfPost.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handlePopupSubmit = this.handlePopupSubmit.bind(this)
   }
 
   componentWillMount() {
@@ -55,9 +56,19 @@ class PostCreateBox extends React.Component {
 
   handleSubmit() {
     this.createPost(this);
+    this.props.reloadPostList();
     this.setState({
       description: ''
     })
+  }
+
+  async handlePopupSubmit(description, linkImg) {
+    await this.setState({
+      description: description,
+      linkImg: linkImg
+    })
+    await this.createPost(this);
+    await this.props.reloadPostList();
   }
 
   handleTextAreaChange(e) {
@@ -104,7 +115,7 @@ class PostCreateBox extends React.Component {
         .row
           .col-md-7.col-sm-7
             .form-group
-              img.profile-photo-md(src=this.state.user.avatar, alt="")
+              img.profile-photo-md(src=this.state.user.avatar, alt="Your avatar")
               textarea.form-control(name="texts", cols="30", rows="1", placeholder="Write what you want", value=this.state.description, onChange=this.handleTextAreaChange)
           .col-md-5.col-sm-5
             .tools
@@ -119,7 +130,7 @@ class PostCreateBox extends React.Component {
                   i.ion-ios-cart       
               button#publish.btn.btn-primary.pull-right(type='submit', onClick=this.handleSubmit, disabled = this.state.description ? false : true) Publish
         if (this.state.showPopup) 
-          CreatePopup(closePopup=this.togglePopup, user=this.state)
+          CreatePopup(closePopup=this.togglePopup, avatar=this.state.user.avatar, type = this.state.type, handlePopupSubmit = this.handlePopupSubmit)
     `;
   }
 }
