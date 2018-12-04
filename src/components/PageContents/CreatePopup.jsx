@@ -54,7 +54,7 @@ class CreatePopup extends PureComponent {
             .form-group
               label(for='cost') Cost:
               input#cost.input-event-info.form-control(type='number', min='0', placeholder='Cost')
-          button#publish.btn.btn-primary.pull-right(onClick=this.onClickPublish, disabled=this.state.description && this.state.linkImg ? false : true) Publish
+          button#publish.btn.btn-primary.pull-right(onClick=this.onClickPublish, disabled=this.state.description || this.state.linkImg ? false : true) Publish
     `;
   }
 }
