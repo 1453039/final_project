@@ -207,7 +207,8 @@
 	position: relative;
 	.post-date {
 		position: absolute;
-  	margin-left: -125px;
+		margin-left: -125px;
+		padding-top: 20px;
   	&:before {
   		content: "";
 		  background: #8dc63f;
@@ -216,7 +217,7 @@
 		  height: 20px;
 		  border-radius: 10px;
 		  left: -30px;
-		  top: 10px;
+		  top: 30px;
 		  border: 2px solid #fff;
   	}
 	}

@@ -1,0 +1,36 @@
+.post-container {
+  clear: both;
+}
+.post-detail {
+  position: relative;
+  .seller-info {
+    float: left;
+    h5#seller-name {
+      margin: 15px 0;     
+    }
+  }
+  .sellingItem-image {
+    padding: 20px 0 0;
+  }
+  .reaction {
+    .chat-online {
+      background-color: #8dc63f !important;
+      color: #fff !important;
+    }
+  }
+  .desc {
+    clear: both;
+    margin: 0;
+  }
+  .selling-text {
+    overflow: hidden;
+    h4.amount {
+      float: left;
+      margin: 20px 0 0;
+    }
+    h4.price {
+      float: right;
+      margin: 20px 0 0;
+    }
+  }
+}

@@ -5,7 +5,7 @@ class BillDetail extends React.Component {
   constructor(){
     super();
     this.state={
-      roll: 'member',
+      roll: 'admin',
       list:[
         {
           id: 0,
@@ -79,7 +79,7 @@ class BillDetail extends React.Component {
     return pug`
       if (this.state.roll == 'member')
         .bill-detail
-          h3.grey Monthly Bill
+          h3.grey Monthly Bill Of Flat #{this.state.list[0].flat}
           table.service-list
             thead
               tr
@@ -113,7 +113,8 @@ class BillDetail extends React.Component {
               each mem in this.state.list
                 tr(key=mem.id)
                   td.id #{mem.id + 1}
-                  td.flat-num #{mem.flat}
+                  td.flat-num 
+                    Link(to='/') #{mem.flat}
                   td.total #{this.calculateBill(mem.id)} VND
                   td.isPaid #{mem.isPaid}
         .pagi-block

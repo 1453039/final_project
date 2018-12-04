@@ -93,13 +93,15 @@ class PostContent extends PureComponent {
       else
         return (Math.floor(timeDiff / (1000 * 3600)) + ' hours ago')
     else {
-      let monthNames = ["January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"];
+      let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       let day = postTime.getDate()
       let month = postTime.getMonth()
       let hour = postTime.getHours()
       let minute = postTime.getMinutes()
-      return (monthNames[month] + ' ' + day + ' at ' + hour + ':' + minute)
+      if (minute < 10)
+        return (monthNames[month] + ' ' + day + ' at ' + hour + ':0' + minute)
+      else return (monthNames[month] + ' ' + day + ' at ' + hour + ':' + minute)
     }
   }
 

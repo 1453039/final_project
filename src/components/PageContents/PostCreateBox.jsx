@@ -69,6 +69,10 @@ class PostCreateBox extends React.PureComponent {
     })
     await this.createPost(this);
     await this.props.reloadPostList();
+    this.setState({
+      description: '',
+      linkImg: ''
+    })
   }
 
   handleTextAreaChange(e) {

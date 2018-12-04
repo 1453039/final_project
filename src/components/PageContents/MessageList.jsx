@@ -6,7 +6,9 @@ class MessageList extends Component {
 	constructor() {
 		super();
 		this.state = {
-			message: [
+      name: 'Trần Gia Bảo Thy',
+      linkImg: 'http://placehold.it/300x300',
+      messages: [
 				{
 					id: 0,
 					name: 'Võ Trân Châu',
@@ -73,7 +75,8 @@ class MessageList extends Component {
 	}
 
   render() {
-    const {message} = this.state;
+    const message = this.state.messages;
+    console.log('messages', message);
     return pug`
     .chat-room
       .row
@@ -85,7 +88,7 @@ class MessageList extends Component {
                   .contact
                     img(src=item.linkImg, alt='').profile-photo-sm.pull-left
                     .msg-preview
-                      h6 #{item.name}
+                      h5 #{item.name}
                       p.text-muted #{item.contents[item.contents.length - 1].detail}
                       small.text-muted #{item.contents[item.contents.length - 1].time}
                       if(item.contents[item.contents.length - 1].status=='seen')
@@ -109,8 +112,10 @@ class MessageList extends Component {
                         small.text-muted #{message[0].contents[0].time}
                       p #{message[0].contents[0].detail}
                   li.right
+                    img(src=this.state.linkImg, alt='').profile-photo-sm.pull-right
                     .chat-item
                       .chat-item-header
+                        h5 #{this.state.name}
                         small.text-muted #{message[0].contents[1].time}
                       p #{message[0].contents[1].detail}
                   li.left
@@ -121,8 +126,10 @@ class MessageList extends Component {
                         small.text-muted #{message[0].contents[2].time}
                       p #{message[0].contents[2].detail}
                   li.right
+                    img(src=this.state.linkImg, alt='').profile-photo-sm.pull-right
                     .chat-item
                       .chat-item-header
+                        h5 #{this.state.name}
                         small.text-muted #{message[0].contents[3].time}
                       p #{message[0].contents[3].detail}
               .send-message

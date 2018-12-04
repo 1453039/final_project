@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
-import '../../../public/styles/event.scss'
+import '../../../public/styles/Event.scss'
 
 class Events extends React.Component {
 constructor(props) {

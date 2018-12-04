@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import '../../../public/styles/Info.scss';
 import InfoMenu from './InfoMenu.jsx'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-class MyInfo extends PureComponent {
+class MyInfo extends Component {
 	constructor(){
 		super();
 		this.state= {
@@ -94,30 +94,30 @@ class MyInfo extends PureComponent {
 									| Edit basic information
 							.edit-block
 								form.form-inline#basic.info(name='basic-info')
-								.row
-									.form-group.col-xs-12
-										label(for='fullname') My full name
-										input#fullname.form-control.input-group-lg(type='text', name='fullname', title='Enter full name', placeholder='Full name', onChange=this.onChangeName, value=this.state.user.name)
-								.row
-									.form-group.col-xs-12
-										label(for='email') My email
-										input#email.form-control.input-group-lg(type='text', name='email', title='Enter email', placeholder='Email', value=this.state.user.email, disabled)
-								.row
-									.form-group.col-xs-12
-										label(for='room') My flat
-										input#room.form-control.input-group-lg(type='text', name='room', title='Enter flat', placeholder='Flat', value=this.state.user.flat, disabled)
-								.row
-									.form-group.col-xs-12
-										label(for='birthday') Date of birth
-										input#birthday.form-control.input-group-lg(type='date', name='birthday', title='Enter birthday', placeholder='birthday', value=this.formatInputDate(), onChange=this.onChangeBirthday)
-								.form-group.gender
-									span.custom-label 
-										strong I am a:
-									label#female.radio-inline Female
-										input(type='radio', name='female', value='female', onChange=this.onChangeGender, checked=this.state.user.sex=='female')
-									label#male.radio-inline Male
-										input(type='radio', name='male', value='male',  onChange=this.onChangeGender, checked=this.state.user.sex=='male')
-								button.info.btn.btn-primary(type='submit', onClick=this.onClickSaveChange) Save change
+									.row
+										.form-group.col-xs-12
+											label(for='fullname') My full name
+											input#fullname.form-control.input-group-lg(type='text', name='fullname', title='Enter full name', placeholder='Full name', onChange=this.onChangeName, value=this.state.user.name)
+									.row
+										.form-group.col-xs-12
+											label(for='email') My email
+											input#email.form-control.input-group-lg(type='text', name='email', title='Enter email', placeholder='Email', value=this.state.user.email, disabled)
+									.row
+										.form-group.col-xs-12
+											label(for='room') My flat
+											input#room.form-control.input-group-lg(type='text', name='room', title='Enter flat', placeholder='Flat', value=this.state.user.flat, disabled)
+									.row
+										.form-group.col-xs-12
+											label(for='birthday') Date of birth
+											input#birthday.form-control.input-group-lg(type='date', name='birthday', title='Enter birthday', placeholder='birthday', value=this.formatInputDate(), onChange=this.onChangeBirthday)
+									.form-group.gender
+										span.custom-label 
+											strong I am a:
+										label#female.radio-inline Female
+											input(type='radio', name='female', value='female', onChange=this.onChangeGender, checked=this.state.user.sex=='female')
+										label#male.radio-inline Male
+											input(type='radio', name='male', value='male',  onChange=this.onChangeGender, checked=this.state.user.sex=='male')
+									button.info.btn.btn-primary(type='submit', onClick=this.onClickSaveChange) Save change
 		`;
   }
 }
