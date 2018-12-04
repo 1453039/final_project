@@ -263,8 +263,12 @@
 					margin-left: 50px;
 				}
 				span {
-					float: right;
-				}				img.profile-photo-md {
+					.btn.btn-primary {
+						padding: 5px 25px;
+						border-radius: 0 4px 4px 0;
+					}
+				}				
+				img.profile-photo-md {
 					margin-right: 10px;
 					height: 50px;
 					width: 50px;

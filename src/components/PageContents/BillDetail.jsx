@@ -5,7 +5,7 @@ class BillDetail extends React.Component {
   constructor(){
     super();
     this.state={
-      roll: 'admin',
+      roll: 'member',
       list:[
         {
           id: 0,

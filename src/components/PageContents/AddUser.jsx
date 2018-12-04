@@ -134,7 +134,7 @@ class AddUser extends React.PureComponent {
                   label(for="email").full-screen Email:
                     input(type="text", name="email", value=this.state.email, onChange=this.handleTextChange, required)#email.form-control.input-group-lg
                   label(for="flat").full-screen Flat:
-                    input(type="text", name="flat", value=this.state.flat, onChange=this.handleTextChange)#room.form-control.input-group-lg
+                    input(type="text", name="flat", value=this.state.isAdmin ? '' : this.state.flat, onChange=this.handleTextChange, disabled=this.state.isAdmin)#room.form-control.input-group-lg
                   .form-group.isAdmin
                     span.custom-label 
                       strong Admin:  

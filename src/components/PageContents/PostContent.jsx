@@ -25,6 +25,12 @@ class PostContent extends PureComponent {
     this.getUserFromSession(this)
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if ((this.state.post != nextState.post) || (this.state.postUser != nextState.postUser))
+      return true
+    return false
+  }
+
   initializeState() {
     let currentUserId = this.state.currentUser._id
     let indexOfLike = _.findIndex(this.state.post.like, function(id) {
@@ -174,7 +180,10 @@ class PostContent extends PureComponent {
                 span.text-mute #{comment.time}
                 p #{comment.commentDetail}
             .post-comment
-              input.form-control(type="text", placeholder="Post a comment")
+              .input-group
+                input.form-control(type="text", placeholder="Post a comment")
+                span.input-group-btn
+                  button.btn.btn-primary(type="button") Send
     `;
   }
 }

@@ -4,6 +4,7 @@ var users = require('../models/User');
 var nodemailer = require('nodemailer');
 const creds = require('../config/config');
 
+
 router.get('/', function (req, res) {
   res.render('index')
 });

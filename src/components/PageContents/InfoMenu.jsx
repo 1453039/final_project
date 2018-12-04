@@ -19,7 +19,7 @@ class InfoMenu extends Component {
           Link(to=this.getLink('info')) Basic Information
         li
           i.icon.ion-ios-settings
-          Link(to=this.getLink('/account-setting')) Account Settings
+          Link(to=this.getLink('account-setting')) Account Settings
         li
           i.icon.ion-ios-cog-outline
           Link(to=this.getLink("change-password")) Change Password								
