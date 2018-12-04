@@ -20,20 +20,16 @@ class Menu extends React.Component {
           link: 'member-noti'
         },
       ],
-      id: this.props.match.params.id
     };
-    this.getLink = this.getLink.bind(this);
-	}
-  getLink(link){
-    return  "/@"+this.state.id+"?"+link
   }
+  
   render () {
     return pug`
       ul.nav.navbar-nav.navbar-right.main-menu
-        Dropdown(title="Home", link=this.getLink("newfeeds"))
+        Dropdown(title="Home", link="?newfeeds")
         Dropdown(title="Notification", list=this.state.notification) 
-        Dropdown(title="Payment", link=this.getLink("payments"))
-        Dropdown(title="Trading", link=this.getLink("tradings"))
+        Dropdown(title="Payment", link="?payments")
+        Dropdown(title="Trading", link="?tradings")
     `;
   }
 }

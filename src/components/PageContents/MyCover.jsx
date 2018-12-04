@@ -11,12 +11,7 @@ class MyCover extends PureComponent {
       user:[],
       page: 'info'
     }
-    this.getLink=this.getLink.bind(this);
     this.getUserFromSession = this.getUserFromSession.bind(this);
-  }
-
-  getLink(link){
-    return  "/@"+this.props.match.params.id+"?"+link
   }
 
   componentWillMount() {
@@ -47,11 +42,11 @@ class MyCover extends PureComponent {
           .col-md-9
             ul.list-inline.profile-menu
               li
-                Link(to=this.getLink("timeline")) My Timeline
+                Link(to="?timeline") My Timeline
               li
-                Link(to=this.getLink("info")) My Account
+                Link(to="?info") My Account
               li
-                Link(to=this.getLink("members")) Members
+                Link(to="?members") Members
       .navbar-mobile.hidden-lg.hidden-md
         .profile-info
           ImageLoader(page=this.state.page, id='avt')
@@ -60,11 +55,11 @@ class MyCover extends PureComponent {
         .mobile-menu
           ul.list-inline
             li
-              Link(to=this.getLink("timeline")) My Timeline
+              Link(to="?timeline") My Timeline
             li
-              Link(to=this.getLink("info")) My Account
+              Link(to="?info") My Account
             li
-              Link(to=this.getLink("members")) Members
+              Link(to="?members") Members
     `;
   }
 }

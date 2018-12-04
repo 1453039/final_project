@@ -25,12 +25,6 @@ class PostContent extends PureComponent {
     this.getUserFromSession(this)
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if ((this.state.post != nextState.post) || (this.state.postUser != nextState.postUser))
-      return true
-    return false
-  }
-
   initializeState() {
     let currentUserId = this.state.currentUser._id
     let indexOfLike = _.findIndex(this.state.post.like, function(id) {
@@ -98,10 +92,8 @@ class PostContent extends PureComponent {
       let day = postTime.getDate()
       let month = postTime.getMonth()
       let hour = postTime.getHours()
-      let minute = postTime.getMinutes()
-      if (minute < 10)
-        return (monthNames[month] + ' ' + day + ' at ' + hour + ':0' + minute)
-      else return (monthNames[month] + ' ' + day + ' at ' + hour + ':' + minute)
+      let minute = ('0' + postTime.getMinutes()).slice(-2)
+      return (monthNames[month] + ' ' + day + ' at ' + hour + ':' + minute)
     }
   }
 

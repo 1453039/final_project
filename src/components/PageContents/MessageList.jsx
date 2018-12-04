@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../../../public/styles/Message.scss';
 
 class MessageList extends Component {
 	constructor() {
 		super();
 		this.state = {
-      name: 'Trần Gia Bảo Thy',
-      linkImg: 'http://placehold.it/300x300',
-      messages: [
+			name: 'Trần Gia Bảo Thy',
+			linkImg: 'http://placehold.it/300x300',
+			messages: [
 				{
 					id: 0,
 					name: 'Võ Trân Châu',
@@ -75,31 +75,9 @@ class MessageList extends Component {
 	}
 
   render() {
-    const message = this.state.messages;
-    console.log('messages', message);
+    const {messages} = this.state;
     return pug`
-    .chat-room
-      .row
-        .col-md-5
-          ul.nav.nav-tabs.contact-list.scrollbar-wrapper.scrollbar-outer
-            each item in message
-              li(key=item.id)
-                Link(to='/')(data-toggle='tab')
-                  .contact
-                    img(src=item.linkImg, alt='').profile-photo-sm.pull-left
-                    .msg-preview
-                      h5 #{item.name}
-                      p.text-muted #{item.contents[item.contents.length - 1].detail}
-                      small.text-muted #{item.contents[item.contents.length - 1].time}
-                      if(item.contents[item.contents.length - 1].status=='seen')
-                        .seen
-                          i.icon.ion-checkmark-round
-                      else if(item.contents[item.contents.length - 1].status=='chat-alert')
-                        .chat-alert 1
-                      else
-                        .replied
-                          i.icon.ion-reply
-        .col-md-7
+      .col-md-7
           .tab-content.scrollbar-wrapper.wrapper.scrollbar-outer
             #contact-1.tab-pane.active
               .chat-body

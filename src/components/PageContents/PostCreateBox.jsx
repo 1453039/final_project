@@ -72,8 +72,7 @@ class PostCreateBox extends React.PureComponent {
     this.setState({
       description: '',
       linkImg: ''
-    })
-  }
+    })  }
 
   handleTextAreaChange(e) {
     this.setState({

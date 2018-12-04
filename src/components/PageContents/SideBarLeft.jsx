@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter  } from 'react-router-dom';
+import ChatOnline from './ChatOnline.jsx'
 import axios from 'axios';
 
 class SideBarLeft extends React.Component {
@@ -7,20 +8,8 @@ class SideBarLeft extends React.Component {
     super(props);
     this.state = {
       user: [],
-      users: [
-				{
-					id: 0,
-					name: 'Trần Phương Thanh',
-					linkImg: 'http://placehold.it/300x300'
-				},
-				{
-					id: 1,
-					name: 'Phạm Thị Anh Thư',
-					linkImg: 'http://placehold.it/300x300'
-				},
-			],
-			id: this.props.match.params.id    }
-    this.getLink = this.getLink.bind(this)
+      id: this.props.match.params.id
+    }
     this.getUserFromSession = this.getUserFromSession.bind(this);
   }
 
@@ -38,56 +27,44 @@ class SideBarLeft extends React.Component {
     })
   }
 
-  getLink(link){
-    return  "/@"+this.state.id+"?"+link
-  }
   render() {
-    const {users} = this.state;
-    const user = this.state.user
-    let name = user.name? user.name : "User Name"    
+    let name = this.state.user.name? this.state.user.name : "User Name"    
     return pug`
       .col-md-3.static
         .profile-card
-          img(src=user.avatar, alt="user").profile-photo
+          img(src=this.state.user.avatar, alt="user").profile-photo
           h5 
-            Link(className="text-white", to=this.getLink("info")) #{name}
+            Link(className="text-white", to="?info") #{name}
         ul.nav-news-feed
           li
             i.icon.ion-ios-home
             div
-             Link(to=this.getLink("newfeeds")) My Newsfeed
+             Link(to="?newfeeds") My Newsfeed
           li
             i.icon.ion-ios-paper 
             div
-              Link(to=this.getLink("timeline")) My Timeline
+              Link(to="?timeline") My Timeline
           li
             i.icon.ion-ios-contact 
             div
-              Link(to=this.getLink("info")) My Account
+              Link(to="?info") My Account
           li
             i.icon.ion-ios-people-outline
             div
-             Link(to=this.getLink("members")) Members
+             Link(to="?members") Members
           li
             i.icon.ion-ios-chatboxes
             div
-              Link(to=this.getLink("messages")) Messages
+              Link(to="?messages") Messages
           li
             i.icon.ion-ios-body
             div
-             Link(to=this.getLink("events")) Events
+             Link(to="?events") Events
           li
             i.icon.ion-information-circled
             div
-             Link(to=this.getLink("reports")) Report
-        #chat-block
-          .title Chat Online
-          ul.online-users.list-inline
-            each item in users
-              li(key=item.id)
-                Link(to=this.getLink("messages"), title=item.name)
-                  img(src=item.linkImg, alt="user").img-responsive.profile-photo
-                  span.online-dot
+             Link(to="?reports") Report
+        ChatOnline
     `;
   }
 }

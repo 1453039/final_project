@@ -42,7 +42,7 @@ class Dropdown extends Component {
               ul.dropdown-menu
                 each item in list
                   li(key=item.id)
-                    Link(to='@' + this.props.match.params.id + '?' + item.link) #{item.title}
+                    Link(to='?' + item.link) #{item.title}
         else 
           Link.dropdown-toggle(to=link) #{headerTitle}
     `;

@@ -4,6 +4,7 @@ import Footer from '../components/Footer.jsx'
 import SideBarLeft from '../components/PageContents/SideBarLeft.jsx'
 import SideBarRight from '../components/PageContents/SideBarRight.jsx'
 import MessageList from '../components/PageContents/MessageList.jsx'
+import MessageBarLeft from '../components/PageContents/MessageBarLeft.jsx'
 
 class MessagePage extends Component {
   render() {
@@ -14,7 +15,10 @@ class MessagePage extends Component {
           .row
             SideBarLeft
             .col-md-9
-              MessageList
+              .chat-room
+                .row
+                  MessageBarLeft
+                  MessageList
       Footer
     `;
   }

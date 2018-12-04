@@ -7,14 +7,8 @@ import Search from './Search.jsx'
 class NavbarHeader extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      id: this.props.match.params.id
-    }
-    this.getLink = this.getLink.bind(this)
   }
-  getLink(link){
-    return  "/@"+this.state.id+"?"+link
-  }
+
   render() {
     return pug`
       .navbar-header
@@ -23,7 +17,7 @@ class NavbarHeader extends React.Component {
           span.icon-bar
           span.icon-bar
           span.icon-bar
-        Link.navbar-brand(to=this.getLink("newfeeds"))
+        Link.navbar-brand(to="?newfeeds")
           img(src=logo, alt="logo")
       Menu
       Search

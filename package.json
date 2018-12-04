@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "watch:build": "webpack --watch --hot --inline",
-    "watch:server": "nodemon --exec babel-node -- bin/www",
+    "watch:server": "nodemon --exec babel-node -- server/server.js",
     "start": "npm-run-all --parallel watch:build watch:server"
   },
   "keywords": [],
@@ -45,6 +45,7 @@
     "redux-thunk": "^2.3.0",
     "sass-loader": "^7.1.0",
     "semantic-ui-react": "^0.81.1",
+    "socket.io": "^2.2.0",
     "url-loader": "^1.0.1",
     "webpack-dev-server": "^3.1.10"
   },
