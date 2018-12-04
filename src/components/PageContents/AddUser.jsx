@@ -7,7 +7,7 @@ import '../../../public/styles/AddUser.scss';
 import DEFAULT_AVATAR from '../../../public/images/avatar-default.png'
 import DEFAULT_COVER from '../../../public/images/default-cover.jpg'
 
-class AddUser extends React.Component {
+class AddUser extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -120,8 +120,7 @@ class AddUser extends React.Component {
     }
   }
   render() {
-    const mess = this.state.messageFromServer;
-    if (mess == '') {
+    if (this.state.messageFromServer == '') {
       return pug`
         div
           Button(onClick=this.openModal)#add-member.btn.btn-primary Add member
@@ -135,7 +134,7 @@ class AddUser extends React.Component {
                   label(for="email").full-screen Email:
                     input(type="text", name="email", value=this.state.email, onChange=this.handleTextChange, required)#email.form-control.input-group-lg
                   label(for="flat").full-screen Flat:
-                    input(type="text", name="flat", value=this.state.isAdmin ? '' : this.state.flat, onChange=this.handleTextChange, disabled=this.state.isAdmin)#room.form-control.input-group-lg
+                    input(type="text", name="flat", value=this.state.flat, onChange=this.handleTextChange)#room.form-control.input-group-lg
                   .form-group.isAdmin
                     span.custom-label 
                       strong Admin:  

@@ -25,12 +25,6 @@ class PostContent extends PureComponent {
     this.getUserFromSession(this)
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if ((this.state.post != nextState.post) || (this.state.postUser != nextState.postUser))
-      return true
-    return false
-  }
-
   initializeState() {
     let currentUserId = this.state.currentUser._id
     let indexOfLike = _.findIndex(this.state.post.like, function(id) {
@@ -147,7 +141,7 @@ class PostContent extends PureComponent {
         if (this.state.page == '?timeline')
           .post-date.hidden-xs.hidden-sm
             h5 #{this.state.postUser.name}
-            p.text-grey #{this.state.post.time}
+            p.text-grey #{this.handlePostTime(this.state.post.time)}
         if this.state.post.linkImg
           img.img-responsive.post-image(src=this.state.post.linkImg, alt="post-image")
         if this.state.post.linkVideo

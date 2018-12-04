@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var posts = require('../models/Post.jsx');
+var chats = require('../models/Chat.jsx');
+var users = require('../models/User')
 
-/* GET ALL POST */
-router.get('/get-all', function(req, res) {
-  posts.find(function (err, posts) {
+/* GET ALL CHAT OF A GROUP CHAT */
+router.get('/get-all-chat', function(req, res) {
+  chats.find({to: req.query.to, from: req.query.from}, function (err, posts) {
     if (err) res.json(err);
     res.json(posts);
   });

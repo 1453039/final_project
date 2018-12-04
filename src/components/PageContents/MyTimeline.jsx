@@ -1,42 +1,72 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PostCreateBox from './PostCreateBox.jsx'
 import PostContent from './PostContent.jsx'
+import axios from 'axios'
 
-class MyTimeline extends Component {
-	constructor (){
-		super();
-		this.state = {
-			post1: {
-				user: 'Trần Gia Bảo Thy',
-				time: '3 mins ago',
-				linkImg: 'http://placehold.it/300x300',
-				linkVideo: '',
-				postDetail: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-				like: '13',
-				dislike: '0',
-				comments: [
-					{
-						id: 0,
-						user: 'Võ Trân Châu',
-						commentDetail: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud'
-					},
-					{
-						id: 1,
-						user: 'Nguyễn Ngô Phú Vinh',
-						commentDetail: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud'
-					}
-				]
-			}
-		}
-	}
+class MyTimeline extends PureComponent {
+  constructor (props){
+    super(props);
+    this.state = {
+      user: [],
+      posts: []
+    }
+    this.getUserPost = this.getUserPost.bind(this)
+    this.reloadPostList = this.reloadPostList.bind(this)
+    this.getUserFromSession = this.getUserFromSession.bind(this)
+    this.sortPostByDate = this.sortPostByDate.bind(this)
+  }
+
+  async componentDidMount() {
+    await this.getUserFromSession(this)
+    await this.getUserPost(this)
+    console.log("this.state.user", this.state.user)
+    console.log("this.state.posts", this.state.posts)
+  }
+
+  reloadPostList() {
+      this.getUserPost(this)
+  }
+  
+  async getUserPost(e) {
+    await axios.get("/post/get-post-user", {
+      params: {
+        id: e.state.user._id
+      }
+    }).then(async (response) => {
+      await e.setState({
+        posts: response.data
+      })
+    }).catch(err => {
+      console.log("err", err)
+    })
+  }
+
+  async getUserFromSession(e) {
+    await axios.get("/members/get_user_from_session").then(async (response) => {
+      await e.setState({
+        user: response.data
+      })
+    }).catch(err =>{
+      console.log("err", err);
+    })
+  }
+
+  sortPostByDate(array) {
+    let sortedArray = array.sort(function (a, b) {
+      return new Date(b.time) - new Date(a.time);
+    })
+    return sortedArray
+  }
+
   render() {
     return pug`
       #page-contents
-      	.row
-      		.col-md-3
-      		.col-md-7
-      			PostCreateBox
-      			PostContent(post=this.state.post1)
+        .row
+          .col-md-3
+          .col-md-7
+            PostCreateBox(reloadPostList = this.reloadPostList)
+            each post in this.sortPostByDate(this.state.posts)
+              PostContent(key=post._id, post=post)
     `;
   }
 }
