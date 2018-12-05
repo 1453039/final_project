@@ -26,7 +26,7 @@ class TradingPage extends Component {
           seller: 'aaaa',
           sellerImg: 'http://placehold.it/300x300',
           isAdmin: false,
-          description: 'Clock likenew 99%. Buy 1 get 1.',
+          description: 'Clock like new 99%. Buy 1 get 1.',
           amount: 2,
           price: 50000,
           linkImg: 'http://colorfully.eu/wp-content/uploads/2012/10/the-clock-is-ticking-away-facebook-cover.jpg'

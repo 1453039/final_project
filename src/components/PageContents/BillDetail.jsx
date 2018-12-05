@@ -5,7 +5,8 @@ class BillDetail extends React.Component {
   constructor(){
     super();
     this.state={
-      roll: 'admin',
+      roll: 'member',
+      date: 'January 2018',
       list:[
         {
           id: 0,
@@ -79,7 +80,7 @@ class BillDetail extends React.Component {
     return pug`
       if (this.state.roll == 'member')
         .bill-detail
-          h3.grey Monthly Bill Of Flat #{this.state.list[0].flat}
+          h3.grey Monthly Bill Of Flat #{this.state.list[0].flat} On #{this.state.date}
           table.service-list
             thead
               tr
@@ -98,10 +99,21 @@ class BillDetail extends React.Component {
                   td.amount #{item.amount}
           h4.grey Total: 
             span #{this.calculateBill(0)} VND
-          button.btn-primary(type='button') Pay
+          button#pay.btn-primary(type='button') Pay
       else 
         .bill-detail  
-          h3.grey Payment List
+          button.btn.btn-primary#add-bill Add Bill
+          form.tool 
+            select.sort-by(name='sort-by')
+              option(selected) -- Sort By --
+              option(value='flat-name') Flat Name
+              option(value='paid') Paid
+            div.form-group
+              input(type="text", placeholder="Search flat...")
+          .payment-title
+            button.pre-month &larr;
+            h3.grey Bills On #{this.state.date}
+            button.next-month &rarr;
           table.bill-list
             thead
               tr
