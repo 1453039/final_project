@@ -59,8 +59,8 @@ class AddUser extends React.PureComponent {
         id: e.state.id,
         avatar: DEFAULT_AVATAR,
         cover: DEFAULT_COVER
-      }).then(async function (response) {
-        await e.setState({
+      }).then(function (response) {
+        e.setState({
           messageFromServer: response.data
         });
       })
@@ -126,7 +126,7 @@ class AddUser extends React.PureComponent {
           Button(onClick=this.openModal)#add-member.btn.btn-primary Add member
           if(this.state.modalIsOpen)
             .overlay
-              .Modal(isOpen=this.state.modalIsOpen, onRequestClose=this.closeModal, contentLabel="Add User")
+              .Modal()
                 Link(to=this.getLink("members") style={ textDecoration: 'none' })
                   Button.close-btn(onClick=this.closeModal)
                     span(className="closebtn glyphicon glyphicon-remove")
@@ -151,7 +151,7 @@ class AddUser extends React.PureComponent {
       div
         Button(onClick=this.openModal)#add-member.btn.btn-primary Add member
         .overlay
-          .Modal(isOpen=this.state.modalIsOpen, onAfterOpen=this.afterOpenModal, onRequestClose=this.closeModal, contentLabel="Add User")
+          .Modal(onRequestClose=this.closeModal)
             div(className='button-center')
               h3 #{mess}
               Link(to={ pathname: this.getLink("members"), search: '' }, style={ textDecoration: 'none' })

@@ -22,15 +22,15 @@ class ImageLoader extends React.PureComponent {
       selectedFile = this.state.user.avatar
     if (this.props.id == 'cover')
       selectedFile = this.state.user.cover
-    await this.setState({ selectedFile })
+    this.setState({ selectedFile })
   }
 
-  async componentDidUpdate() {
+  componentDidUpdate() {
     if (this.props.id == 'avt' && this.state.isUpdated == true) {
-      await this.updateAvatar(this)
+      this.updateAvatar(this)
     }
     if (this.props.id == 'cover' && this.state.isUpdated == true) {
-      await this.updateCover(this)
+      this.updateCover(this)
     }
     if (this.props.page == 'popup-create-post' && this.state.isUpdated == true) {
       this.props.handleImgChange(this.state.selectedFile)
@@ -75,8 +75,8 @@ class ImageLoader extends React.PureComponent {
   }
 
   async getUserFromSession(e) {
-    await axios.get("/members/get_user_from_session").then(async (response) => {
-      await e.setState({
+    await axios.get("/members/get_user_from_session").then((response) => {
+      e.setState({
         user: response.data
       })
     }).catch(err => {

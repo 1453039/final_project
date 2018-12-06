@@ -5,6 +5,7 @@ var path = require('path');
 var debug = require('debug')('apartment-social-network:server');
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
+var _ = require('lodash');
 
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -51,20 +52,27 @@ app.use('/apartment', apartment);
 app.use('/chat', chat);
 
 /** SOCKET!!! */
-app.get('/connected/:socketId', function (req, res) {
-  if (req.session.user._id) {
-    io.sockets.sockets[req.params.socketId] &&
-      onlineUsers.push({
-        socketId: req.params.socketId,
-        userId: req.session.user._id
-      })
+app.get('/connected/:socketId', function (req, res, next) {
+  if (req.session.user) {
+    let onlineUser = {}
+    onlineUser.socketId = req.params.socketId
+    onlineUser.user = req.session.user
+    onlineUsers.push(onlineUser)
     io.sockets.emit('OnlineUserChange', onlineUsers);
+    res.json({
+      message: 'connect',
+    })
+  } else {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
   }
 })
 
 
 app.get('/getOnlineUsers', function (req, res) {
-  res.json(onlineUsers);
+  var results = onlineUsers.filter(item => item.user.apartment == req.query.apartmentId && item.user._id != req.query.userId)
+  res.json(results);
 })
 
 app.get('/getMessages', function (req, res) {
@@ -73,11 +81,11 @@ app.get('/getMessages', function (req, res) {
 })
 
 io.on('connection', function (socket) {
-  console.log(onlineUsers, "online user connected!!");
+  console.log(socket.id, "online user connected!!");
 
   socket.on('disconnect', function () {
     onlineUsers = onlineUsers.filter(item => item.socketId !== socket.id)
-    console.log(onlineUsers, "disconnected!");
+    console.log(socket.id, "disconnected!");
     io.sockets.emit('OnlineUserChange', onlineUsers);
   });
 

@@ -19,8 +19,8 @@ class MyCover extends PureComponent {
   }
 
   async getUserFromSession(e) {
-    await axios.get("/members/get_user_from_session").then(async (response) => {
-      await e.setState({
+    await axios.get("/members/get_user_from_session").then((response) => {
+      e.setState({
         user: response.data
       })
     }).catch(err =>{

@@ -54,8 +54,8 @@ class MyInfo extends Component {
   }
 
   async getUserFromSession(e) {
-    await axios.get("/members/get_user_from_session").then(async (response) => {
-      await e.setState({
+    await axios.get("/members/get_user_from_session").then((response) => {
+      e.setState({
         user: response.data
       })
     }).catch(err =>{
@@ -76,7 +76,8 @@ class MyInfo extends Component {
     })
   }
 
-  async onClickSaveChange() {
+  async onClickSaveChange(e) {
+    e.preventDefault()
     await this.updateInfo(this);
   }
 
@@ -97,7 +98,7 @@ class MyInfo extends Component {
 									.row
 										.form-group.col-xs-12
 											label(for='fullname') My full name
-											input#fullname.form-control.input-group-lg(type='text', name='fullname', title='Enter full name', placeholder='Full name', onChange=this.onChangeName, value=this.state.user.name)
+											input#fullname.form-control.input-group-lg(type='text', name='fullname', title='Enter full name', placeholder='Full name', onChange=this.onChangeName, value=this.state.user.name ? this.state.user.name : '')
 									.row
 										.form-group.col-xs-12
 											label(for='email') My email

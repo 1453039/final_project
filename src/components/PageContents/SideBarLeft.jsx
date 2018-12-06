@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link, withRouter  } from 'react-router-dom';
 import ChatOnline from './ChatOnline.jsx'
 import axios from 'axios';
 
-class SideBarLeft extends React.Component {
+class SideBarLeft extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {

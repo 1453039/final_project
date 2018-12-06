@@ -47,8 +47,8 @@ class PostCreateBox extends React.PureComponent {
       linkImg: e.state.linkImg,
       linkVideo: e.state.linkVideo,
       type: e.state.type ? e.state.type : "Post"
-    }).then(async (response) => {
-      await alert(response.data)
+    }).then((response) => {
+      alert(response.data)
     }).catch(err => {
       console.log("err", err);
     })
@@ -63,7 +63,7 @@ class PostCreateBox extends React.PureComponent {
   }
 
   async handlePopupSubmit(description, linkImg) {
-    await this.setState({
+    this.setState({
       description: description,
       linkImg: linkImg
     })
@@ -81,7 +81,7 @@ class PostCreateBox extends React.PureComponent {
   }
 
   handleTypeOfPost(e) {
-    switch (e.target.name) {
+    switch (e.target.id) {
       case "image-post":
         this.setState({
           type: "Post"
@@ -106,8 +106,9 @@ class PostCreateBox extends React.PureComponent {
   }
 
   togglePopup(e){
-    if (this.showPopup == false)
+    if (this.state.showPopup == false) {
       this.handleTypeOfPost(e)
+    }
     this.setState({
       showPopup: !this.state.showPopup
     });
@@ -126,11 +127,11 @@ class PostCreateBox extends React.PureComponent {
                 li.active
                   i.ion-compose
                 li(name="image-post", onClick=this.togglePopup)#image-post
-                  i.ion-images
+                  i.ion-images#image-post
                 li(name="event-post", onClick=this.togglePopup)#event-post
-                  i.ion-ios-body
+                  i.ion-ios-body#event-post
                 li(name="trading-post", onClick=this.togglePopup)#trading-post
-                  i.ion-ios-cart       
+                  i.ion-ios-cart#trading-post  
               button#publish.btn.btn-primary.pull-right(type='submit', onClick=this.handleSubmit, disabled = this.state.description ? false : true) Publish
         if (this.state.showPopup) 
           CreatePopup(closePopup=this.togglePopup, avatar=this.state.user.avatar, type = this.state.type, handlePopupSubmit = this.handlePopupSubmit)

@@ -19,8 +19,6 @@ class MyTimeline extends PureComponent {
   async componentDidMount() {
     await this.getUserFromSession(this)
     await this.getUserPost(this)
-    console.log("this.state.user", this.state.user)
-    console.log("this.state.posts", this.state.posts)
   }
 
   reloadPostList() {
