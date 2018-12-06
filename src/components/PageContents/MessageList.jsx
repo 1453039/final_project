@@ -75,46 +75,75 @@ class MessageList extends Component {
 	}
 
   render() {
-    const {messages} = this.state;
+    const message = this.state.messages;
     return pug`
-      .col-md-7
-          .tab-content.scrollbar-wrapper.wrapper.scrollbar-outer
+      .col-sm-7
+        .scroll-wrapper.tab-content.scrollbar-wrapper.wrapper.scrollbar-outer
+          .tab-content.scrollbar-wrapper.wrapper.scrollbar-outer.scroll-content.scroll-scrolly_visible
             #contact-1.tab-pane.active
               .chat-body
                 ul.chat-message
                   li.left
-                    img(src=messages[0].linkImg, alt='').profile-photo-sm.pull-left
+                    img(src=message[0].linkImg, alt='').profile-photo-sm.pull-left
                     .chat-item
                       .chat-item-header
-                        h5 #{messages[0].name}
-                        small.text-muted #{messages[0].contents[0].time}
-                      p #{messages[0].contents[0].detail}
+                        h5 #{message[0].name}
+                        small.text-muted #{message[0].contents[0].time}
+                      p #{message[0].contents[0].detail}
                   li.right
                     img(src=this.state.linkImg, alt='').profile-photo-sm.pull-right
                     .chat-item
                       .chat-item-header
                         h5 #{this.state.name}
-                        small.text-muted #{messages[0].contents[1].time}
-                      p #{messages[0].contents[1].detail}
+                        small.text-muted #{message[0].contents[1].time}
+                      p #{message[0].contents[1].detail}
                   li.left
-                    img(src=messages[0].linkImg, alt='').profile-photo-sm.pull-left
+                    img(src=message[0].linkImg, alt='').profile-photo-sm.pull-left
                     .chat-item
                       .chat-item-header
-                        h5 #{messages[0].name}
-                        small.text-muted #{messages[0].contents[2].time}
-                      p #{messages[0].contents[2].detail}
+                        h5 #{message[0].name}
+                        small.text-muted #{message[0].contents[2].time}
+                      p #{message[0].contents[2].detail}
                   li.right
                     img(src=this.state.linkImg, alt='').profile-photo-sm.pull-right
                     .chat-item
                       .chat-item-header
                         h5 #{this.state.name}
-                        small.text-muted #{messages[0].contents[3].time}
-                      p #{messages[0].contents[3].detail}
-              .send-message
-                .input-group
-                  input.form-control(type="text", placeholder="Type your message")
-                  span.input-group-btn
-                    button.btn.btn-primary(type="button") Send
+                        small.text-muted #{message[0].contents[3].time}
+                      p #{message[0].contents[3].detail}
+                  li.left
+                    img(src=message[0].linkImg, alt='').profile-photo-sm.pull-left
+                    .chat-item
+                      .chat-item-header
+                        h5 #{message[0].name}
+                        small.text-muted #{message[0].contents[0].time}
+                      p #{message[0].contents[0].detail}
+                  li.right
+                    img(src=this.state.linkImg, alt='').profile-photo-sm.pull-right
+                    .chat-item
+                      .chat-item-header
+                        h5 #{this.state.name}
+                        small.text-muted #{message[0].contents[1].time}
+                      p #{message[0].contents[1].detail}
+                  li.left
+                    img(src=message[0].linkImg, alt='').profile-photo-sm.pull-left
+                    .chat-item
+                      .chat-item-header
+                        h5 #{message[0].name}
+                        small.text-muted #{message[0].contents[2].time}
+                      p #{message[0].contents[2].detail}
+                  li.right
+                    img(src=this.state.linkImg, alt='').profile-photo-sm.pull-right
+                    .chat-item
+                      .chat-item-header
+                        h5 #{this.state.name}
+                        small.text-muted #{message[0].contents[3].time}
+                      p #{message[0].contents[3].detail}
+            .send-message
+              .input-group
+                input.form-control(type="text", placeholder="Type your message")
+                span.input-group-btn
+                  button.btn.btn-primary(type="button") Send
     `;
   }
 }

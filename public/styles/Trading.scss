@@ -26,11 +26,15 @@
     overflow: hidden;
     h4.amount {
       float: left;
-      margin: 20px 0 0;
+      margin: 25px 0 0;
     }
     h4.price {
       float: right;
       margin: 20px 0 0;
+      padding: 10px;
+      border: 1px solid #8dc63f;
+      border-radius: 4px;
+      color: #8dc63f !important;
     }
   }
 }

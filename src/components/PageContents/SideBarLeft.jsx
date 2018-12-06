@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link, withRouter  } from 'react-router-dom';
 import ChatOnline from './ChatOnline.jsx'
 import axios from 'axios';

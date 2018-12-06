@@ -24,7 +24,7 @@ constructor(props) {
             p.desc.grey #{sellingItem.description}
             img.img-responsive.sellingItem-image(src=sellingItem.linkImg, alt="sellingItem-image")
             .selling-text
-              h4.price.grey Price: #{sellingItem.price} VND
+              h4.price #{sellingItem.price} VND
               h4.amount.grey Amount: #{sellingItem.amount}
     `;
   }

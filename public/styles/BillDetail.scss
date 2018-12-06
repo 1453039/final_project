@@ -1,5 +1,12 @@
 .bill-detail { 
   padding: 0 30px;
+  #payment-title {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  h4.payment-detail {
+    margin: 10px 0 !important;
+  }
   button#add-bill {
     float: right;
     padding: 4px 15px;
@@ -41,7 +48,7 @@
       }
     }
   }
-  h4 {
+  h4#total {
     margin: 20px 0 0 !important;
     float: right;
      span {
@@ -49,6 +56,7 @@
      }
   }
   table {
+    margin-top: 20px;
     width: 100%;
     th, td {
       border: 1px solid #ccc;
@@ -75,4 +83,49 @@
 .pagi-block {
   margin-top: 10px;
   text-align: center;
+}
+
+.checkout {
+  padding: 0 30px;
+  h3.grey#checkout {
+    text-align: center;
+  }
+  label {
+    display: inline-block;
+    width: 30%;
+    margin-bottom: 5px;
+    font-weight: 700;
+  }
+  input.form-control {
+    float: right;
+    width: 70% !important;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  button.btn {
+    width: 100%;
+    outline: none;
+    margin: 10px 0;
+    padding: 10px 25px;
+  }
+  .icon-container {
+    width: 70%;
+    float: right;
+    font-size: 35px;
+    .fa {
+      padding: 0 10px;
+    }
+    .fa-cc-visa {
+      color: #00007f;
+    }
+    .fa-cc-amex {
+      color: #0000ff;
+    }
+    .fa-cc-mastercard {
+      color: #ff0000;
+    }
+    .fa-cc-discover {
+      color: #ffa500;
+    }
+  }
 }

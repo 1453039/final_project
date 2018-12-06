@@ -76,15 +76,15 @@ class PassForm extends React.Component {
     let disabled = password ? false : true
 		return pug`
 			.login-form.col-md-5.col-sm-5
-					#wrapper
-						h2.text-white Welcome to #{apartment.name}
-						.line-divider
-						h2.text-white Enter your password
-						form(onSubmit=this.handleClickNext)
-							fieldset.form-group
-								input.form-control#example-email(type="password", placeholder="Your password", onChange=this.handlePassChange)
-							button.btn-secondary(disabled=disabled)
-								span Next
+				#wrapper
+					h2.text-white Welcome to #{apartment.name}
+					.line-divider
+					h2.text-white Enter your password
+					form(onSubmit=this.handleClickNext)
+						fieldset.form-group
+							input.form-control#example-email(type="password", placeholder="Your password", onChange=this.handlePassChange)
+						button.btn-secondary(disabled=disabled)
+							span Next
 		`;
   }
 }

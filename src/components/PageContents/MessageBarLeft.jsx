@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import '../../../public/styles/Message.scss';
-import axios from 'axios';
 
 class MessageBarLeft extends PureComponent {
 	constructor() {
@@ -13,7 +12,6 @@ class MessageBarLeft extends PureComponent {
     this.getUserFromSession = this.getUserFromSession.bind(this)
     this.getUserChatList = this.getUserChatList.bind(this)
   }
-
   async componentDidMount() {
     await this.getUserFromSession(this)
     await this.getUserChatList()
@@ -41,12 +39,12 @@ class MessageBarLeft extends PureComponent {
       })
     }) 
   }
-
   render() {
-    if(this.state.userChatList)
-      return pug`
-        .col-md-5
-          ul.nav.nav-tabs.contact-list.scrollbar-wrapper.scrollbar-outer
+   if(this.state.userChatList)
+    return pug`
+      .col-sm-5
+        .scroll-wrapper.nav.nav-tabs.contact-list.scrollbar-wrapper.scrollbar-outer
+          ul.nav.nav-tabs.contact-list.scrollbar-wrapper.scrollbar-outer.scroll-content.croll-scrolly_visible
             each item in this.state.userChatList
               li(key=item.userId)
                 Link(to='?info')(data-toggle='tab')
@@ -64,13 +62,12 @@ class MessageBarLeft extends PureComponent {
                       // else
                       //   .replied
                       //     i.icon.ion-reply
-      `;
+    `;
     else 
       return pug`
         .col-md-5
           ul.nav.nav-tabs.contact-list.scrollbar-wrapper.scrollbar-outer
-      `;
-  }
+      `;  }
 }
 
 export default MessageBarLeft;

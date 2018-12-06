@@ -106,9 +106,8 @@ class PostCreateBox extends React.PureComponent {
   }
 
   togglePopup(e){
-    if (this.state.showPopup == false) {
+    if (this.state.showPopup == false)
       this.handleTypeOfPost(e)
-    }
     this.setState({
       showPopup: !this.state.showPopup
     });
@@ -131,7 +130,7 @@ class PostCreateBox extends React.PureComponent {
                 li(name="event-post", onClick=this.togglePopup)#event-post
                   i.ion-ios-body#event-post
                 li(name="trading-post", onClick=this.togglePopup)#trading-post
-                  i.ion-ios-cart#trading-post  
+                  i.ion-ios-cart#trading-post
               button#publish.btn.btn-primary.pull-right(type='submit', onClick=this.handleSubmit, disabled = this.state.description ? false : true) Publish
         if (this.state.showPopup) 
           CreatePopup(closePopup=this.togglePopup, avatar=this.state.user.avatar, type = this.state.type, handlePopupSubmit = this.handlePopupSubmit)
