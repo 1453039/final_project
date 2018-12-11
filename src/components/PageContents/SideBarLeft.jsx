@@ -28,7 +28,8 @@ class SideBarLeft extends React.PureComponent {
   }
 
   render() {
-    let name = this.state.user.name? this.state.user.name : "User Name"    
+    let name = this.state.user.name? this.state.user.name : "User Name"
+    let page = window.location.search
     return pug`
       .col-md-3.static
         .profile-card
@@ -39,7 +40,10 @@ class SideBarLeft extends React.PureComponent {
           li
             i.icon.ion-ios-home
             div
-             Link(to="?newfeeds") My Newsfeed
+              if(page=='?newfeeds')
+                Link.active(to="?newfeeds") My Newsfeed
+              else
+                Link(to="?newfeeds") My Newsfeed
           li
             i.icon.ion-ios-paper 
             div
@@ -55,15 +59,24 @@ class SideBarLeft extends React.PureComponent {
           li
             i.icon.ion-ios-chatboxes
             div
-              Link(to="?messages") Messages
+              if(page=='?messages')
+                Link.active(to="?messages") Messages
+              else
+                Link(to='?messages') Messages
           li
             i.icon.ion-ios-body
             div
-             Link(to="?events") Events
+              if(page=='?events')
+                Link.active(to="?events") Events
+              else
+                Link(to="?events") Events
           li
             i.icon.ion-information-circled
             div
-             Link(to="?reports") Report
+              if(page=='?reports')
+                Link.active(to="?reports") Report
+              else
+                Link(to="?reports") Report
         ChatOnline
     `;
   }

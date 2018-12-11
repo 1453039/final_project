@@ -7,22 +7,15 @@ class MemberView extends React.Component {
     this.state = {
       detail: this.props.detail
     }
-    this.calculateBill=this.calculateBill.bind(this);
-  }
-  calculateBill(num) {
-    let sum = 0;
-    const arr = this.state.detail.list[num].service;
-    for (let i=0; i<arr.length; i++) {
-      sum = sum + arr[i].fee*arr[i].amount;
-    };
-    return sum;
+    this.handleClickPay = this.props.handleClickPay;
+    this.calculateBill = this.props.calculateBill;
   }
   render() {
     return pug`
       .bill-detail
         h3.grey#payment-title Monthly Bill 
-        h4.grey.payment-detail Month: #{this.state.detail.date}
         h4.grey.payment-detail Flat: #{this.state.detail.list[0].flat} 
+        h4.grey.payment-detail Month: #{this.state.detail.date}
         table.service-list
           thead
             tr
@@ -41,7 +34,8 @@ class MemberView extends React.Component {
                 td.amount #{item.amount}
         h4.grey#total Total: 
           span #{this.calculateBill(0)} VND
-        button#pay.btn-primary(type='button') Pay
+        if !this.state.detail.isClickpay
+          button#pay.btn-primary(type='button', onClick=this.handleClickPay) Pay
     `;
   }
 }

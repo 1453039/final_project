@@ -7,6 +7,9 @@
   ul.edit-menu {
     margin-top: 80px;
     padding: 0 20px;
+    .active {
+      text-decoration: underline;
+    }
     li {
       list-style: none;
       border-bottom: 1px solid #f1f2f2;

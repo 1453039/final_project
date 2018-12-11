@@ -51,8 +51,6 @@ class ResidentList extends Component {
   render() {
 		return pug`
 			#page-contents
-				if(this.state.modalIsOpen)
-					.overlay
 				.row
 					.col-md-3
 						if(this.state.role =='admin')

@@ -18,7 +18,7 @@ constructor(props) {
                 Link.profile-link(to="/") #{sellingItem.seller}
                 if(sellingItem.isAdmin)
                   i.icon.ion-android-checkmark-circle
-            .reaction
+            Link.reaction(to="?messages")
               .text-green.btn.chat-online
                 span Chat Online
             p.desc.grey #{sellingItem.description}

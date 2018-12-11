@@ -63,16 +63,13 @@ class SideBarRight extends React.Component {
               img(src=item.linkImg).profile-photo-sm.pull-left
               div
                 h5
-                  Router
-                    Link(to='?timeline') #{item.name}
-                Router
-                  Link(to='?messages').text-green Chat now
+                  Link(to='?timeline') #{item.name}
+                Link(to='?messages').text-green Chat now
         .footer.hidden-sm.hidden-xs
           ul
             each item in info
               li(key=item.id) 
-                Router
-                  Link(to=item.link) #{item.name}
+                Link(to=item.link) #{item.name}
           .copyright
             p Team 039-049 © 2018. All rights reserved
     `;

@@ -25,10 +25,10 @@ class EditPass extends Component {
 								.row
 									.form-group.col-xs-6
 										label New password
-										input#email.form-control.input-group-lg(type='password', name='password', title='Enter password', placeholder='New password', required)
+										input#new-pass.form-control.input-group-lg(type='password', name='password', title='Enter password', placeholder='New password', required)
 									.form-group.col-xs-6
 										label Confirm password
-										input#email.form-control.input-group-lg(type='password', name='password', title='Enter password', placeholder='Confirm password', required)
+										input#confirm-new-pass.form-control.input-group-lg(type='password', name='password', title='Enter password', placeholder='Confirm password', required)
 								p
 									Link(to='/') Forgot password?
 								button.btn.btn-primary.info(method='post', type='submit') Update password

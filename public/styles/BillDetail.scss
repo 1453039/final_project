@@ -24,6 +24,10 @@
       background: #fff;
       border-radius: 4px;
       color: #27aae1;
+      &:hover {
+        color: #fff;
+        background-color: #337ab7;
+      }
     }
     h3 {
       margin: 0 10px;
@@ -38,6 +42,7 @@
       padding: 4px 15px;
       border: 1px solid #ccc;
       border-radius: 15px;
+      outline: none;
     }
     .form-group {
       float: right;
@@ -45,6 +50,7 @@
         border: 1px solid #ccc;
         border-radius: 15px;
         padding: 0 15px;
+        outline: none;
       }
     }
   }
@@ -85,10 +91,37 @@
   text-align: center;
 }
 
-.checkout {
+.checkout, .add-bill-detail {
+  position: relative;
   padding: 0 30px;
-  h3.grey#checkout {
+  h3.grey {
     text-align: center;
+  }
+  .cancel {
+    position: absolute;
+    right: 30px;
+    top: 0;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #808080;
+  }
+  .line-divide {
+    border: 1px solid #ccc;
+    margin: 35px;
+  }
+  .add-bill-form {
+    border: 1px dashed #ccc;
+    padding: 5px 10px;
+    span {
+      margin-left: 10px;
+    }
+    &:hover{
+      cursor: pointer;
+    }
+  }
+  form {
+    clear: both;
   }
   label {
     display: inline-block;

@@ -2,10 +2,19 @@ import React, {Component} from  'react';
 import {Link} from 'react-router-dom';
 
 class PayOnline extends React.Component {
+  constructor() {
+    super();
+    this.reload = this.reloadPage.bind(this);
+  }
+  reloadPage() {
+    console.log(1);
+    location.reload();
+  }
   render() {
     return pug`
       .checkout
-        h3#checkout.grey Check Out
+        h3.grey Check Out
+        button.cancel(onClick=this.reload) Cancel
         form
           .form-group 
             label(for='fname') Accepted Cards

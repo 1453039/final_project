@@ -29,6 +29,7 @@ class MyCover extends PureComponent {
   }
 
   render() {
+    const page=window.location.search;
     return pug`
     .timeline-cover
       ImageLoader(page=this.state.page, id='cover')
@@ -42,11 +43,20 @@ class MyCover extends PureComponent {
           .col-md-9
             ul.list-inline.profile-menu
               li
-                Link(to="?timeline") My Timeline
+                if(page=='?timeline')
+                  Link.active(to="?timeline") My Timeline
+                else
+                  Link(to="?timeline") My Timeline
               li
-                Link(to="?info") My Account
+                if(page=='?info')
+                  Link.active(to="?info") My Account
+                else
+                  Link(to="?info") My Account
               li
-                Link(to="?members") Members
+                if(page=='?members')
+                  Link.active(to="?members") Members
+                else
+                  Link(to="?members") Members
       .navbar-mobile.hidden-lg.hidden-md
         .profile-info
           ImageLoader(page=this.state.page, id='avt')
@@ -55,11 +65,20 @@ class MyCover extends PureComponent {
         .mobile-menu
           ul.list-inline
             li
+            if(page=='?timeline')
+              Link.active(to="?timeline") My Timeline
+            else
               Link(to="?timeline") My Timeline
             li
-              Link(to="?info") My Account
+              if(page=='?info')
+                Link.active(to="?info") My Account
+              else
+                Link(to="?info") My Account
             li
-              Link(to="?members") Members
+              if(page=='?members')
+                Link.active(to="?members") Members
+              else
+                Link(to="?members") Members
     `;
   }
 }

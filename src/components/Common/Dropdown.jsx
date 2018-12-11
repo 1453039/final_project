@@ -34,17 +34,29 @@ class Dropdown extends Component {
   render () {
     const{list, link} = this.props
     const{listOpen, headerTitle} = this.state
+    const page = window.location.search;
     return pug`
       li.dropdown
         if (list)
-          div.dropdown-toggle(onClick=this.toggleListTmp) #{headerTitle}
-            if (listOpen)
-              ul.dropdown-menu
-                each item in list
-                  li(key=item.id)
-                    Link(to='?' + item.link) #{item.title}
+          if(page=='?admin-noti' || page=='?member-noti')
+            div.dropdown-toggle.active(onClick=this.toggleListTmp) #{headerTitle}
+              if (listOpen)
+                ul.dropdown-menu
+                  each item in list
+                    li(key=item.id)
+                      Link(to='?' + item.link) #{item.title}
+          else
+            div.dropdown-toggle(onClick=this.toggleListTmp) #{headerTitle}
+              if (listOpen)
+                ul.dropdown-menu
+                  each item in list
+                    li(key=item.id)
+                      Link(to='?' + item.link) #{item.title}
         else 
-          Link.dropdown-toggle(to=link) #{headerTitle}
+          if(page==link)
+            Link.dropdown-toggle.active(to=link) #{headerTitle}
+          else
+            Link.dropdown-toggle(to=link) #{headerTitle}
     `;
   }
 }

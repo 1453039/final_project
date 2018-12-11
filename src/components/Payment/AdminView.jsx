@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 class AdminView extends React.Component {
   constructor(props) {
     super(props);
+    this.calculateBill = this.props.calculateBill;
+    this.handleClickAddBill = this.props.handleClickAddBill;
   }
   render() {
     const {detail} = this.props;
     return pug`
       .bill-detail  
-        button.btn.btn-primary#add-bill Add Bill
+        button.btn.btn-primary#add-bill(onClick=this.handleClickAddBill) Add Bill
         form.tool 
           select.sort-by(name='sort-by')
             option(selected) -- Sort By --

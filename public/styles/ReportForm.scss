@@ -14,3 +14,42 @@
     width: 100%;
   }
 }
+.report-list {
+  h3.grey {
+    text-align: center;
+  }
+  .report-container {
+    .report-item {
+      padding: 20px;
+      background: #f8f8f8;
+      border-radius: 4px;
+      width: 100%;
+      border: 1px solid #f1f2f2;
+      margin-bottom: 20px;
+      overflow: visible;
+      position: relative;
+      img.profile-photo-md.pull-left {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+      }
+      .report-detail {
+        margin-left: 65px;
+        position: relative;
+        a.profile-link {
+          font-weight: 600;
+        }
+        p.text-muted {
+          float: right;
+        }
+        .report-description {
+          line-height: 24px;
+          margin: 0;
+        }
+        .line-divider {
+          margin: 10px;
+        }
+      }
+    }
+  }
+}
