@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var users = require('../models/User');
 var nodemailer = require('nodemailer');
+var _ = require('lodash');
 const creds = require('../config/config');
 
 router.get('/', function (req, res) {
@@ -14,7 +15,7 @@ router.route('/insert')
     user.email = req.body.email;
     user.apartment = req.body.id;
     user.password = "";
-    user.name = "";
+    user.name = "User Name";
     user.birthday = "";
     user.sex = "";
     user.avatar = req.body.avatar;
@@ -155,6 +156,7 @@ router.get('/get-resident-of-apartment', function (req, res) {
   users.find({ apartment: id }, function (err, users) {
     if (err)
       res.send(err);
+    users = users.filter(item => JSON.stringify(item._id) != JSON.stringify(req.query.userId));
     res.json(users);
   });
 });

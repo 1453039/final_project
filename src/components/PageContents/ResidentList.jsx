@@ -1,51 +1,48 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 import '../../../public/styles/ResidentList.scss';
 import '../../../public/styles/AddUser.scss';
 import Friends from './Friends.jsx';
 import AddUser from './AddUser.jsx'
 
-class ResidentList extends Component {
+class ResidentList extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: [],
-			role: 'admin',
-			friends: [
-				{
-					id: 0,
-					name: 'aaa',
-					room: '1',
-					linkImg: 'http://placehold.it/300x300',
-					linkCover: 'http://placehold.it/1030x360'
-				},
-				{
-					id: 1,
-					name: 'bbb',
-					room: '2',
-					linkImg: 'http://placehold.it/300x300',
-					linkCover: 'http://placehold.it/1030x360'
-				}
-			]
+			user: [],
+			friends: []
 		}
-		this.getData = this.getData.bind(this);
-	}
-	componentDidMount() {
-    this.getData(this);
+    this.getUserFromSession = this.getUserFromSession.bind(this);
+    this.getMemberList = this.getMemberList.bind(this);
+  }
+  
+	async componentDidMount() {
+    await this.getUserFromSession(this);
+    await this.getMemberList(this);
 	}
 
-  componentWillReceiveProps(nexProps) {
-    this.getData(this);
+  async getUserFromSession(e) {
+    await axios.get("/user/get_user_from_session").then((response) => {
+      e.setState({
+        user: response.data
+      })
+    }).catch(err => {
+      console.log("err", err);
+    })
   }
 
-  getData(e) {
-    axios.get('/members/getAll')
-      .then(function (response) {
-        e.setState({ data: response.data });
-      })
-      .catch(error => {
-        console.log(error.response);
-      });
+  async getMemberList(e) {
+    await axios.get("/user/get-resident-of-apartment", {
+      params: {
+        id: e.props.match.params.id,
+        userId: e.state.user._id
+      }
+    }).then(response => {
+      e.setState({friends: response.data});
+    }).catch(err => {
+      console.log("err", err);
+    })
   }
 
   render() {
@@ -53,7 +50,7 @@ class ResidentList extends Component {
 			#page-contents
 				.row
 					.col-md-3
-						if(this.state.role =='admin')
+						if(this.state.user.isAdmin)
 							AddUser
 					.col-md-9
 						.friend-list
@@ -62,4 +59,4 @@ class ResidentList extends Component {
   }
 }
 
-export default ResidentList;
+export default withRouter(ResidentList);

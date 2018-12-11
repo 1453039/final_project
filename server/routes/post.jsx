@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var posts = require('../models/Post.jsx');
+var comments = require('../models/Comment.jsx');
 
 /* GET ALL POST */
 router.get('/get-all', function(req, res) {
@@ -44,6 +45,29 @@ router.post('/insert', function(req, res) {
   post.save(function (err) {
     if (err)
       res.json(err);
+    res.json("Create post sucessfully!");
+  });
+});
+
+/* GET COMMENTS OF A POST */
+router.get('/get-comment', function(req, res) {
+  comments.find({post: req.query.post}, function(err, comments) {
+    if (err) console.log('err', err);
+    res.json(comments);
+  })
+})
+
+/* SAVE COMMENT */
+router.post('/insert-comment', function(req, res) {
+  var comment = new comments()
+  var now = new Date()
+  comment.author = req.body.author
+  comment.post = req.body.post
+  comment.description = req.body.description
+  comment.time = now
+  comment.save(function (err) {
+    if (err)
+      console.log(err);
     res.json("Create post sucessfully!");
   });
 });

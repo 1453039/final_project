@@ -21,7 +21,7 @@ var chat = require('./routes/chat')
 
 /** Variables */
 let onlineUsers = [];
-let messagesStored = [];
+var chats = require('./models/Chat.jsx');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '../public'));
@@ -46,7 +46,7 @@ app.use(session({
 
 // Setting Router
 app.use('/', route);
-app.use('/members', user);
+app.use('/user', user);
 app.use('/post', post)
 app.use('/apartment', apartment);
 app.use('/chat', chat);
@@ -75,11 +75,6 @@ app.get('/getOnlineUsers', function (req, res) {
   res.json(results);
 })
 
-app.get('/getMessages', function (req, res) {
-  if (messagesStored.length > 10) messagesStored = messagesStored.slice(messagesStored.length - 10, messagesStored.length);
-  res.json(messagesStored)
-})
-
 io.on('connection', function (socket) {
   console.log(socket.id, "online user connected!!");
 
@@ -90,7 +85,17 @@ io.on('connection', function (socket) {
   });
 
   socket.on('chat', function (data) {
-    messagesStored.push(data)
+    var chat = new chats()
+    var now = new Date()
+    chat.from = data.from
+    chat.to = data.to
+    chat.detail = data.detail
+    chat.time = now
+    chat.save(function (err) {
+    if (err)
+      res.json(err);
+    });
+    data = chat
     io.sockets.emit('updateMessage', data);
   });
 });

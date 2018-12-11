@@ -43,7 +43,7 @@ class ImageLoader extends React.PureComponent {
 
 
   async updateAvatar(e) {
-    await axios.put("/members/update-avatar", {
+    await axios.put("/user/update-avatar", {
       id: e.state.user._id,
       avatar: e.state.selectedFile
     }).then((response) => {
@@ -54,7 +54,7 @@ class ImageLoader extends React.PureComponent {
   }
 
   async updateCover(e) {
-    await axios.put("/members/update-cover", {
+    await axios.put("/user/update-cover", {
       id: e.state.user._id,
       cover: e.state.selectedFile
     }).then((response) => {
@@ -75,7 +75,7 @@ class ImageLoader extends React.PureComponent {
   }
 
   async getUserFromSession(e) {
-    await axios.get("/members/get_user_from_session").then((response) => {
+    await axios.get("/user/get_user_from_session").then((response) => {
       e.setState({
         user: response.data
       })

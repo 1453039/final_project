@@ -29,7 +29,7 @@ class PassForm extends React.Component {
   }
 
   async saveToSession(e) {
-    await axios.post("/members/save_to_session", {
+    await axios.post("/user/save_to_session", {
       id: e.state.id_user
     }).then((response) => {
       console.log(response.data)
@@ -40,7 +40,7 @@ class PassForm extends React.Component {
 
   async updatePasswordUser() {
     let seft = this
-    await axios.post("/members/update_password", {
+    await axios.post("/user/update_password", {
         id : seft.state.id_user,
         password: seft.state.password
     }).then((response) => {

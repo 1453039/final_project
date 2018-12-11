@@ -18,7 +18,7 @@ class SideBarLeft extends React.PureComponent {
   }
 
   async getUserFromSession(e) {
-    await axios.get("/members/get_user_from_session").then((response) => {
+    await axios.get("/user/get_user_from_session").then((response) => {
       e.setState({
         user: response.data
       })

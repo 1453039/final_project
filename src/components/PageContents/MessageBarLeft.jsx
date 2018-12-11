@@ -1,24 +1,32 @@
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import '../../../public/styles/Message.scss';
+import axios from 'axios';
 
 class MessageBarLeft extends PureComponent {
-	constructor() {
-		super();
-		this.state = {
+  constructor(props) {
+    super(props);
+    this.state = {
       user: [],
+      toUser: this.props.history.location.state ? this.props.history.location.state.toUser : [],
+      userIdList: [],
+      userList: [],
       userChatList: []
     }
     this.getUserFromSession = this.getUserFromSession.bind(this)
+    this.getUserIdList = this.getUserIdList.bind(this)
+    this.getUserList = this.getUserList.bind(this)
     this.getUserChatList = this.getUserChatList.bind(this)
   }
   async componentDidMount() {
     await this.getUserFromSession(this)
-    await this.getUserChatList()
+    await this.getUserIdList()
+    await this.getUserList(this)
+    await this.getUserChatList(this)
   }
-  
+
   async getUserFromSession(e) {
-    await axios.get("/members/get_user_from_session").then((response) => {
+    await axios.get("/user/get_user_from_session").then((response) => {
       e.setState({
         user: response.data
       })
@@ -27,33 +35,92 @@ class MessageBarLeft extends PureComponent {
     })
   }
 
-  async getUserChatList() {
-    console.log(1);
-    await axios.get("/chat/get-list-chat-people", {
+  async getUserIdList() {
+    await axios.get("/chat/get-list-user-id", {
       params: {
         id: this.state.user._id
       }
     }).then((response) => {
       this.setState({
-        userChatList: response.data
+        userIdList: response.data
       })
-    }) 
+    })
   }
+
+  async getUserList(e) {
+    var userList = []
+    var tmpArr = []
+    for (var i in e.state.userIdList)
+      await axios.get("/user/get-user", {
+        params: {
+          id: e.state.userIdList[i]
+        }
+      }).then((response) => {
+        tmpArr.push(response.data)
+      }).catch(err => {
+        console.log("err", err)
+      })
+    userList = userList.concat(tmpArr)
+    e.setState({ userList });
+  }
+
+  async getUserChatList(e) {
+    var userChatList = []
+    var tmpArr = []
+    for (var i in e.state.userList)
+      await axios.get("/chat/get-last-message", {
+        params: {
+          from: e.state.user._id,
+          to: e.state.userList[i]._id
+        }
+      }).then(response => {
+        var tmp = {};
+        tmp._id = e.state.userList[i]._id
+        tmp.name = e.state.userList[i].name
+        tmp.avatar = e.state.userList[i].avatar
+        tmp.lastMessage = response.data.lastMessage
+        tmp.time = response.data.time
+        tmpArr.push(tmp);
+      })
+    userChatList = userChatList.concat(tmpArr);
+    e.setState({ userChatList });
+  }
+
+  handlePostTime(time) {
+    let now = new Date()
+    let postTime = new Date(time)
+    var timeDiff = Math.abs(now.getTime() - postTime.getTime())
+    if (timeDiff / (1000 * 3600 * 24) < 1)
+      if (timeDiff / (1000 * 3600) < 1)
+        if (timeDiff / (1000 * 60) < 1)
+          return ('Just now')
+        else return (Math.floor(timeDiff / (1000 * 60)) + ' minutes ago')
+      else
+        return (Math.floor(timeDiff / (1000 * 3600)) + ' hours ago')
+    else {
+      let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      let day = postTime.getDate()
+      let month = postTime.getMonth()
+      return (monthNames[month] + ' ' + day)
+    }
+  }
+
   render() {
-   if(this.state.userChatList)
-    return pug`
+    if (this.state.userChatList)
+      return pug`
       .col-sm-5
         .scroll-wrapper.nav.nav-tabs.contact-list.scrollbar-wrapper.scrollbar-outer
           ul.nav.nav-tabs.contact-list.scrollbar-wrapper.scrollbar-outer.scroll-content.croll-scrolly_visible
             each item in this.state.userChatList
-              li(key=item.userId)
-                Link(to='?info')(data-toggle='tab')
+              li(key=item._id)
+                Link(to={pathname: '@' + this.props.match.params.id ,search: '?messages', state: {toUser: item}})(data-toggle='tab')
                   .contact
                     img(src=item.avatar, alt='').profile-photo-sm.pull-left
                     .msg-preview
                       h6 #{item.name}
                       p.text-muted #{item.lastMessage}
-                      small.text-muted #{item.time}
+                      small.text-muted #{this.handlePostTime(item.time)}
                       // if(item.contents[item.contents.length - 1].status=='seen')
                       //   .seen
                       //     i.icon.ion-checkmark-round
@@ -63,11 +130,12 @@ class MessageBarLeft extends PureComponent {
                       //   .replied
                       //     i.icon.ion-reply
     `;
-    else 
+    else
       return pug`
         .col-md-5
           ul.nav.nav-tabs.contact-list.scrollbar-wrapper.scrollbar-outer
-      `;  }
+      `;
+  }
 }
 
-export default MessageBarLeft;
+export default withRouter(MessageBarLeft);

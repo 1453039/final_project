@@ -52,7 +52,7 @@ class AddUser extends React.PureComponent {
   }
   async insertNewUser(e) {
     try {
-      await axios.post('/members/insert', {
+      await axios.post('/user/insert', {
         email: e.state.email,
         flat: e.state.flat,
         isAdmin: e.state.isAdmin,
@@ -71,7 +71,7 @@ class AddUser extends React.PureComponent {
   }
   async sendMail(e) {
     try {
-      await axios.post('/members/send', {
+      await axios.post('/user/send', {
         email: e.state.email,
         id: e.state.id
       }).then((response) => {

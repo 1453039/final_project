@@ -54,7 +54,7 @@ class MyInfo extends Component {
   }
 
   async getUserFromSession(e) {
-    await axios.get("/members/get_user_from_session").then((response) => {
+    await axios.get("/user/get_user_from_session").then((response) => {
       e.setState({
         user: response.data
       })
@@ -64,7 +64,7 @@ class MyInfo extends Component {
   }
 
   async updateInfo(e) {
-    await axios.put("/members/update-info", {
+    await axios.put("/user/update-info", {
       id: e.state.user._id,
       name: e.state.user.name,
       birthday: e.state.user.birthday,
