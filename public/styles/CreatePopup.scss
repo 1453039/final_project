@@ -40,15 +40,20 @@
         border-radius: 5px;
         margin: 10px;
         float: right;
+        width: 70%;
       }
       textarea.form-control {
         margin: 10px;
       }
     }
+    label#upload-file {
+      width: 30% !important;
+    }
     label{
       margin: 10px;
       padding: 5px;
       float: left;
+      width: 20%;
       i {
         color: #6d6e71;
         font-size: 30px;

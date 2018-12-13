@@ -153,7 +153,7 @@ class AddUser extends React.PureComponent {
         .overlay
           .Modal(onRequestClose=this.closeModal)
             div(className='button-center')
-              h3 #{mess}
+              h3 #{this.state.messageFromServer}
               Link(to={ pathname: this.getLink("members"), search: '' }, style={ textDecoration: 'none' })
                 Button(onClick=this.closeModal) Close the Dialog
       `;

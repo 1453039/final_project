@@ -52,8 +52,21 @@ class CreatePopup extends PureComponent {
               label(for='celebration-day') Date:
               input#celebration-day.input-event-info.form-control(type='date')
             .form-group
+              label(for='celebration-day') Time:
+              input#celebration-time.input-event-info.form-control(type='time')
+            .form-group
               label(for='cost') Cost:
               input#cost.input-event-info.form-control(type='number', min='0', placeholder='Cost')
+          if(this.state.type=='Trading')
+            .form-group
+              label(for='item-name') Item:
+              input#item-name.input-event-info.form-control(type='text', placeholder='Item Name')
+            .form-group
+              label(for='cost') Cost:
+              input#cost.input-event-info.form-control(type='number', min='0', placeholder='Cost')
+            .form-group
+              label(for='amount') Amount:
+              input#amount.input-event-info.form-control(type='number', min='0', placeholder='Amount')
           button#publish.btn.btn-primary.pull-right(onClick=this.onClickPublish, disabled=!this.state.description && !this.state.linkImg ? true : false) Publish
     `;
   }

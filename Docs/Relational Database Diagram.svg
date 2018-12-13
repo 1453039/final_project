@@ -727,7 +727,7 @@
 				<v:textRect cx="16.0531" cy="886.828" width="16.13" height="12.0036"/>
 			</g>
 		</g>
-		<g id="group53-105" transform="translate(287.124,-412.754)" v:mID="53" v:groupContext="group">
+		<g id="group53-105" transform="translate(287.124,-384.75)" v:mID="53" v:groupContext="group">
 			<v:userDefs>
 				<v:ud v:nameU="msvStructureType" v:prompt="" v:val="VT4(List)"/>
 				<v:ud v:nameU="msvShapeCategories" v:prompt="" v:val="VT4(Database;DbEntity)"/>
@@ -762,9 +762,9 @@
 				<v:userDefs>
 					<v:ud v:nameU="EmblOffset" v:prompt="" v:val="VT0(0):26"/>
 				</v:userDefs>
-				<rect x="0" y="527.276" width="180" height="367.544" class="st1"/>
+				<rect x="0" y="499.273" width="180" height="395.547" class="st1"/>
 			</g>
-			<g id="shape55-108" v:mID="55" v:groupContext="shape" transform="translate(0,-336.044)">
+			<g id="shape55-108" v:mID="55" v:groupContext="shape" transform="translate(0,-364.047)">
 				<title>Sheet.55</title>
 				<v:userDefs>
 					<v:ud v:nameU="msvStructureType" v:prompt="" v:val="VT4(Heading)"/>
@@ -779,8 +779,8 @@
 			</g>
 			<g id="shape53-110" v:mID="53" v:groupContext="groupContent">
 				<v:textBlock v:margins="rect(8.5,4,8.5,4)"/>
-				<v:textRect cx="90" cy="543.026" width="180" height="29.0036"/>
-				<text x="4" y="546.03" class="st3" v:langID="2057"><v:paragraph/><v:tabList/>posts</text>			</g>
+				<v:textRect cx="90" cy="515.023" width="180" height="29.0036"/>
+				<text x="4" y="518.02" class="st3" v:langID="2057"><v:paragraph/><v:tabList/>posts</text>			</g>
 		</g>
 		<g id="group57-112" transform="translate(287.124,-720.794)" v:mID="57" v:groupContext="group">
 			<v:userDefs>
@@ -4411,6 +4411,49 @@
 			<title>Relationship.624</title>
 			<g id="shape624-679" v:mID="624" v:groupContext="groupContent" v:layerMember="0">
 				<path d="M2.25 902.93 L15.75 902.93 L15.75 904.71" class="st12"/>
+			</g>
+		</g>
+		<g id="group629-682" transform="translate(287.124,-384.75)" v:mID="629" v:groupContext="group">
+			<v:userDefs>
+				<v:ud v:nameU="msvShapeCategories" v:prompt="" v:val="VT4(Database;DbAttribute;DbListItem)"/>
+				<v:ud v:nameU="AttributeName" v:prompt="" v:val="VT4(attribute name)"/>
+				<v:ud v:nameU="PrimaryKey" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="ForeignKey" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="Required" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="ContainerMargin" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="WidthMin" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="UserWidth" v:prompt="" v:val="VT0(1.875):0"/>
+				<v:ud v:nameU="DarkerColor" v:prompt="" v:val="VT5(#000000)"/>
+				<v:ud v:nameU="DarkColor" v:prompt="" v:val="VT5(#000000)"/>
+				<v:ud v:nameU="BackFillColor" v:prompt="" v:val="VT0(1):26"/>
+				<v:ud v:nameU="BackLineColor" v:prompt="" v:val="VT5(#000000)"/>
+				<v:ud v:nameU="ItemIndex" v:prompt="" v:val="VT0(-1):26"/>
+				<v:ud v:nameU="EmblOffset" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="Spacer" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="AttributeName" v:prompt="" v:val="VT4(date: Date)"/>
+				<v:ud v:nameU="ContainerMargin" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="WidthMin" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="DarkColor" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="BackFillColor" v:prompt="" v:val="VT5(#f2f2f2)"/>
+				<v:ud v:nameU="BackLineColor" v:prompt="" v:val="VT0(0):26"/>
+				<v:ud v:nameU="ItemIndex" v:prompt="" v:val="VT0(14):26"/>
+			</v:userDefs>
+			<title>Attribute.629</title>
+			<desc>date: Date</desc>
+			<g id="shape629-683" v:mID="629" v:groupContext="groupContent">
+				<v:textBlock v:margins="rect(8,8,8,36)"/>
+				<v:textRect cx="90" cy="880.818" width="180" height="28.0036"/>
+				<text x="36" y="883.82" class="st3" v:langID="2057"><v:paragraph/><v:tabList/>date: Date</text>			</g>
+			<g id="shape630-686" v:mID="630" v:groupContext="shape" transform="translate(4.5,-6.00982)">
+				<title>Sheet.630</title>
+				<desc>PK</desc>
+				<v:userDefs>
+					<v:ud v:nameU="PrimaryKey" v:prompt="" v:val="VT0(0):5"/>
+					<v:ud v:nameU="ForeignKey" v:prompt="" v:val="VT0(0):5"/>
+				</v:userDefs>
+				<v:textBlock v:margins="rect(0,0,0,0)"/>
+				<v:textRect cx="16.0531" cy="886.828" width="16.13" height="12.0036"/>
 			</g>
 		</g>
 	</g>

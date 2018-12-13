@@ -88,7 +88,7 @@ class ImageLoader extends React.PureComponent {
     return pug`
     if(this.props.page == 'popup-create-post')
       input#input-img.input-type-file(type='file', onChange=this.onImageChange)
-      label(for='input-img')
+      label#upload-file(for='input-img')
         .btn-choose
           i.ion-images
           span Upload file
