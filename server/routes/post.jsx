@@ -3,10 +3,10 @@ var router = express.Router();
 var posts = require('../models/Post.jsx');
 var comments = require('../models/Comment.jsx');
 
-/* GET ALL POST */
+/* GET ALL POST OF AN  APARTMENT*/
 router.get('/get-all', function(req, res) {
-  posts.find(function (err, posts) {
-    if (err) res.json(err);
+  posts.find({$and: [{apartment: req.query.apartment}, {type: req.query.type}]}, function (err, posts) {
+    if (err) console.log(err);
     res.json(posts);
   });
 });
@@ -21,7 +21,7 @@ router.get('get-post', function(req, res) {
 
 /* GET ALL POST OF AN USER BY ID */
 router.get('/get-post-user', function(req, res) {
-  posts.find({author: req.query.id}, function (err, posts) {
+  posts.find({$and: [{author: req.query.id}, {type: req.query.type}]}, function (err, posts) {
     if (err) res.json(err);
     res.json(posts);
   });
@@ -41,7 +41,8 @@ router.post('/insert', function(req, res) {
   post.linkImg = req.body.linkImg ? req.body.linkImg : ""
   post.linkVideo = req.body.linkVideo ? req.body.linkVideo : ""
   post.type = req.body.type
-  post.cost = 0
+  post.date = req.body.date
+  post.cost = req.body.cost
   post.save(function (err) {
     if (err)
       res.json(err);

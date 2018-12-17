@@ -18,7 +18,6 @@ class AddUser extends React.PureComponent {
       modalIsOpen: false,
       id: this.props.match.params.id
     }
-    this.getLink = this.getLink.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.onClick = this.onClick.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
@@ -26,10 +25,6 @@ class AddUser extends React.PureComponent {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.sendMail = this.sendMail.bind(this);
-  }
-
-  getLink(link) {
-    return "/@" + this.state.id + "?" + link
   }
 
   openModal() {
@@ -46,9 +41,10 @@ class AddUser extends React.PureComponent {
       messageFromServer: ''
     });
   }
-  onClick(e) {
-    this.insertNewUser(this);
+  async onClick(e) {
+    await this.insertNewUser(this);
     // this.sendMail(this);
+    await this.props.reloadMemberList();
   }
   async insertNewUser(e) {
     try {
@@ -127,7 +123,7 @@ class AddUser extends React.PureComponent {
           if(this.state.modalIsOpen)
             .overlay
               .Modal()
-                Link(to=this.getLink("members") style={ textDecoration: 'none' })
+                Link(to="?members" style={ textDecoration: 'none' })
                   Button.close-btn(onClick=this.closeModal)
                     span(className="closebtn glyphicon glyphicon-remove")
                 fieldset#form
@@ -154,7 +150,7 @@ class AddUser extends React.PureComponent {
           .Modal(onRequestClose=this.closeModal)
             div(className='button-center')
               h3 #{this.state.messageFromServer}
-              Link(to={ pathname: this.getLink("members"), search: '' }, style={ textDecoration: 'none' })
+              Link(to="?members", style={ textDecoration: 'none' })
                 Button(onClick=this.closeModal) Close the Dialog
       `;
     }

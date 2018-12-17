@@ -15,6 +15,7 @@ class ResidentList extends PureComponent {
 		}
     this.getUserFromSession = this.getUserFromSession.bind(this);
     this.getMemberList = this.getMemberList.bind(this);
+    this.reloadMemberList = this.reloadMemberList.bind(this);
   }
   
 	async componentDidMount() {
@@ -45,13 +46,17 @@ class ResidentList extends PureComponent {
     })
   }
 
+  reloadMemberList() {
+    this.getMemberList(this)
+  }
+
   render() {
 		return pug`
 			#page-contents
 				.row
 					.col-md-3
 						if(this.state.user.isAdmin)
-							AddUser
+							AddUser(reloadMemberList = this.reloadMemberList)
 					.col-md-9
 						.friend-list
 							Friends(friends=this.state.friends)

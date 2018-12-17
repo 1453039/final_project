@@ -30,7 +30,6 @@ class LoginForm extends React.Component {
       e.preventDefault()
       var seft = this
       let listUsers = []
-      let listApart = []
       await this.getListUser().then(async (response) => {
         listUsers = response.data
         for (var id in listUsers) {
@@ -38,11 +37,8 @@ class LoginForm extends React.Component {
             let data = res
             data.isAdmin = seft.isAdmin(listUsers, res)
             data.id_user = listUsers[id]._id
-            let tamole = []
-            tamole.push(data)
-            listApart = listApart.concat(tamole)
             seft.setState({
-              listApart,
+              listApart: [...seft.state.listApart, data],
               isClick: true,
             })
           });

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import '../../../public/styles/Message.scss';
 import axios from 'axios';
+import _ from 'lodash';
 
 class MessageBarLeft extends PureComponent {
   constructor(props) {
@@ -18,11 +19,32 @@ class MessageBarLeft extends PureComponent {
     this.getUserList = this.getUserList.bind(this)
     this.getUserChatList = this.getUserChatList.bind(this)
   }
+
   async componentDidMount() {
     await this.getUserFromSession(this)
     await this.getUserIdList()
     await this.getUserList(this)
     await this.getUserChatList(this)
+  }
+
+  async componentWillReceiveProps(nextProps) {
+    await this.setState({ toUser: nextProps.history.location.state.toUser });
+    if (!_.isEmpty(this.state.toUser)) {
+      let id = this.state.toUser._id
+      let index = await _.findIndex(this.state.userChatList, function (chat) {
+        return chat._id === id
+      })
+      if (index == -1) {
+        var tmp = {};
+        tmp._id = this.state.toUser._id
+        tmp.name = this.state.toUser.name
+        tmp.avatar = this.state.toUser.avatar
+        tmp.lastMessage = ''
+        tmp.time = ''
+        this.setState({ userChatList: [...this.state.userChatList, tmp] });
+        this.setState({ userChatList: [...this.state.userChatList.reverse()] });
+      }
+    }
   }
 
   async getUserFromSession(e) {
@@ -48,25 +70,19 @@ class MessageBarLeft extends PureComponent {
   }
 
   async getUserList(e) {
-    var userList = []
-    var tmpArr = []
     for (var i in e.state.userIdList)
       await axios.get("/user/get-user", {
         params: {
           id: e.state.userIdList[i]
         }
       }).then((response) => {
-        tmpArr.push(response.data)
+        e.setState({ userList: [...e.state.userList, response.data] });
       }).catch(err => {
         console.log("err", err)
       })
-    userList = userList.concat(tmpArr)
-    e.setState({ userList });
   }
 
   async getUserChatList(e) {
-    var userChatList = []
-    var tmpArr = []
     for (var i in e.state.userList)
       await axios.get("/chat/get-last-message", {
         params: {
@@ -80,29 +96,37 @@ class MessageBarLeft extends PureComponent {
         tmp.avatar = e.state.userList[i].avatar
         tmp.lastMessage = response.data.lastMessage
         tmp.time = response.data.time
-        tmpArr.push(tmp);
+        e.setState({ userChatList: [...e.state.userChatList, tmp] });
+        window.socket.on('updateMessage', (msg) => {
+          let index = _.findIndex(e.state.userChatList, function (chat) {
+            return chat._id === e.state.toUser._id
+          })
+          e.state.userChatList[index].lastMessage = msg.detail
+          e.state.userChatList[index].time = msg.time
+          e.setState({ userChatList: [...e.state.userChatList] });
+        })
       })
-    userChatList = userChatList.concat(tmpArr);
-    e.setState({ userChatList });
   }
 
   handlePostTime(time) {
-    let now = new Date()
-    let postTime = new Date(time)
-    var timeDiff = Math.abs(now.getTime() - postTime.getTime())
-    if (timeDiff / (1000 * 3600 * 24) < 1)
-      if (timeDiff / (1000 * 3600) < 1)
-        if (timeDiff / (1000 * 60) < 1)
-          return ('Just now')
-        else return (Math.floor(timeDiff / (1000 * 60)) + ' minutes ago')
-      else
-        return (Math.floor(timeDiff / (1000 * 3600)) + ' hours ago')
-    else {
-      let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-      let day = postTime.getDate()
-      let month = postTime.getMonth()
-      return (monthNames[month] + ' ' + day)
+    if (time) {
+      let now = new Date()
+      let postTime = new Date(time)
+      var timeDiff = Math.abs(now.getTime() - postTime.getTime())
+      if (timeDiff / (1000 * 3600 * 24) < 1)
+        if (timeDiff / (1000 * 3600) < 1)
+          if (timeDiff / (1000 * 60) < 1)
+            return ('Just now')
+          else return (Math.floor(timeDiff / (1000 * 60)) + ' minutes ago')
+        else
+          return (Math.floor(timeDiff / (1000 * 3600)) + ' hours ago')
+      else {
+        let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let day = postTime.getDate()
+        let month = postTime.getMonth()
+        return (monthNames[month] + ' ' + day)
+      }
     }
   }
 

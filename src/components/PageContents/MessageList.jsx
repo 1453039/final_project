@@ -3,7 +3,17 @@ import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import _ from 'lodash';
 import '../../../public/styles/Message.scss';
+import Emoji from './Emoji.jsx';
+import JSEMOJI from 'emoji-js';
 
+//emoji set up
+let jsemoji = new JSEMOJI();
+// set the style to emojione (default - apple)
+jsemoji.img_set = 'emojione';
+// set the storage location for all emojis
+jsemoji.img_sets.emojione.path = 'https://cdn.jsdelivr.net/emojione/assets/3.0/png/32/';
+// some more settings...
+jsemoji.replace_mode = 'unified';
 
 class MessageList extends PureComponent {
   constructor(props) {
@@ -12,12 +22,15 @@ class MessageList extends PureComponent {
       fromUser: [],
       toUser: this.props.history.location.state ? this.props.history.location.state.toUser : [],
       messages: [],
-      message: ''
+      message: '',
+      emojiShown: false
     }
     this.getUserFromSession = this.getUserFromSession.bind(this)
     this.getMessages = this.getMessages.bind(this)
     this.onChangeMessage = this.onChangeMessage.bind(this)
     this.handleSendMessage = this.handleSendMessage.bind(this)
+    this.handleEmojiClick = this.handleEmojiClick.bind(this)
+    this.toogleEmojiState = this.toogleEmojiState.bind(this)
   }
 
   async componentDidMount() {
@@ -65,6 +78,7 @@ class MessageList extends PureComponent {
   }
 
   handleSendMessage(e) {
+    e.preventDefault()
     let messageInfo = {};
     messageInfo.from = this.state.fromUser._id;
     messageInfo.to = this.state.toUser._id;
@@ -97,6 +111,21 @@ class MessageList extends PureComponent {
     }
   }
 
+  //displays emoji inside the input window
+  handleEmojiClick = (n, e) => {
+    let emoji = jsemoji.replace_colons(`:${e.name}:`);
+    this.setState({
+      message: this.state.message + emoji,
+      emojiShown: !this.state.emojiShown
+    });
+  }
+
+  toogleEmojiState = () => {
+    this.setState({
+      emojiShown: !this.state.emojiShown
+    });
+  }
+
   render() {
     if (!_.isEmpty(this.state.toUser))
       return pug`
@@ -125,8 +154,9 @@ class MessageList extends PureComponent {
                                 small.text-muted #{this.handlePostTime(message.time)}
                               p #{message.detail}
               .send-message
-                .input-group
+                form.input-group(onSubmit=this.handleSendMessage)
                   input.form-control(type="text", placeholder="Type your message", value=this.state.message, onChange=this.onChangeMessage)
+                  Emoji(handleEmojiClick = this.handleEmojiClick, toogleEmojiState = this.toogleEmojiState, emojiShown= this.state.emojiShown)
                   span.input-group-btn
                     button.btn.btn-primary(type="button", onClick=this.handleSendMessage) Send
       `;
@@ -139,7 +169,7 @@ class MessageList extends PureComponent {
                   .chat-body
                 .send-message
                   .input-group
-                    input.form-control(type="text", placeholder="Type your message")
+                    input.form-control(type="text", placeholder="Type your message", disabled)
                     span.input-group-btn
                       button.btn.btn-primary(type="button", disabled) Send
       `;

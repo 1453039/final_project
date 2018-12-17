@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import axios from 'axios';
 import CreatePopup from './CreatePopup.jsx'
@@ -13,6 +13,8 @@ class PostCreateBox extends React.PureComponent {
       linkImg: '',
       linkVideo: '',
       type: '',
+      date: '',
+      cost: 0,
       showPopup: false
     };
     this.getUserFromSession = this.getUserFromSession.bind(this)
@@ -46,7 +48,9 @@ class PostCreateBox extends React.PureComponent {
       description: e.state.description,
       linkImg: e.state.linkImg,
       linkVideo: e.state.linkVideo,
-      type: e.state.type ? e.state.type : "Post"
+      type: e.state.type ? e.state.type : "Post",
+      date: e.state.date,
+      cost: e.state.cost
     }).then((response) => {
       alert(response.data)
     }).catch(err => {
@@ -58,21 +62,25 @@ class PostCreateBox extends React.PureComponent {
     this.createPost(this);
     this.props.reloadPostList();
     this.setState({
-      description: ''
+      description: '',
+      type: ''
     })
   }
 
-  async handlePopupSubmit(description, linkImg) {
-    this.setState({
+  async handlePopupSubmit(description, linkImg, date, cost) {
+    await this.setState({
       description: description,
-      linkImg: linkImg
+      linkImg: linkImg,
+      date: date,
+      cost: cost
     })
     await this.createPost(this);
     await this.props.reloadPostList();
     this.setState({
       description: '',
-      linkImg: ''
-    })  }
+      type: ''
+    })
+  }
 
   handleTextAreaChange(e) {
     this.setState({

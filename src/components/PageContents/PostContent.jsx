@@ -78,27 +78,22 @@ class PostContent extends PureComponent {
       }
     }).then(async response1 => {
       if (!_.isEmpty(response1.data)) {
-        let comments = []
-        let tmpArr = []
         for (var i in response1.data)
           await axios.get("/user/get-user", {
             params: {
               id: response1.data[i].author
             }
           }).then(response => {
-            console.log("i", i)
             let comment = {}
             comment._id = response1.data[i]._id
             comment.name = response.data.name
             comment.avatar = response.data.avatar
             comment.description = response1.data[i].description
             comment.time = response1.data[i].time
-            tmpArr.push(comment);
+            e.setState({ comments: [...e.state.comments, comment] });
           }).catch(err => {
             console.log("err", err)
           })
-        comments = comments.concat(tmpArr);
-        e.setState({ comments });
       }
     }).catch(err => {
       console.log("err", err)

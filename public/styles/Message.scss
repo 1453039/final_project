@@ -60,7 +60,7 @@
                 font-size: 14px;
               }
             }
-          }    
+          }
         }
       }
     }
@@ -86,14 +86,14 @@
           border-radius: 50%;
         }
         .chat-item {
-          background: rgba(141,198,63, .1);
+          background: rgba(141, 198, 63, .1);
           margin-left: 50px;
           padding: 5px 10px;
           position: relative;
           border-radius: 10px;
           &:before {
             border-bottom: 10px solid transparent;
-            border-right: 8px solid rgba(141,198,63, .1);
+            border-right: 8px solid rgba(141, 198, 63, .1);
             border-top: 10px solid transparent;
             content: "";
             height: 0;
@@ -123,14 +123,14 @@
         list-style: none;
         margin-bottom: 20px;
         .chat-item {
-          background: rgba(39,170,225, .1);
+          background: rgba(39, 170, 225, .1);
           margin-right: 50px;
           padding: 5px 10px;
           position: relative;
           border-radius: 10px;
           &:before {
             border-bottom: 10px solid transparent;
-            border-right: 8px solid rgba(141,198,63, .1);
+            border-right: 8px solid rgba(141, 198, 63, .1);
             border-top: 10px solid transparent;
             content: "";
             height: 0;
@@ -160,11 +160,15 @@
   }
   .send-message {
     margin: 30px 0;
-    .form-control {
-      border: 1px solid #ccc;
-    }
-    .btn.btn-primary {
-      border-radius: 0 5px 5px 0 !important;
+    .input-group {
+      position: relative;
+      .form-control {
+        border: 1px solid #ccc;
+        padding-right: 30px;
+      }
+      .btn.btn-primary {
+        border-radius: 0 5px 5px 0 !important;
+      }
     }
   }
 }

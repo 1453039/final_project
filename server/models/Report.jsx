@@ -7,7 +7,7 @@ const ReportSchema = new Schema({
   apartment: {type: Schema.Types.ObjectId, ref: apartments},
 	author: {type: Schema.Types.ObjectId, ref: users},
   detail: String,
-	date: String
+	date: Date
 });
 
 module.exports = mongoose.model('Report', ReportSchema);

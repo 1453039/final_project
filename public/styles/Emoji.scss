@@ -1,0 +1,32 @@
+#show-emoji-no {
+  position: absolute;
+  top: 3px;
+  right: 83px;
+  font-size: 25px;
+  width: 30px;
+  z-index: 1000;
+}
+
+#show-emoji-no:hover {
+  font-size: 28px;
+  transition-duration: 10ms;
+}
+
+#show-emoji-yes {
+  position: absolute;
+  top: 3px;
+  right: 83px;
+  font-size: 20px;
+  z-index: 1000;
+}
+
+.emoji-table {
+  position: absolute;
+  bottom: 30px;
+  right: 83px;
+}
+
+$padding_emoji: 20px;
+$size_emoji: 25px;
+@import './node_modules/emoji-picker-react/dist/universal/style.scss';
+

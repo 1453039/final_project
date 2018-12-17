@@ -13,7 +13,8 @@ const PostSchema = new Schema({
 	dislike: [{type: Schema.Types.ObjectId, ref: users}],
 	linkImg: String,
 	linkVideo: String,
-	type: {type: String, enum: ['Post', 'Event']},
+  type: {type: String, enum: ['Post', 'Event']},
+  date: Date,
   cost: Number
 });
 

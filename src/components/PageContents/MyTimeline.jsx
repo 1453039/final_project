@@ -28,7 +28,8 @@ class MyTimeline extends PureComponent {
   async getUserPost(e) {
     await axios.get("/post/get-post-user", {
       params: {
-        id: e.state.user._id
+        id: e.state.user._id,
+        type: 'Post'
       }
     }).then(async (response) => {
       await e.setState({
