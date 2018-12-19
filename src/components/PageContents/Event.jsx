@@ -13,10 +13,7 @@ constructor(props) {
       event: this.props.event,
       isAttending: false
     }
-    this.getUserFromSession = this.getUserFromSession.bind(this)
-    this.getPostUser = this.getPostUser.bind(this)
     this.handleAttendent = this.handleAttendent.bind(this);
-    this.updateReaction = this.updateReaction.bind(this);
   }
 
   async componentDidMount() {
@@ -54,6 +51,7 @@ constructor(props) {
     await this.updateReaction(this)
     await this.getPostUser(this)
   }
+  
   async getPostUser(e) {
     await axios.get("/user/get-user", {
       params: {
@@ -112,7 +110,7 @@ constructor(props) {
             .event-text
               h3.desc.text-white #{this.state.event.description}
               if (this.state.event.cost > 0)
-                h4.cost.grey Price: #{this.state.event.cost} VND
+                h4.cost.grey Price: #{this.state.event.cost.toLocaleString()} VND
               else
                 h4.cost.grey Price: FREE
               h4.date.grey When: #{this.handleEventTime(this.state.event.date)}

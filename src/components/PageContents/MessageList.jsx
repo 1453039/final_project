@@ -22,7 +22,7 @@ class MessageList extends PureComponent {
       fromUser: [],
       toUser: this.props.history.location.state ? this.props.history.location.state.toUser : [],
       messages: [],
-      message: '',
+      message: this.props.history.location.state && this.props.history.location.state.itemName ? '[' + this.props.history.location.state.itemName + '] ' : '',
       emojiShown: false
     }
     this.getUserFromSession = this.getUserFromSession.bind(this)

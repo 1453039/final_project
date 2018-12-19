@@ -24,9 +24,10 @@
   }
   .selling-text {
     overflow: hidden;
-    h4.amount {
+    h4.name {
       float: left;
       margin: 25px 0 0;
+      font-weight: bold;
     }
     h4.price {
       float: right;

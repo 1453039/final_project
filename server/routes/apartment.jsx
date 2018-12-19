@@ -21,13 +21,4 @@ router.get('/get-list-apartment', function (req, res){
   });
 });
 
-router.get('/get-apartment', function(req, res){
-  var id = req.query.id_user;
-  users.findById(id, function(err, user){
-    if (err)
-      res.send(err);
-    res.json(user.apartment);
-  });
-});
-
 module.exports = router;

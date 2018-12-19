@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 import apartments from './Apartment';
 
-const FlatSchema = new Schema({
+const BillSchema = new Schema({
 	apartment: {type: Schema.Types.ObjectId, ref: apartments},
 	flat: String,
 	total: Float,
@@ -10,4 +10,4 @@ const FlatSchema = new Schema({
   isPaid: {type: Boolean, default: false}
 });
 
-module.exports = mongoose.model('flats', FlatSchema);
+module.exports = mongoose.model('bills', BillSchema);

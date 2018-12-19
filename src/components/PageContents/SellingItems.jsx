@@ -1,33 +1,56 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import '../../../public/styles/Trading.scss'
+import axios from 'axios'
 
 class SellingItems extends React.Component {
 constructor(props) {
     super(props);
+    this.state = {
+      postUser: [],
+      item: this.props.item
+    }
   }
+
+  componentDidMount() {
+    this.getPostUser(this)
+  }
+
+  async getPostUser(e) {
+    await axios.get("/user/get-user", {
+      params: {
+        id: e.state.item.seller
+      }
+    }).then(async (response) => {
+      await e.setState({
+        postUser: response.data
+      })
+    }).catch(err => {
+      console.log("err", err)
+    })
+  }
+
   render() {
-    const {sellingItem} = this.props
     return pug`
       .post-content
         .post-container
-          img.profile-photo-md.pull-left(src=sellingItem.sellerImg, alt="user")
+          img.profile-photo-md.pull-left(src=this.state.postUser.avatar, alt="user")
           .post-detail
             .seller-info
               h5#seller-name
-                Link.profile-link(to="/") #{sellingItem.seller}
-                if(sellingItem.isAdmin)
+                Link.profile-link(to="/") #{this.state.postUser.name}
+                if(this.state.item.isAdmin)
                   i.icon.ion-android-checkmark-circle
-            Link.reaction(to="?messages")
+            Link.reaction(to={search: "?messages", state: {toUser: this.state.postUser, itemName: this.state.item.name}})
               .text-green.btn.chat-online
                 span Chat Online
-            p.desc.grey #{sellingItem.description}
-            img.img-responsive.sellingItem-image(src=sellingItem.linkImg, alt="sellingItem-image")
+            p.desc.grey #{this.state.item.description}
+            img.img-responsive.sellingItem-image(src=this.state.item.linkImg, alt="sellingItem-image")
             .selling-text
-              h4.price #{sellingItem.price} VND
-              h4.amount.grey Amount: #{sellingItem.amount}
+              h4.price #{this.state.item.price.toLocaleString()} VND
+              h4.name #{this.state.item.name}
     `;
   }
 }
 
-export default SellingItems;
+export default withRouter(SellingItems);

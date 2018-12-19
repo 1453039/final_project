@@ -6,6 +6,7 @@ import users from './User'
 const SellItemSchema = new Schema({
 	apartment: {type: Schema.Types.ObjectId, ref: apartments},
   seller: {type: Schema.Types.ObjectId, ref: users},
+  isAdmin: Boolean,
   name: String,
 	time: {type: Date, default: Date.now},
 	description: String,

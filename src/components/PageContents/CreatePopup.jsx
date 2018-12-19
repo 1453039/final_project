@@ -10,6 +10,9 @@ class CreatePopup extends PureComponent {
       day: '',
       time: '',
       cost: 0,
+      itemName: '',
+      price: 0,
+      amount: 0,
       page: 'popup-create-post',
       type: this.props.type
     }
@@ -38,18 +41,26 @@ class CreatePopup extends PureComponent {
       this.setState({ time: e.target.value })
     if (e.target.name == "cost")
       this.setState({ cost: parseInt(e.target.value) })
+    if (e.target.name == "item-name")
+      this.setState({ itemName: e.target.value })
+    if (e.target.name == "amount")
+      this.setState({ amount: parseInt(e.target.value) })
+    if (e.target.name == "price")
+      this.setState({ price: parseInt(e.target.value) })
   }
 
   onClickPublish() {
-    this.props.handlePopupSubmit(this.state.description, this.state.linkImg, new Date(this.state.day + ' ' + this.state.time), this.state.cost)
+    this.props.handlePopupSubmit(this.state.description, this.state.linkImg, new Date(this.state.day + ' ' + this.state.time), this.state.cost, this.state.itemName, this.state.price, this.state.amount);
     this.props.closePopup()
   }
 
   render() {
-    const disabled = (this.state.type=='Event') ? (!this.state.description || !this.state.linkImg || !this.state.day || !this.state.time) : (!this.state.description || !this.state.linkImg)
+    const disabled = (this.state.type=='Event') ? (!this.state.description || !this.state.linkImg || !this.state.day || !this.state.time) 
+    : ((this.state.type=='Trading') ? (!this.state.description || !this.state.linkImg || !this.state.itemName) 
+    : (!this.state.description || !this.state.linkImg))
     return pug`
       .popup
-        .popup-inner 
+        form.popup-inner
           button(onClick=this.props.closePopup)#close-popup.btn.btn-default.close-btn
             span.closebtn.glyphicon.glyphicon-remove
           .form-group
@@ -65,18 +76,18 @@ class CreatePopup extends PureComponent {
               input#celebration-time.input-event-info.form-control(type='time', name='time', value=this.state.time, onChange=this.handleInputChange)
             .form-group
               label(for='cost') Cost:
-              input#cost.input-event-info.form-control(type='number', name='cost', min='0', , value=this.state.cost, onChange=this.handleInputChange)
+              input#cost.input-event-info.form-control(type='number', name='cost', min='0', value=this.state.cost, onChange=this.handleInputChange, required)
           if(this.state.type=='Trading')
             .form-group
               label(for='item-name') Item:
-              input#item-name.input-event-info.form-control(type='text', placeholder='Item Name')
+              input#item-name.input-event-info.form-control(type='text', name='item-name', placeholder='Item Name', value=this.state.itemName, onChange=this.handleInputChange)
             .form-group
-              label(for='cost') Cost:
-              input#cost.input-event-info.form-control(type='number', min='0', placeholder='Cost')
+              label(for='price') Price:
+              input#price.input-event-info.form-control(type='number', name='price', min='0', placeholder='Price', value=this.state.price, onChange=this.handleInputChange, required)
             .form-group
               label(for='amount') Amount:
-              input#amount.input-event-info.form-control(type='number', min='0', placeholder='Amount')
-           button#publish.btn.btn-primary.pull-right(onClick=this.onClickPublish, disabled=disabled) Publish
+              input#amount.input-event-info.form-control(type='number', min='0', name='amount', placeholder='Amount', value=this.state.amount, onChange=this.handleInputChange, required)
+          button#publish.btn.btn-primary.pull-right(onClick=this.onClickPublish, disabled=disabled) Publish
     `;
   }
 }

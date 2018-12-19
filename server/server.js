@@ -19,6 +19,7 @@ var post = require('./routes/post')
 var apartment = require('./routes/apartment');
 var chat = require('./routes/chat')
 var report = require('./routes/report')
+var trade = require('./routes/trade')
 
 /** Variables */
 let onlineUsers = [];
@@ -52,6 +53,7 @@ app.use('/post', post)
 app.use('/apartment', apartment);
 app.use('/chat', chat);
 app.use('/report', report);
+app.use('/trade', trade);
 
 /** SOCKET!!! */
 app.get('/connected/:socketId', function (req, res, next) {

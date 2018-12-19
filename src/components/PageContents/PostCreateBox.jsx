@@ -15,12 +15,13 @@ class PostCreateBox extends React.PureComponent {
       type: '',
       date: '',
       cost: 0,
+      name: '',
+      price: 0,
+      amount: 0,
       showPopup: false
     };
-    this.getUserFromSession = this.getUserFromSession.bind(this)
     this.togglePopup = this.togglePopup.bind(this)
     this.handleTextAreaChange = this.handleTextAreaChange.bind(this)
-    this.createPost = this.createPost.bind(this)
     this.handleTypeOfPost = this.handleTypeOfPost.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handlePopupSubmit = this.handlePopupSubmit.bind(this)
@@ -58,6 +59,24 @@ class PostCreateBox extends React.PureComponent {
     })
   }
 
+  async createItem(e) {
+    await axios.post("/trade/insert", {
+      apartment: e.state.user.apartment,
+      seller: e.state.user._id,
+      isAdmin: e.state.user.isAdmin,
+      name: e.state.name,
+      description: e.state.description,
+      linkImg: e.state.linkImg,
+      linkVideo: e.state.linkVideo,
+      price: e.state.price,
+      amount: e.state.amount
+    }).then(response => {
+      console.log(response.data);
+    }).catch(err => {
+      console.log("err", err);
+    })
+  }
+
   handleSubmit() {
     this.createPost(this);
     this.props.reloadPostList();
@@ -67,14 +86,19 @@ class PostCreateBox extends React.PureComponent {
     })
   }
 
-  async handlePopupSubmit(description, linkImg, date, cost) {
+  async handlePopupSubmit(description, linkImg, date, cost, name, price, amount) {
     await this.setState({
       description: description,
       linkImg: linkImg,
       date: date,
-      cost: cost
+      cost: cost,
+      name: name,
+      price: price,
+      amount: amount
     })
-    await this.createPost(this);
+    if (this.state.type == "Trading")
+      await this.createItem(this)
+    else await this.createPost(this);
     await this.props.reloadPostList();
     this.setState({
       description: '',
@@ -120,6 +144,7 @@ class PostCreateBox extends React.PureComponent {
       showPopup: !this.state.showPopup
     });
   }
+
   render() {
     return pug`
       .create-post

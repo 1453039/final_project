@@ -2,6 +2,17 @@ import React, { PureComponent } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import axios from 'axios'
 import _ from 'lodash'
+import Emoji from './Emoji.jsx';
+import JSEMOJI from 'emoji-js';
+
+//emoji set up
+let jsemoji = new JSEMOJI();
+// set the style to emojione (default - apple)
+jsemoji.img_set = 'emojione';
+// set the storage location for all emojis
+jsemoji.img_sets.emojione.path = 'https://cdn.jsdelivr.net/emojione/assets/3.0/png/32/';
+// some more settings...
+jsemoji.replace_mode = 'unified';
 
 class PostContent extends PureComponent {
   constructor(props) {
@@ -14,16 +25,15 @@ class PostContent extends PureComponent {
       comments: [],
       comment: '',
       like: '',
-      dislike: ''
+      dislike: '',
+      emojiShown: false
     }
-    this.getUserFromSession = this.getUserFromSession.bind(this)
-    this.getPostUser = this.getPostUser.bind(this)
     this.onClickReaction = this.onClickReaction.bind(this)
     this.initializeState = this.initializeState.bind(this)
-    this.getComments = this.getComments.bind(this)
-    this.createComment = this.createComment.bind(this)
     this.handleSendComment = this.handleSendComment.bind(this)
     this.OnChangeComment = this.OnChangeComment.bind(this)
+    this.handleEmojiClick = this.handleEmojiClick.bind(this)
+    this.toogleEmojiState = this.toogleEmojiState.bind(this)
   }
 
   async componentDidMount() {
@@ -192,6 +202,21 @@ class PostContent extends PureComponent {
     this.setState({ comment: '' });
   }
 
+  //displays emoji inside the input window
+  handleEmojiClick = (n, e) => {
+    let emoji = jsemoji.replace_colons(`:${e.name}:`);
+    this.setState({
+      comment: this.state.comment + emoji,
+      emojiShown: !this.state.emojiShown
+    });
+  }
+
+  toogleEmojiState = () => {
+    this.setState({
+      emojiShown: !this.state.emojiShown
+    });
+  }
+
   render() {
     return pug`
       .post-content
@@ -233,6 +258,7 @@ class PostContent extends PureComponent {
             .post-comment
               .input-group
                 input.form-control(type="text", placeholder="Post a comment", value=this.state.comment, onChange=this.OnChangeComment)
+                Emoji(handleEmojiClick = this.handleEmojiClick, toogleEmojiState = this.toogleEmojiState, emojiShown= this.state.emojiShown)
                 span.input-group-btn
                   button.btn.btn-primary(type="button", onClick=this.handleSendComment) Send
     `;

@@ -13,7 +13,7 @@ export default class Emoji extends Component {
         span#show-emoji-yes(onClick=this.props.toogleEmojiState)
           i.icon.ion-happy-outline
         div.emoji-table
-          EmojiPicker(onEmojiClick=this.props.handleEmojiClick)
+          EmojiPicker(onEmojiClick=this.props.handleEmojiClick, disableDiversityPicker)
       `;
     } else {
       return pug `
