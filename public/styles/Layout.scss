@@ -8,4 +8,8 @@ body{
  	line-height: 26px;
 	color: #6d6e71;
 	font-size: 13px;
+	#root {
+		position: relative;
+		min-height: 100vh;
+	}
 }

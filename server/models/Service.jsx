@@ -6,7 +6,7 @@ const ServiceSchema = new Schema({
 	apartment: {type: Schema.Types.ObjectId, ref: apartments},
 	name: String,
   fee: {type: Number, default: 0},
-  type: String
+  unit: String
 });
 
 module.exports = mongoose.model('services', ServiceSchema);
