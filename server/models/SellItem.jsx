@@ -12,8 +12,7 @@ const SellItemSchema = new Schema({
 	description: String,
 	linkImg: String,
 	linkVideo: String,
-  price: {type: Number, default: 0},
-  amount: {type: Number, default: 0}
+  price: {type: Number, default: 0}
 });
 
 module.exports = mongoose.model('sell_items', SellItemSchema);

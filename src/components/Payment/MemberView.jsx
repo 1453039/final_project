@@ -29,7 +29,7 @@ class MemberView extends React.Component {
               tr(key=item.id)
                 td.id #{item.id + 1}
                 td.service-name #{item.name}
-                td.fee #{item.fee} 
+                td.fee #{item.fee}
                 td.unit #{item.unit}
                 td.amount #{item.amount}
         h4.grey#total Total: 

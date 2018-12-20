@@ -1,9 +1,15 @@
-var express = require('express');
-var router = express.Router();
-var users = require('../models/User');
-var nodemailer = require('nodemailer');
-var _ = require('lodash');
+const express = require('express');
+const router = express.Router();
+const nodemailer = require('nodemailer');
+const _ = require('lodash');
 const creds = require('../config/config');
+
+// Load input validation
+const validateRegisterInput = require("../validation/register");
+const validateLoginInput = require("../validation/login");
+
+// Load Model
+const users = require('../models/User');
 
 router.get('/', function (req, res) {
   res.render('index')
@@ -11,23 +17,52 @@ router.get('/', function (req, res) {
 
 router.route('/insert')
   .post(function (req, res) {
-    var user = new users();
-    user.email = req.body.email;
-    user.apartment = req.body.id;
-    user.password = "";
-    user.name = "User Name";
-    user.birthday = "";
-    user.sex = "";
-    user.avatar = req.body.avatar;
-    user.cover = req.body.cover;
-    user.flat = req.body.flat;
-    user.status = false;
-    user.isAdmin = req.body.isAdmin;
-    user.save(function (err) {
-      if (err)
-        res.send(err);
-      res.send('User successfully added!');
-    });
+    const { body } = req;
+    const { email, flat, isAdmin, id, avatar, cover } = body;
+    const { errors, isValid } = validateRegisterInput(body);
+    console.log('errors, isValid', errors, isValid); 
+    // Check validation
+    if (!isValid) {
+      return res.json(errors);
+    }
+    users.find({ email: email }, (err, user) => {
+      if (err) console.log("err", err);
+      if (!_.isEmpty(user)) {
+        errors.email = "Email already exists";
+        return res.json(errors);
+      } else {
+        var user = new users();
+        user.email = email.toLowerCase();
+        user.apartment = id;
+        user.password = "";
+        user.name = "User Name";
+        user.birthday = "";
+        user.sex = "";
+        user.avatar = avatar;
+        user.cover = cover;
+        user.flat = flat;
+        user.status = false;
+        user.isAdmin = isAdmin;
+        user.save(function (err) {
+          if (err)
+            console.log("err", err);
+          res.send({
+            success: true,
+            message: 'User successfully added!'
+          });
+        })
+      }
+    })
+  })
+
+router.route('/login')
+  .post(function (req, res) {
+    const { body } = req;
+    const { errors, isValid } = validateLoginInput(body);
+    // Check validation
+    if (!isValid) {
+      return res.json(errors);
+    }
   })
 
 router.route('/send')
@@ -60,7 +95,7 @@ router.route('/send')
       subject: "Welcome to AP Social", // Subject line
       text: text
     };
-    
+
     transporter.sendMail(mailOptions, (err, data) => {
       if (err) {
         res.json({
@@ -72,17 +107,16 @@ router.route('/send')
         })
       }
     })
-
   })
 
 router.route('/update_password')
   .post(function (req, res) {
     const id = req.body.id
-    users.findById(id, function(err, user){
-      if(err)
+    users.findById(id, function (err, user) {
+      if (err)
         res.send(err);
       const password = user.encryptPassword(req.body.password);
-      users.update({ _id: id }, {password: password}, function (err, result) {
+      users.update({ _id: id }, { password: password }, function (err, result) {
         if (err)
           res.send(err);
         res.send('User password successfully updated!');
@@ -95,7 +129,7 @@ router.route('/update-info')
     let name = req.body.name
     let birthday = req.body.birthday
     let sex = req.body.sex
-    users.updateOne({ _id: req.body.id }, {$set: {name: name, birthday: birthday, sex: sex}}, function (err, result) {
+    users.updateOne({ _id: req.body.id }, { $set: { name: name, birthday: birthday, sex: sex } }, function (err, result) {
       if (err)
         res.send(err);
       req.session.user.name = name
@@ -105,9 +139,9 @@ router.route('/update-info')
     });
   });
 
-router.put('/update-avatar', function(req, res) {
+router.put('/update-avatar', function (req, res) {
   let avatar = req.body.avatar
-  users.updateOne({ _id: req.body.id }, {$set: {avatar: avatar}}, function (err, result) {
+  users.updateOne({ _id: req.body.id }, { $set: { avatar: avatar } }, function (err, result) {
     if (err)
       res.send(err);
     req.session.user.avatar = avatar
@@ -115,9 +149,9 @@ router.put('/update-avatar', function(req, res) {
   });
 })
 
-router.put('/update-cover', function(req, res) {
+router.put('/update-cover', function (req, res) {
   let cover = req.body.cover
-  users.updateOne({ _id: req.body.id }, {$set: {cover: cover}}, function (err, result) {
+  users.updateOne({ _id: req.body.id }, { $set: { cover: cover } }, function (err, result) {
     if (err)
       res.send(err);
     req.session.user.cover = cover
@@ -174,5 +208,22 @@ router.post('/save_to_session', function (req, res) {
 router.get('/get_user_from_session', function (req, res) {
   res.json(req.session.user);
 });
+
+router.get('/logout', function (req, res) {
+  if (req.session) {
+    // delete session object
+    req.session.destroy(function (err) {
+      if (err)
+        console.log(err);
+      res.json("Log out successfully!");
+    })
+  }
+})
+
+router.get('/check-logged-in', function (req, res) {
+  if (req.session.user)
+    res.json(true);
+  else res.json(false);
+})
 
 module.exports = router;

@@ -2,10 +2,25 @@ import React, { Component } from 'react';
 import '../../../public/styles/Info.scss';
 import BasicInfoPage from '../../containers/BasicInfoPage';
 import { Link, withRouter } from 'react-router-dom';
+import axios from 'axios'
 
 class InfoMenu extends Component {
 	constructor (){
     super();
+    this.state = {
+      loggedIn: false
+    }
+    this.handleClickLogOut = this.handleClickLogOut.bind(this)
+  }
+
+  loggingOut(e) {
+    axios.get("/user/logout").then(response => {
+      console.log(response.data);
+    }).catch(err => { console.log('err', err)});
+  }
+
+  handleClickLogOut() {
+    this.loggingOut(this);
   }
 
   render() {
@@ -29,7 +44,7 @@ class InfoMenu extends Component {
             Link(to="?change-password") Change Password								
         li 
           i.icon.ion-ios-locked-outline
-          Link(to='/') Log Out
+          Link(to='/', onClick=this.handleClickLogOut) Log Out
 		`;
   }
 }

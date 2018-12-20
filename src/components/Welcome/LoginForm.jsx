@@ -11,7 +11,8 @@ class LoginForm extends React.Component {
       email: '',
       listUsers: [],
       isClick: false,
-      listApart: []
+      listApart: [],
+      errors: []
     };
     this.handleClickNext = this.handleClickNext.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -21,6 +22,7 @@ class LoginForm extends React.Component {
   }
   handleEmailChange(e) {
     this.setState({
+      errors: {},
       email: e.target.value
     });
   }
@@ -31,21 +33,27 @@ class LoginForm extends React.Component {
       var seft = this
       let listUsers = []
       await this.getListUser().then(async (response) => {
-        listUsers = response.data
-        for (var id in listUsers) {
-          await seft.getListApart(listUsers[id]).then(function (res) {
-            let data = res
-            data.isAdmin = seft.isAdmin(listUsers, res)
-            data.id_user = listUsers[id]._id
-            seft.setState({
-              listApart: [...seft.state.listApart, data],
-              isClick: true,
-            })
-          });
+        let message = response.data.message;
+        if (message == 'fail') {
+          seft.setState({ errors: response.data.value })
+        }
+        else {
+          listUsers = response.data.value
+          for (var id in listUsers) {
+            await seft.getListApart(listUsers[id]).then(function (res) {
+              let data = res
+              data.isAdmin = seft.isAdmin(listUsers, res)
+              data.id_user = listUsers[id]._id
+              seft.setState({
+                listApart: [...seft.state.listApart, data],
+                isClick: true,
+              })
+            });
+          }
         }
       });
     }
-    catch(error) {
+    catch (error) {
       console.log("error", error);
     }
   }
@@ -86,19 +94,22 @@ class LoginForm extends React.Component {
   render() {
     const { isClick, listApart, email } = this.state
     let disabled = email ? false : true
+    console.log(this.state.errors);
     return pug`
-			if !isClick 
-				.login-form.col-md-5.col-sm-5
-					#wrapper
-						h2.text-white Enter your email
-						form(onSubmit=this.handleClickNext)
-							fieldset.form-group
-								input.form-control#example-email(type="text", name="email", placeholder="name@examle.com", value = this.state.email, onChange=this.handleEmailChange)
-							button.btn-secondary(disabled=disabled)
-								span Next
-			else
-				ListApart(listApart=listApart)
-		`;
+      if !isClick 
+        .login-form.col-md-5.col-sm-5
+          #wrapper
+            h2.text-white Enter your email
+            form(onSubmit=this.handleClickNext)
+              fieldset.form-group
+                input.form-control#example-email(type="text", name="email", placeholder="name@examle.com", value = this.state.email, onChange=this.handleEmailChange)
+                if (this.state.errors)
+                  span.error #{this.state.errors.email}
+              button.btn-secondary(disabled=disabled)
+                span Next
+      else
+        ListApart(listApart=listApart)
+    `;
   }
 }
 

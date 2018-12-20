@@ -11,11 +11,11 @@ class AddBill extends React.Component {
       service: [
         {
           id: 0,
-          name: 'Điện'
+          name: '�i?n'
         },
         {
           id: 1,
-          name: 'Nước'
+          name: 'Nu?c'
         },
       ]
     }

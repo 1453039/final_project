@@ -40,7 +40,6 @@ router.post('/insert', function(req, res) {
   item.linkImg = req.body.linkImg ? req.body.linkImg : ""
   item.linkVideo = req.body.linkVideo ? req.body.linkVideo : ""
   item.price = req.body.price
-  item.amount = req.body.amount
   item.save(function (err) {
     if (err)
       res.json(err);

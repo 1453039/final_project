@@ -17,7 +17,6 @@ class PostCreateBox extends React.PureComponent {
       cost: 0,
       name: '',
       price: 0,
-      amount: 0,
       showPopup: false
     };
     this.togglePopup = this.togglePopup.bind(this)
@@ -68,8 +67,7 @@ class PostCreateBox extends React.PureComponent {
       description: e.state.description,
       linkImg: e.state.linkImg,
       linkVideo: e.state.linkVideo,
-      price: e.state.price,
-      amount: e.state.amount
+      price: e.state.price
     }).then(response => {
       console.log(response.data);
     }).catch(err => {
@@ -86,15 +84,14 @@ class PostCreateBox extends React.PureComponent {
     })
   }
 
-  async handlePopupSubmit(description, linkImg, date, cost, name, price, amount) {
+  async handlePopupSubmit(description, linkImg, date, cost, name, price) {
     await this.setState({
       description: description,
       linkImg: linkImg,
       date: date,
       cost: cost,
       name: name,
-      price: price,
-      amount: amount
+      price: price
     })
     if (this.state.type == "Trading")
       await this.createItem(this)

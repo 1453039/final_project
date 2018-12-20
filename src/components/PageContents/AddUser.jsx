@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import Modal from 'react-modal';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
@@ -16,7 +15,8 @@ class AddUser extends React.PureComponent {
       isAdmin: false,
       messageFromServer: '',
       modalIsOpen: false,
-      id: this.props.match.params.id
+      id: this.props.match.params.id,
+      errors: {}
     }
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.onClick = this.onClick.bind(this);
@@ -42,6 +42,7 @@ class AddUser extends React.PureComponent {
     });
   }
   async onClick(e) {
+    e.preventDefault();
     await this.insertNewUser(this);
     // this.sendMail(this);
     await this.props.reloadMemberList();
@@ -57,7 +58,8 @@ class AddUser extends React.PureComponent {
         cover: DEFAULT_COVER
       }).then(function (response) {
         e.setState({
-          messageFromServer: response.data
+          errors: response.data,
+          messageFromServer: response.message
         });
       })
     }
@@ -83,6 +85,7 @@ class AddUser extends React.PureComponent {
     }
   }
   handleTextChange(e) {
+    this.setState({errors: {}});
     if (e.target.name == "email") {
       this.setState({
         email: e.target.value
@@ -116,19 +119,22 @@ class AddUser extends React.PureComponent {
     }
   }
   render() {
-    if (this.state.messageFromServer == '') {
+    console.log("this.state.errors", this.state.errors, this.state.messageFromServer);
+    if (!this.state.messageFromServer) {
       return pug`
         div
-          Button(onClick=this.openModal)#add-member.btn.btn-primary Add member
+          button(onClick=this.openModal)#add-member.btn.btn-primary Add member
           if(this.state.modalIsOpen)
             .overlay
               .Modal()
                 Link(to="?members" style={ textDecoration: 'none' })
-                  Button.close-btn(onClick=this.closeModal)
+                  button.close-btn(onClick=this.closeModal)
                     span(className="closebtn glyphicon glyphicon-remove")
                 fieldset#form
                   label(for="email").full-screen Email:
-                    input(type="text", name="email", value=this.state.email, onChange=this.handleTextChange, required)#email.form-control.input-group-lg
+                    input(type="email", name="email", value=this.state.email, onChange=this.handleTextChange)#email.form-control.input-group-lg
+                  if (this.state.errors)
+                    span.error #{this.state.errors.email}
                   label(for="flat").full-screen Flat:
                     input(type="text", name="flat", value=this.state.flat, onChange=this.handleTextChange)#room.form-control.input-group-lg
                   .form-group.isAdmin
@@ -139,19 +145,19 @@ class AddUser extends React.PureComponent {
                     label#male.radio-inline.gender No
                       input(type='radio', name='admin2', value='false', checked=this.state.isAdmin === false, onChange=this.handleOptionChange).gender
                 div(className='button-center')
-                  Button(onClick=this.onClick, type='submit')#invite.btn.btn-primary Invite
+                  button(type='submit', onClick=this.onClick)#invite.btn.btn-primary Invite
       `;
     }
     else {
       return pug`
       div
-        Button(onClick=this.openModal)#add-member.btn.btn-primary Add member
+        button(onClick=this.openModal)#add-member.btn.btn-primary Add member
         .overlay
           .Modal(onRequestClose=this.closeModal)
             div(className='button-center')
               h3 #{this.state.messageFromServer}
               Link(to="?members", style={ textDecoration: 'none' })
-                Button(onClick=this.closeModal) Close the Dialog
+                button(onClick=this.closeModal) Close the Dialog
       `;
     }
   }

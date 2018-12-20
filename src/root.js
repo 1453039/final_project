@@ -25,6 +25,7 @@ class Root extends React.Component {
     let id = nextProps.match.params.id
     this.setState({ patch, id })
   }
+  
   render() {
     switch (this.state.patch) {
       case "?info":
