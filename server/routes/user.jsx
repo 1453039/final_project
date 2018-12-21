@@ -93,7 +93,8 @@ router.route('/send')
       from: creds.USER, // sender address
       to: req.body.email,
       subject: "Welcome to AP Social", // Subject line
-      text: text
+      text: text,
+      html: '<h1 style="text-align:center; font-weight: bold"> WELCOME TO APSOCIAL </h1>'
     };
 
     transporter.sendMail(mailOptions, (err, data) => {

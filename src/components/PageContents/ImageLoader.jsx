@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 
 class ImageLoader extends React.PureComponent {
   constructor(props) {
@@ -7,7 +8,8 @@ class ImageLoader extends React.PureComponent {
     this.state = {
       user: [],
       selectedFile: '',
-      isUpdated: false
+      isUpdated: false,
+      page: window.location.search
     }
     this.onImageChange = this.onImageChange.bind(this);
     this.getUserFromSession = this.getUserFromSession.bind(this);
@@ -26,13 +28,14 @@ class ImageLoader extends React.PureComponent {
   }
 
   componentDidUpdate() {
+    let page = this.state.page
     if (this.props.id == 'avt' && this.state.isUpdated == true) {
       this.updateAvatar(this)
     }
     if (this.props.id == 'cover' && this.state.isUpdated == true) {
       this.updateCover(this)
     }
-    if (this.props.page == 'popup-create-post' && this.state.isUpdated == true) {
+    if ((page == '?newfeeds' || page == '?events' || page == '?tradings' || page == '?timeline' || page =='?admin-noti' || page == '?member-noti') && this.state.isUpdated == true) {
       this.props.handleImgChange(this.state.selectedFile)
       this.setState({
         isUpdated: false
@@ -85,8 +88,9 @@ class ImageLoader extends React.PureComponent {
   }
 
   render() {
+    const page = this.state.page
     return pug`
-    if(this.props.page == 'popup-create-post')
+    if(page == '?newfeeds' || page == '?events' || page == '?tradings' || page == '?timeline' || page =='?admin-noti' || page == '?member-noti')
       input#input-img.input-type-file(type='file', onChange=this.onImageChange)
       label#upload-file(for='input-img')
         .btn-choose
@@ -107,4 +111,4 @@ class ImageLoader extends React.PureComponent {
   }
 }
 
-export default ImageLoader;
+export default withRouter(ImageLoader);

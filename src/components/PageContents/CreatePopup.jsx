@@ -58,7 +58,9 @@ class CreatePopup extends PureComponent {
   }
 
   render() {
-    const page = window.location.search;    const disabled = (this.state.type=='Event') ? (!this.state.description || !this.state.linkImg || !this.state.day || !this.state.time) 
+    const page = window.location.search; 
+    console.log(this.state)   
+    const disabled = (this.state.type=='Event') ? (!this.state.description || !this.state.linkImg || !this.state.day || !this.state.time) 
     : ((this.state.type=='Trading') ? (!this.state.description || !this.state.linkImg || !this.state.itemName) 
     : (!this.state.description || !this.state.linkImg))
     return pug`
