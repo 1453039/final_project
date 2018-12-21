@@ -102,9 +102,10 @@ class LoginForm extends React.Component {
             h2.text-white Enter your email
             form(onSubmit=this.handleClickNext)
               fieldset.form-group
-                input.form-control#example-email(type="text", name="email", placeholder="name@examle.com", value = this.state.email, onChange=this.handleEmailChange)
+                input.form-control#example-email(type="text", name="email", placeholder="name@example.com", value = this.state.email, onChange=this.handleEmailChange)
                 if (this.state.errors)
-                  span.error #{this.state.errors.email}
+                  span.error 
+                    strong #{this.state.errors.email}
               button.btn-secondary(disabled=disabled)
                 span Next
       else

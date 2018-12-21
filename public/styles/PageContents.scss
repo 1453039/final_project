@@ -351,30 +351,31 @@
     }
   }
 }
+
+.footer {
+  font-size: 11px;
+  ul {
+    li {
+      list-style-image: none;
+      list-style-type: none;
+      float: left;
+      margin-right: 15px;
+      a {
+        color: #6d6e71;
+      }
+    }
+  }
+  .copyright {
+    p {
+      margin-left: 15px;
+      padding-top: 10px;
+      line-height: 2;
+      clear: left;
+    }
+  }
+}
 footer {
   width: 100%;
   position: absolute;
   bottom: 0;
-  .footer {
-    font-size: 11px;
-    ul {
-      li {
-        list-style-image: none;
-        list-style-type: none;
-        float: left;
-        margin-right: 15px;
-        a {
-          color: #6d6e71;
-        }
-      }
-    }
-    .copyright {
-      p {
-        margin-left: 15px;
-        padding-top: 10px;
-        line-height: 2;
-        clear: left;
-      }
-    }
-  }
 }
