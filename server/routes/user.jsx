@@ -20,7 +20,7 @@ router.route('/insert')
     const { body } = req;
     const { email, flat, isAdmin, id, avatar, cover } = body;
     const { errors, isValid } = validateRegisterInput(body);
-    console.log('errors, isValid', errors, isValid); 
+    console.log('errors, isValid', errors, isValid);
     // Check validation
     if (!isValid) {
       return res.json(errors);
@@ -58,11 +58,16 @@ router.route('/insert')
 router.route('/login')
   .post(function (req, res) {
     const { body } = req;
-    const { errors, isValid } = validateLoginInput(body);
-    // Check validation
-    if (!isValid) {
-      return res.json(errors);
-    }
+    const errors = {};
+    users.findById(body.id, function (err, user) {
+      if (err) console.log(err);
+      if (!user.validPassword(req.body.password)) {
+        errors.password = "Your password is wrong"
+        res.send({ success: false, errors: errors });
+      } else {
+        res.send({ success: true, message: "Login successfully!" });
+      }
+    })
   })
 
 router.route('/send')
@@ -94,7 +99,7 @@ router.route('/send')
       to: req.body.email,
       subject: "Welcome to AP Social", // Subject line
       text: text,
-      html: '<h1 style="text-align:center; font-weight: bold"> WELCOME TO APSOCIAL </h1>'
+      html: '<h1 style="text-align:center; font-weight: bold"> WELCOME TO APSOCIAL NETWORK</h1>'
     };
 
     transporter.sendMail(mailOptions, (err, data) => {
@@ -115,7 +120,7 @@ router.route('/update_password')
     const id = req.body.id
     users.findById(id, function (err, user) {
       if (err)
-        res.send(err);
+        console.log(err);
       const password = user.encryptPassword(req.body.password);
       users.update({ _id: id }, { password: password }, function (err, result) {
         if (err)
@@ -124,6 +129,37 @@ router.route('/update_password')
       });
     })
   });
+
+router.route('/change_password')
+  .post(function (req, res) {
+    const id = req.body.id
+    users.findById(id, function (err, user) {
+      if (err) console.log(err);
+      const { errors, isValid } = validateRegisterInput(req.body);
+      if (!user.validPassword(req.body.oldPassword)) {
+        if (!errors.oldPassword)
+          errors.oldPassword = "Your old password is wrong."
+        res.send({ success: false, errors: errors });
+      } else {
+        if (req.body.password == req.body.oldPassword) {
+          if (!errors.password)
+            errors.password = "New password must be difference with old password."
+          res.send({ success: false, errors: errors });
+        } else {
+          if (_.isEmpty(errors)) {
+            const password = user.encryptPassword(req.body.password);
+            users.updateOne({ _id: id }, { $set: { password: password } }, function (err, result) {
+              if (err)
+                console.log(err, result);
+              res.send({ success: true, message: 'User password successfully updated!' });
+            });
+          } else {
+            res.send({ success: false, errors: errors });
+          }
+        }
+      }
+    })
+  })
 
 router.route('/update-info')
   .put(function (req, res) {

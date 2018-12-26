@@ -45,7 +45,7 @@ class AddUser extends React.PureComponent {
   async onClick(e) {
     e.preventDefault();
     await this.insertNewUser(this);
-    // this.sendMail(this);
+    // await this.sendMail(this);
     await this.props.reloadMemberList();
   }
   async insertNewUser(e) {
@@ -120,7 +120,6 @@ class AddUser extends React.PureComponent {
     }
   }
   render() {
-    console.log("this.state.errors", this.state.errors, this.state.messageFromServer);
     if (!this.state.messageFromServer) {
       return pug`
         div

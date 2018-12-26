@@ -17,9 +17,7 @@ router.get('/get-my-item', function(req, res) {
     if (err) console.log(err);
     res.json(items);
   });
-});
-
-/* GET SINGLE ITEM BY ID */
+});/* GET SINGLE ITEM BY ID */
 router.get('get-item', function(req, res) {
   sell_items.findById(req.query.id, function (err, item) {
     if (err) console.log(err);

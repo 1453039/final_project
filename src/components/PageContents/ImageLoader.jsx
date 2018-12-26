@@ -8,8 +8,7 @@ class ImageLoader extends React.PureComponent {
     this.state = {
       user: [],
       selectedFile: '',
-      isUpdated: false,
-      page: window.location.search
+      isUpdated: false
     }
     this.onImageChange = this.onImageChange.bind(this);
     this.getUserFromSession = this.getUserFromSession.bind(this);
@@ -42,7 +41,9 @@ class ImageLoader extends React.PureComponent {
       })
     }
   }
-  
+
+
+
   async updateAvatar(e) {
     await axios.put("/user/update-avatar", {
       id: e.state.user._id,
@@ -86,9 +87,8 @@ class ImageLoader extends React.PureComponent {
   }
 
   render() {
-    const page = this.state.page
     return pug`
-    if(page == '?newfeeds' || page == '?events' || page == '?tradings' || page == '?timeline' || page =='?admin-noti' || page == '?member-noti')
+    if(this.props.page == 'create-popup')
       input#input-img.input-type-file(type='file', onChange=this.onImageChange)
       label#upload-file(for='input-img')
         .btn-choose

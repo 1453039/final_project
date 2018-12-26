@@ -11,7 +11,7 @@ class AddBill extends React.Component {
       service: [
         {
           id: 0,
-          name: 'ï¿½i?n'
+          name: 'Ði?n'
         },
         {
           id: 1,

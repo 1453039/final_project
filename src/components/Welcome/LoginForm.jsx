@@ -94,7 +94,6 @@ class LoginForm extends React.Component {
   render() {
     const { isClick, listApart, email } = this.state
     let disabled = email ? false : true
-    console.log(this.state.errors);
     return pug`
       if !isClick 
         .login-form.col-md-5.col-sm-5
@@ -103,9 +102,9 @@ class LoginForm extends React.Component {
             form(onSubmit=this.handleClickNext)
               fieldset.form-group
                 input.form-control#example-email(type="text", name="email", placeholder="name@example.com", value = this.state.email, onChange=this.handleEmailChange)
-                if (this.state.errors)
-                  span.error 
-                    strong #{this.state.errors.email}
+              if (this.state.errors)
+                span.error 
+                  strong #{this.state.errors.email}
               button.btn-secondary(disabled=disabled)
                 span Next
       else

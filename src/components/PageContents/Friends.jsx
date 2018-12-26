@@ -16,7 +16,7 @@ class Friends extends React.Component {
               .card-info
                 img(src=item.avatar, alt="user").profile-photo-lg
                 .friend-info
-                  Link(to='?messages').pull-right.text-green Inbox
+                  Link(to={search: '?messages', state: {toUser: item}}).pull-right.text-green Inbox
                   h5 #{item.name}
                   p Flat: 
                     span #{item.flat}

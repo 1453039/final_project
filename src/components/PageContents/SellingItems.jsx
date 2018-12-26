@@ -31,8 +31,7 @@ constructor(props) {
   }
 
   render() {
-    const page = window.location.search;
-    return pug`
+    const page = window.location.search;    return pug`
       .post-content
         .post-container
           img.profile-photo-md.pull-left(src=this.state.postUser.avatar, alt="user")

@@ -15,7 +15,9 @@ class CreatePopup extends PureComponent {
       type: this.props.type,
       serviceName: '',
       unit: '',
-      fee: ''    }
+      fee: '',
+      page: 'create-popup'    
+    }
     this.handleTextAreaChange = this.handleTextAreaChange.bind(this)
     this.handleImgChange = this.handleImgChange.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)

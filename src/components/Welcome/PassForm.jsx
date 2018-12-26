@@ -3,29 +3,29 @@ import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 
 class PassForm extends React.Component {
-	constructor (props) {
+  constructor (props) {
     super(props);
     this.state = {
       apartment: [],
       password: '',
       id: this.props.match.params.id,
-      id_user: this.props.history.location.state.id_user
+      id_user: this.props.history.location.state.id_user,
+      errors: {}
     }
     this.saveToSession = this.saveToSession.bind(this);
     this.handleClickNext = this.handleClickNext.bind(this);
     this.handlePassChange = this.handlePassChange.bind(this);
     this.getApartment = this.getApartment.bind(this);
-    this.updatePasswordUser = this.updatePasswordUser.bind(this);
   }
   
   componentDidMount(){
     this.getApartment(this);
   }
 
-	handlePassChange (e) {
-		this.setState ({
+  handlePassChange (e) {
+    this.setState ({
       password: e.target.value,
-		});
+    });
   }
 
   async saveToSession(e) {
@@ -35,18 +35,6 @@ class PassForm extends React.Component {
       console.log(response.data)
     }).catch(err => {
       console.log("err", err);
-    })
-  }
-
-  async updatePasswordUser() {
-    let seft = this
-    await axios.post("/user/update_password", {
-        id : seft.state.id_user,
-        password: seft.state.password
-    }).then((response) => {
-      console.log(response.data);
-    }).catch(err => {
-      console.log("err", err)
     })
   }
 
@@ -64,28 +52,44 @@ class PassForm extends React.Component {
     })
   }
   
-	async handleClickNext(e) {
+  async handleClickNext(e) {
     e.preventDefault()
-    await this.updatePasswordUser()
-    await this.saveToSession(this);
-    await this.props.history.push('@'+ this.state.id + '?newfeeds');
+    let seft = this
+    await axios.post("/user/login", {
+        id : seft.state.id_user,
+        password: seft.state.password
+    }).then((response) => {
+      const success = response.data.success
+      if (success) {
+        console.log(response.data.message);
+        seft.saveToSession(seft);
+        seft.props.history.push('@'+ seft.state.id + '?newfeeds');
+      } else {
+        seft.setState({ errors: response.data.errors });
+      }
+    }).catch(err => {
+      console.log("err", err)
+    })
   }
   
   render() {
     const {apartment, password} = this.state
     let disabled = password ? false : true
-		return pug`
-			.login-form.col-md-5.col-sm-5
-				#wrapper
-					h2.text-white Welcome to #{apartment.name}
-					.line-divider
-					h2.text-white Enter your password
-					form(onSubmit=this.handleClickNext)
-						fieldset.form-group
-							input.form-control#example-email(type="password", placeholder="Your password", onChange=this.handlePassChange)
-						button.btn-secondary(disabled=disabled)
-							span Next
-		`;
+    return pug`
+      .login-form.col-md-5.col-sm-5
+        #wrapper
+          h2.text-white Welcome to #{apartment.name}
+          .line-divider
+          h2.text-white Enter your password
+          form(onSubmit=this.handleClickNext)
+            fieldset.form-group
+              input.form-control#example-email(type="password", placeholder="Your password", onChange=this.handlePassChange)
+            if (this.state.errors)
+              span.error 
+                strong #{this.state.errors.password}
+            button.btn-secondary(disabled=disabled)
+              span Next
+    `;
   }
 }
 

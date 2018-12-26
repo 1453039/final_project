@@ -77,8 +77,7 @@ class SideBarLeft extends React.PureComponent {
                 Link.active(to="?services") Services
               else
                 Link(to="?services") Services
-          li
-            i.icon.ion-information-circled
+          li            i.icon.ion-information-circled
             div
               if(page=='?reports')
                 Link.active(to="?reports") Report
@@ -90,4 +89,3 @@ class SideBarLeft extends React.PureComponent {
 }
 
 export default withRouter(SideBarLeft);
-
