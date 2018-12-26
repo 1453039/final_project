@@ -130,7 +130,8 @@ class MessageList extends PureComponent {
     this.setState({
       selectedImage: !this.state.selectedImage
     })
-  }  render() {
+  }  
+  render() {
     if (!_.isEmpty(this.state.toUser))
       return pug`
         .col-sm-7
@@ -162,7 +163,8 @@ class MessageList extends PureComponent {
                   input.form-control(type="text", placeholder="Type your message", value=this.state.message, onChange=this.onChangeMessage)
                   Emoji(handleEmojiClick = this.handleEmojiClick, toogleEmojiState = this.toogleEmojiState, emojiShown= this.state.emojiShown)
                   span.choose-img-btn
-                    i.ion-images(onClick=this.handleChooseImgBtnClick)                  span.input-group-btn
+                    i.ion-images(onClick=this.handleChooseImgBtnClick)                  
+                  span.input-group-btn
                     button.btn.btn-primary(type="button", onClick=this.handleSendMessage) Send
       `;
     else

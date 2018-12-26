@@ -84,7 +84,8 @@ class Root extends React.Component {
       case "?services":
         return pug`
           ServicesPage
-        `      default:
+        `      
+      default:
         return pug`
           LoginPage
         `

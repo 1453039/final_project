@@ -52,7 +52,8 @@ class MyCover extends PureComponent {
                   Link.active(to="?my-products") My Products
                 else
                   Link(to="?my-products") My Products
-              li                if(page=='?info')
+              li                
+                if(page=='?info')
                   Link.active(to="?info") My Account
                 else
                   Link(to="?info") My Account
