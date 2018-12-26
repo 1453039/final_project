@@ -31,6 +31,7 @@ constructor(props) {
   }
 
   render() {
+    const page = window.location.search;
     return pug`
       .post-content
         .post-container
@@ -41,9 +42,10 @@ constructor(props) {
                 Link.profile-link(to="/") #{this.state.postUser.name}
                 if(this.state.item.isAdmin)
                   i.icon.ion-android-checkmark-circle
-            Link.reaction(to={search: "?messages", state: {toUser: this.state.postUser, itemName: this.state.item.name}})
-              .text-green.btn.chat-online
-                span Chat Online
+            if(page=='?tradings')
+              Link.reaction(to={search: "?messages", state: {toUser: this.state.postUser, itemName: this.state.item.name}})
+                .text-green.btn.chat-online
+                  span Chat Online
             p.desc.grey #{this.state.item.description}
             img.img-responsive.sellingItem-image(src=this.state.item.linkImg, alt="sellingItem-image")
             .selling-text

@@ -162,6 +162,16 @@
     margin: 30px 0;
     .input-group {
       position: relative;
+      .choose-img-btn {
+        position: absolute;
+        top: 15%;
+        right: 115px;
+        font-size: 20px;
+        z-index: 1;
+        &:hover{
+          cursor: pointer;
+        }
+      }
       .form-control {
         border: 1px solid #ccc;
         padding-right: 30px;

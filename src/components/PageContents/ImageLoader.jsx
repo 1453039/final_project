@@ -42,9 +42,7 @@ class ImageLoader extends React.PureComponent {
       })
     }
   }
-
-
-
+  
   async updateAvatar(e) {
     await axios.put("/user/update-avatar", {
       id: e.state.user._id,

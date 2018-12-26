@@ -29,7 +29,7 @@ class PageContents extends PureComponent {
       this.getAllPost(this)
     if (this.state.page == '?events')
       this.getAllEvent(this)
-    if (this.state.page == '?tradings')
+    if (this.state.page == '?tradings' || this.state.page == '?my-products')
       await this.getAllSellingItem(this)
   }
 
@@ -38,7 +38,7 @@ class PageContents extends PureComponent {
       this.getAllPost(this)
     if (this.state.page == '?events')
       this.getAllEvent(this)
-    if (this.state.page == '?tradings')
+    if (this.state.page == '?tradings' || this.state.page == '?my-products')
       this.getAllSellingItem(this)
   }
 
@@ -118,7 +118,7 @@ class PageContents extends PureComponent {
             if (this.state.page == '?events')
               each event in this.sortPostByDate(this.state.events)
                 Event(key=event._id, event=event)
-            if (this.state.page == '?tradings')
+            if (this.state.page == '?tradings' || this.state.page == '?my-products')
               each item in this.sortPostByDate(this.state.items)
                 SellingItems(key=item.id, item=item)
           SideBarRight

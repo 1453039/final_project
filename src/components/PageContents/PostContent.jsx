@@ -220,15 +220,6 @@ class PostContent extends PureComponent {
   render() {
     return pug`
       .post-content
-        if (this.state.page == '?timeline')
-          .post-date.hidden-xs.hidden-sm
-            h5 #{this.state.postUser.name}
-            p.text-grey #{this.handlePostTime(this.state.post.time)}
-        if this.state.post.linkImg
-          img.img-responsive.post-image(src=this.state.post.linkImg, alt="post-image")
-        if this.state.post.linkVideo
-          video.post-video(controls)
-            source(src=this.state.post.linkVideo, type="video/mp4")
         .post-container
           img.profile-photo-md.pull-left(src=this.state.postUser.avatar, alt="user")
           .post-detail
@@ -248,7 +239,11 @@ class PostContent extends PureComponent {
             .line-divider
             .post-text
               p #{this.state.post.description}
-            .line-divider
+            if this.state.post.linkImg
+              img.img-responsive.post-image(src=this.state.post.linkImg, alt="post-image")
+            if this.state.post.linkVideo
+              video.post-video(controls)
+                source(src=this.state.post.linkVideo, type="video/mp4")
             each comment in this.state.comments
               .post-comment(key=comment._id)
                 img.profile-photo-sm(src=comment.avatar, alt="")

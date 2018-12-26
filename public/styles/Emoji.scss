@@ -18,6 +18,9 @@
   right: 82px;
   font-size: 20px;
   z-index: 1;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .emoji-table {

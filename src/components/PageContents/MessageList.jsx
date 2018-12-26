@@ -126,6 +126,13 @@ class MessageList extends PureComponent {
     });
   }
 
+  handleChooseImgBtnClick = () => {
+    this.setState({
+      selectedImage: !this.state.selectedImage
+    })
+  }
+
+
   render() {
     if (!_.isEmpty(this.state.toUser))
       return pug`
@@ -157,6 +164,8 @@ class MessageList extends PureComponent {
                 form.input-group(onSubmit=this.handleSendMessage)
                   input.form-control(type="text", placeholder="Type your message", value=this.state.message, onChange=this.onChangeMessage)
                   Emoji(handleEmojiClick = this.handleEmojiClick, toogleEmojiState = this.toogleEmojiState, emojiShown= this.state.emojiShown)
+                  span.choose-img-btn
+                    i.ion-images(onClick=this.handleChooseImgBtnClick)
                   span.input-group-btn
                     button.btn.btn-primary(type="button", onClick=this.handleSendMessage) Send
       `;

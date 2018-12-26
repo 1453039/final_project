@@ -48,6 +48,11 @@ class MyCover extends PureComponent {
                 else
                   Link(to="?timeline") My Timeline
               li
+                if(page=='?my-products')
+                  Link.active(to="?my-products") My Products
+                else
+                  Link(to="?my-products") My Products
+              li
                 if(page=='?info')
                   Link.active(to="?info") My Account
                 else
@@ -65,10 +70,15 @@ class MyCover extends PureComponent {
         .mobile-menu
           ul.list-inline
             li
-            if(page=='?timeline')
-              Link.active(to="?timeline") My Timeline
-            else
-              Link(to="?timeline") My Timeline
+              if(page=='?timeline')
+                Link.active(to="?timeline") My Timeline
+              else
+                Link(to="?timeline") My Timeline
+            li
+              if(page=='?my-products')
+                Link.active(to="?my-products") My Products
+              else
+                Link(to="?my-products") My Products
             li
               if(page=='?info')
                 Link.active(to="?info") My Account

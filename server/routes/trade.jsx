@@ -11,6 +11,14 @@ router.get('/get-all', function(req, res) {
   });
 });
 
+/* GET SELLING ITEMS OF AN USER OF AN  APARTMENT*/
+router.get('/get-my-item', function(req, res) {
+  sell_items.find({$and: [{apartment: req.query.apartment}, {seller: req.query.userId}]}, function (err, items) {
+    if (err) console.log(err);
+    res.json(items);
+  });
+});
+
 /* GET SINGLE ITEM BY ID */
 router.get('get-item', function(req, res) {
   sell_items.findById(req.query.id, function (err, item) {
