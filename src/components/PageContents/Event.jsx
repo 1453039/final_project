@@ -33,7 +33,7 @@ constructor(props) {
       like: e.state.event.like,
       dislike: e.state.event.dislike
     }).then((response) => {
-      alert(response.data)
+      console.log(response.data)
     }).catch(err => {
       console.log("err", err)
     })

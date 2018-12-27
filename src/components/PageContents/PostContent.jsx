@@ -116,7 +116,7 @@ class PostContent extends PureComponent {
       like: e.state.post.like,
       dislike: e.state.post.dislike
     }).then((response) => {
-      alert(response.data)
+      console.log(response.data)
     }).catch(err => {
       console.log("err", err)
     })

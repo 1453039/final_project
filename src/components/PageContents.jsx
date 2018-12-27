@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import SideBarLeft from './PageContents/SideBarLeft.jsx';
@@ -11,8 +11,8 @@ import '../../public/styles/PageContents.scss';
 
 
 class PageContents extends PureComponent {
-  constructor (props) {
-    super (props);
+  constructor(props) {
+    super(props);
     this.state = {
       posts: [],
       events: [],
@@ -21,21 +21,30 @@ class PageContents extends PureComponent {
       page: window.location.search
     }
     this.reloadPostList = this.reloadPostList.bind(this)
+    this.filterPostByType = this.filterPostByType.bind(this)
   }
 
   async componentDidMount() {
     await this.getUserFromSession(this)
     if (this.state.page == '?newfeeds')
       this.getAllPost(this)
+    if (this.state.page == '?admin-noti' || this.state.page == '?member-noti') {
+      await this.getAllPost(this);
+      this.filterPostByType();
+    }
     if (this.state.page == '?events')
       this.getAllEvent(this)
     if (this.state.page == '?tradings' || this.state.page == '?my-products')
       await this.getAllSellingItem(this)
   }
 
-  reloadPostList() {
+  async reloadPostList() {
     if (this.state.page == '?newfeeds')
       this.getAllPost(this)
+    if (this.state.page == '?admin-noti' || this.state.page == '?member-noti') {
+      await this.getAllPost(this);
+      this.filterPostByType();
+    }
     if (this.state.page == '?events')
       this.getAllEvent(this)
     if (this.state.page == '?tradings' || this.state.page == '?my-products')
@@ -47,9 +56,17 @@ class PageContents extends PureComponent {
       e.setState({
         user: response.data
       })
-    }).catch(err =>{
+    }).catch(err => {
       console.log("err", err);
     })
+  }
+
+  filterPostByType() {
+    let posts = this.state.posts;
+    console.log("1", posts);
+    posts = posts.filter(post => post.isAdmin == this.props.isAdmin)
+    console.log("2", posts);
+    this.setState({ posts });
   }
 
   async getAllPost(e) {
@@ -104,7 +121,7 @@ class PageContents extends PureComponent {
     return sortedArray
   }
 
-  render () {
+  render() {
     return pug`
     #page-contents
       .container
@@ -112,7 +129,7 @@ class PageContents extends PureComponent {
           SideBarLeft
           .col-md-7
             PostCreateBox(reloadPostList = this.reloadPostList)
-            if (this.state.page == '?newfeeds')
+            if (this.state.page == '?newfeeds' || this.state.page == '?admin-noti' || this.state.page == '?member-noti')
               each post in this.sortPostByDate(this.state.posts)
                 PostContent(key=post._id, post=post)
             if (this.state.page == '?events')

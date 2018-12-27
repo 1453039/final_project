@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 
-const {API_KEY} = process.env;
-const API_URL = 'http://api.musicgraph.com/api/v2/artist/suggest';
-
 class Search extends Component {
   constructor () {
     super ();
@@ -44,7 +41,7 @@ class Search extends Component {
       form.navbar-form.navbar-right.hidden-sm
         div.form-group
           i.icon.ion-android-search
-          input.form-control(type="text", placeholder="Search for...", onChange=this.handleInputChange)
+          input.form-control(type="text", placeholder="Search post...", onChange=this.handleInputChange)
     `;
   }
 }

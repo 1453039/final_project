@@ -22,6 +22,7 @@ class CreatePopup extends PureComponent {
     this.handleImgChange = this.handleImgChange.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
     this.onClickPublish = this.onClickPublish.bind(this)
+    this.handleKeyDown = this.handleKeyDown.bind(this)
   }
 
   handleTextAreaChange(e) {
@@ -37,8 +38,9 @@ class CreatePopup extends PureComponent {
   }
 
   handleInputChange(e) {
-    if (e.target.name == "date")
+    if (e.target.name == "date") {
       this.setState({ day: e.target.value })
+    }
     if (e.target.name == "time")
       this.setState({ time: e.target.value })
     if (e.target.name == "cost")
@@ -58,14 +60,21 @@ class CreatePopup extends PureComponent {
     this.props.handlePopupSubmit(this.state.description, this.state.linkImg, new Date(this.state.day + ' ' + this.state.time), this.state.cost, this.state.itemName, this.state.price);
     this.props.closePopup()
   }
-  
+
+  getNow() {
+    const now = new Date();
+    let day = now.getDate();
+    let month = now.getMonth() + 1;
+    let year = now.getFullYear();
+    return (year + '-' + month + '-' + day);
+  }
+
   handleKeyDown(e) {
-    console.log(e.keyCode);
+    e.preventDefault();
   }
 
   render() {
-    const page = window.location.search; 
-    console.log(this.state)   
+    const page = window.location.search;
     const disabled = (this.state.type=='Event') ? (!this.state.description || !this.state.linkImg || !this.state.day || !this.state.time) 
     : ((this.state.type=='Trading') ? (!this.state.description || !this.state.linkImg || !this.state.itemName) 
     : (!this.state.description || !this.state.linkImg))
@@ -95,7 +104,7 @@ class CreatePopup extends PureComponent {
             if(this.state.type=='Event')
               .form-group
                 label(for='celebration-day') Date:
-                input#celebration-day.input-event-info.form-control(type='date', name='date', value=this.state.day, onChange=this.handleInputChange)
+                input#celebration-day.input-event-info.form-control(type='date', name='date', min='2018-12-27', value=this.state.day, onKeyDown=this.handleKeyDown, onChange=this.handleInputChange)
               .form-group
                 label(for='celebration-time') Time:
                 input#celebration-time.input-event-info.form-control(type='time', name='time', value=this.state.time, onChange=this.handleInputChange)

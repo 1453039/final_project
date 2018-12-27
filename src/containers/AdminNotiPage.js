@@ -26,7 +26,7 @@ class AdminNotiPage extends Component {
       return pug`
         Header
         div(className="AdminNotiPage")
-          PageContents
+          PageContents(isAdmin=true)
         Footer
       `;
     else return pug``;

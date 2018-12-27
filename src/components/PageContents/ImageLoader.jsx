@@ -27,15 +27,20 @@ class ImageLoader extends React.PureComponent {
   }
 
   componentDidUpdate() {
-    let page = this.state.page
     if (this.props.id == 'avt' && this.state.isUpdated == true) {
       this.updateAvatar(this)
     }
     if (this.props.id == 'cover' && this.state.isUpdated == true) {
       this.updateCover(this)
     }
-    if ((page == '?newfeeds' || page == '?events' || page == '?tradings' || page == '?timeline' || page =='?admin-noti' || page == '?member-noti') && this.state.isUpdated == true) {
+    if (this.props.page == "create-popup" && this.state.isUpdated == true) {
       this.props.handleImgChange(this.state.selectedFile)
+      this.setState({
+        isUpdated: false
+      })
+    }
+    if (this.props.page == "?messages" && this.state.isUpdated == true) {
+      this.props.handleChooseImgBtn(this.state.selectedFile)
       this.setState({
         isUpdated: false
       })
@@ -86,8 +91,32 @@ class ImageLoader extends React.PureComponent {
     })
   }
 
-  
-  
+  render() {
+    return pug`
+      if(this.props.page == 'create-popup')
+        input#input-img.input-type-file(type='file', onChange=this.onImageChange)
+        label#upload-file(for='input-img')
+          .btn-choose
+            i.ion-images
+            span Upload file
+        img.selectedFile(src=this.state.selectedFile)
+      else
+        if(this.props.page == '?messages')
+          input#message-img.input-type-file(type='file', onChange=this.onImageChange)
+          label#upload-file(for='message-img')
+            .btn-choose
+              i.ion-images
+        else 
+          if(this.props.page == 'info' && this.props.id == 'avt')
+            input#ava-img.input-type-file(type='file', onChange=this.onImageChange)
+            label(for='ava-img')
+              img(src=this.state.selectedFile, alt='Your Image').img-responsive.profile-photo
+          else
+            if(this.props.page == 'info' && this.props.id == 'cover')
+              input#cover-img.input-type-file(type='file', onChange=this.onImageChange)
+              label(for='cover-img')
+                img(src=this.state.selectedFile, alt='Your Cover')
+  `}
 }
 
 export default withRouter(ImageLoader);

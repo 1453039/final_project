@@ -14,7 +14,7 @@ import PaymentPage from './containers/PaymentPage';
 import EventPage from './containers/EventPage';
 import TradingPage from './containers/TradingPage';
 import MyProductsPage from './containers/MyProductsPage';
-import ServicesPage from './containers/ServicesPage'
+// import ServicesPage from './containers/ServicesPage'
 class Root extends React.Component {
   componentWillMount() {
     let patch = window.location.search
@@ -81,10 +81,10 @@ class Root extends React.Component {
         return pug`
           MyProductsPage
         `
-      case "?services":
-        return pug`
-          ServicesPage
-        `      
+      // case "?services":
+      //   return pug`
+      //     ServicesPage
+      //   `      
       default:
         return pug`
           LoginPage

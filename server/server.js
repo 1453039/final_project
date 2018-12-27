@@ -94,6 +94,7 @@ io.on('connection', function (socket) {
     chat.from = data.from
     chat.to = data.to
     chat.detail = data.detail
+    chat.linkImg = data.linkImg
     chat.time = now
     chat.save(function (err) {
     if (err)

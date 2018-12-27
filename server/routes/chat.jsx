@@ -48,6 +48,7 @@ router.get('/get-last-message', function (req, res) {
     if (err) console.log(err);
     var tmp = {};
     tmp.lastMessage = chats[chats.length - 1].detail
+    tmp.lastImg = chats[chats.length - 1].linkImg
     tmp.time = chats[chats.length - 1].time
     res.json(tmp);
   });

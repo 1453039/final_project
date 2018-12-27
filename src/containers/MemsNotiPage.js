@@ -26,7 +26,7 @@ class MemsNotiPage extends Component {
       return pug`
         Header
         div(className="MemsNotiPage")
-          PageContents
+          PageContents(isAdmin=false)
         Footer
       `;
     else return pug``;

@@ -24,8 +24,7 @@ class MessageList extends PureComponent {
       toUser: this.props.history.location.state ? this.props.history.location.state.toUser : [],
       messages: [],
       message: this.props.history.location.state && this.props.history.location.state.itemName ? '[' + this.props.history.location.state.itemName + '] ' : '',
-      emojiShown: false, 
-      page: window.location.search
+      emojiShown: false
     }
     this.getUserFromSession = this.getUserFromSession.bind(this)
     this.getMessages = this.getMessages.bind(this)
@@ -33,6 +32,7 @@ class MessageList extends PureComponent {
     this.handleSendMessage = this.handleSendMessage.bind(this)
     this.handleEmojiClick = this.handleEmojiClick.bind(this)
     this.toogleEmojiState = this.toogleEmojiState.bind(this)
+    this.handleChooseImgBtn = this.handleChooseImgBtn.bind(this)
   }
 
   async componentDidMount() {
@@ -85,6 +85,7 @@ class MessageList extends PureComponent {
     messageInfo.from = this.state.fromUser._id;
     messageInfo.to = this.state.toUser._id;
     messageInfo.detail = this.state.message;
+    messageInfo.linkImg = '';
     window.socket.emit('chat', messageInfo);
     this.setState({ message: ''});
   }
@@ -128,10 +129,13 @@ class MessageList extends PureComponent {
     });
   }
 
-  handleChooseImgBtnClick = () => {
-    this.setState({
-      selectedImage: !this.state.selectedImage
-    })
+  handleChooseImgBtn = (selectedImage) => {
+    let messageInfo = {};
+    messageInfo.from = this.state.fromUser._id;
+    messageInfo.to = this.state.toUser._id;
+    messageInfo.detail = '';
+    messageInfo.linkImg = selectedImage;
+    window.socket.emit('chat', messageInfo);
   }  
   render() {
     if (!_.isEmpty(this.state.toUser))
@@ -152,6 +156,8 @@ class MessageList extends PureComponent {
                                 h5 #{this.state.toUser.name}
                                 small.text-muted #{this.handlePostTime(message.time)}
                               p #{message.detail}
+                              if (message.linkImg)
+                                img.message-img(src=message.linkImg)
                         else if (message.from == this.state.fromUser._id)
                           li.right
                             img(src=this.state.fromUser.avatar, alt='').profile-photo-sm.pull-right
@@ -160,11 +166,13 @@ class MessageList extends PureComponent {
                                 h5 #{this.state.fromUser.name}
                                 small.text-muted #{this.handlePostTime(message.time)}
                               p #{message.detail}
+                              if (message.linkImg)
+                                img.message-img(src=message.linkImg)
               .send-message
                 form.input-group(onSubmit=this.handleSendMessage)
                   input.form-control(type="text", placeholder="Type your message", value=this.state.message, onChange=this.onChangeMessage)
                   Emoji(handleEmojiClick = this.handleEmojiClick, toogleEmojiState = this.toogleEmojiState, emojiShown= this.state.emojiShown)
-                  ImageLoader(page=this.state.page, id='message-img')
+                  ImageLoader(page='?messages', handleChooseImgBtn = this.handleChooseImgBtn)                 
                   span.input-group-btn
                     button.btn.btn-primary(type="button", onClick=this.handleSendMessage) Send
       `;

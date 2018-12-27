@@ -95,6 +95,7 @@ class MessageBarLeft extends PureComponent {
         tmp.name = e.state.userList[i].name
         tmp.avatar = e.state.userList[i].avatar
         tmp.lastMessage = response.data.lastMessage
+        tmp.lastImg = response.data.lastImg
         tmp.time = response.data.time
         e.setState({ userChatList: [...e.state.userChatList, tmp] });
         window.socket.on('updateMessage', (msg) => {
@@ -102,6 +103,7 @@ class MessageBarLeft extends PureComponent {
             return chat._id === e.state.toUser._id
           })
           e.state.userChatList[index].lastMessage = msg.detail
+          e.state.userChatList[index].lastImg = msg.linkImg
           e.state.userChatList[index].time = msg.time
           e.setState({ userChatList: [...e.state.userChatList] });
         })
@@ -142,8 +144,13 @@ class MessageBarLeft extends PureComponent {
                   .contact
                     img(src=item.avatar, alt='').profile-photo-sm.pull-left
                     .msg-preview
-                      h6 #{item.name}
-                      p.text-muted #{item.lastMessage}
+                      h5 
+                        strong #{item.name}
+                      if (item.lastImg)
+                        p.text-muted  
+                          i.ion-images
+                      else 
+                        p.text-muted #{item.lastMessage}
                       small.text-muted #{this.handlePostTime(item.time)}
                       // if(item.contents[item.contents.length - 1].status=='seen')
                       //   .seen
