@@ -162,7 +162,10 @@
     margin: 30px 0;
     .input-group {
       position: relative;
-      .choose-img-btn {
+      #message-img {
+        display: none;
+      }
+      #upload-file {
         position: absolute;
         top: 15%;
         right: 115px;

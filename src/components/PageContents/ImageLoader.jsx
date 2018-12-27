@@ -86,27 +86,8 @@ class ImageLoader extends React.PureComponent {
     })
   }
 
-  render() {
-    return pug`
-    if(this.props.page == 'create-popup')
-      input#input-img.input-type-file(type='file', onChange=this.onImageChange)
-      label#upload-file(for='input-img')
-        .btn-choose
-          i.ion-images
-          span Upload file
-      img.selectedFile(src=this.state.selectedFile)
-    else 
-      if(this.props.page == 'info' && this.props.id == 'avt')
-        input#ava-img.input-type-file(type='file', onChange=this.onImageChange)
-        label(for='ava-img')
-          img(src=this.state.selectedFile, alt='Your Image').img-responsive.profile-photo
-      else
-        if(this.props.page == 'info' && this.props.id == 'cover')
-          input#cover-img.input-type-file(type='file', onChange=this.onImageChange)
-          label(for='cover-img')
-            img(src=this.state.selectedFile, alt='Your Cover')
-    `;
-  }
+  
+  
 }
 
 export default withRouter(ImageLoader);

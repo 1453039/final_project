@@ -5,6 +5,7 @@ import _ from 'lodash';
 import '../../../public/styles/Message.scss';
 import Emoji from './Emoji.jsx';
 import JSEMOJI from 'emoji-js';
+import ImageLoader from './ImageLoader.jsx';
 
 //emoji set up
 let jsemoji = new JSEMOJI();
@@ -23,7 +24,8 @@ class MessageList extends PureComponent {
       toUser: this.props.history.location.state ? this.props.history.location.state.toUser : [],
       messages: [],
       message: this.props.history.location.state && this.props.history.location.state.itemName ? '[' + this.props.history.location.state.itemName + '] ' : '',
-      emojiShown: false
+      emojiShown: false, 
+      page: window.location.search
     }
     this.getUserFromSession = this.getUserFromSession.bind(this)
     this.getMessages = this.getMessages.bind(this)
@@ -162,8 +164,7 @@ class MessageList extends PureComponent {
                 form.input-group(onSubmit=this.handleSendMessage)
                   input.form-control(type="text", placeholder="Type your message", value=this.state.message, onChange=this.onChangeMessage)
                   Emoji(handleEmojiClick = this.handleEmojiClick, toogleEmojiState = this.toogleEmojiState, emojiShown= this.state.emojiShown)
-                  span.choose-img-btn
-                    i.ion-images(onClick=this.handleChooseImgBtnClick)                  
+                  ImageLoader(page=this.state.page, id='message-img')
                   span.input-group-btn
                     button.btn.btn-primary(type="button", onClick=this.handleSendMessage) Send
       `;

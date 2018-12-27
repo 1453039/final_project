@@ -9,6 +9,13 @@ class Friends extends React.Component {
     const {friends} = this.props;
     return pug`
       .row
+        form.tool 
+          select.sort-by(name='sort-by')
+            option(selected) -- Sort By --
+            option(value='name') Name
+            option(value='flat-name') Flat Name
+          div.form-group
+            input(type="text", placeholder="Search for...")
         each item in friends
           .col-md-6.col-sm-6(key=item._id)
             .friends-card
@@ -23,5 +30,6 @@ class Friends extends React.Component {
     `;
   }
 }
+
 
 export default Friends;
