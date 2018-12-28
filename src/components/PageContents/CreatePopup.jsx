@@ -9,6 +9,7 @@ class CreatePopup extends PureComponent {
       linkImg: '',
       day: '',
       time: '',
+      eventName: '',
       cost: 0,
       itemName: '',
       price: 0,
@@ -38,9 +39,10 @@ class CreatePopup extends PureComponent {
   }
 
   handleInputChange(e) {
-    if (e.target.name == "date") {
+    if (e.target.name == "event-name")
+      this.setState({ eventName: e.target.value })
+    if (e.target.name == "date")
       this.setState({ day: e.target.value })
-    }
     if (e.target.name == "time")
       this.setState({ time: e.target.value })
     if (e.target.name == "cost")
@@ -57,7 +59,7 @@ class CreatePopup extends PureComponent {
       this.setState({ fee: parseInt(e.target.value) })  }
 
   onClickPublish() {
-    this.props.handlePopupSubmit(this.state.description, this.state.linkImg, new Date(this.state.day + ' ' + this.state.time), this.state.cost, this.state.itemName, this.state.price);
+    this.props.handlePopupSubmit(this.state.description, this.state.linkImg, new Date(this.state.day + ' ' + this.state.time), this.state.cost, this.state.itemName, this.state.eventName, this.state.price);
     this.props.closePopup()
   }
 
@@ -102,6 +104,9 @@ class CreatePopup extends PureComponent {
               textarea.form-control(name="texts", cols="30", rows="1", placeholder="Write what you want", value=this.state.description, onChange=this.handleTextAreaChange)
             ImageLoader(page=this.state.page, handleImgChange=this.handleImgChange) 
             if(this.state.type=='Event')
+              .form-group
+                label(for='event-name') Event:
+                input#event-name.input-event-info.form-control(type='text', name='event-name', value=this.state.eventName, onChange=this.handleInputChange, placeholder='Event Name')
               .form-group
                 label(for='celebration-day') Date:
                 input#celebration-day.input-event-info.form-control(type='date', name='date', min='2018-12-27', value=this.state.day, onKeyDown=this.handleKeyDown, onChange=this.handleInputChange)

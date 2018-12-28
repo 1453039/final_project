@@ -41,6 +41,7 @@ router.post('/insert', function(req, res) {
   post.linkImg = req.body.linkImg ? req.body.linkImg : ""
   post.linkVideo = req.body.linkVideo ? req.body.linkVideo : ""
   post.type = req.body.type
+  post.eventName = req.body.eventName
   post.date = req.body.date
   post.cost = req.body.cost
   post.save(function (err) {

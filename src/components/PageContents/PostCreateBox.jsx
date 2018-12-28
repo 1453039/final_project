@@ -16,6 +16,7 @@ class PostCreateBox extends React.PureComponent {
       date: '',
       cost: 0,
       name: '',
+      eventName: '',
       price: 0,
       showPopup: false
     };
@@ -50,6 +51,7 @@ class PostCreateBox extends React.PureComponent {
       linkVideo: e.state.linkVideo,
       type: e.state.type ? e.state.type : "Post",
       date: e.state.date,
+      eventName: e.state.eventName,
       cost: e.state.cost
     }).then((response) => {
       alert(response.data)
@@ -84,13 +86,14 @@ class PostCreateBox extends React.PureComponent {
     })
   }
 
-  async handlePopupSubmit(description, linkImg, date, cost, name, price) {
+  async handlePopupSubmit(description, linkImg, date, cost, name, eventName, price) {
     await this.setState({
       description: description,
       linkImg: linkImg,
       date: date,
       cost: cost,
       name: name,
+      eventName: eventName,
       price: price
     })
     if (this.state.type == "Trading")

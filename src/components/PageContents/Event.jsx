@@ -106,14 +106,15 @@ constructor(props) {
                 .text-green.btn#attendent(onClick=this.handleAttendent)
                   i.icon.ion-checkmark
                   span#like #{this.state.event.like.length}
+            p.desc.grey #{this.state.event.description}
             img.img-responsive.event-image(src=this.state.event.linkImg, alt="event-image")
             .event-text
-              h3.desc.text-white #{this.state.event.description}
+              h3.name.text-white #{this.state.event.eventName}
               if (this.state.event.cost > 0)
                 h4.cost.grey Price: #{this.state.event.cost.toLocaleString()} VND
               else
                 h4.cost.grey Price: FREE
-              h4.date.grey When: #{this.handleEventTime(this.state.event.date)}
+              h4.date.grey #{this.handleEventTime(this.state.event.date)}
     `;
   }
 }

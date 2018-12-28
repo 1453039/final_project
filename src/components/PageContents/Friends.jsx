@@ -15,7 +15,8 @@ class Friends extends React.Component {
             option(value='name') Name
             option(value='flat-name') Flat Name
           div.form-group
-            input(type="text", placeholder="Search for...")        each item in friends
+            input(type="text", placeholder="Search for...")
+        each item in friends
           .col-md-6.col-sm-6(key=item._id)
             .friends-card
               img(src=item.cover, alt='profile-cover').img-responsive.cover
