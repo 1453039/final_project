@@ -34,8 +34,9 @@ router.get('/get-list-user-id', function (req, res) {
         if (!error) {
           arr.concat(list);
           const distinct = [...new Set(arr)].reverse()
-          for (var i in distinct)
+          for (var i in distinct) {
             distinct[i] = JSON.parse(distinct[i])
+          }
           res.json(distinct);
         }
       })
@@ -46,6 +47,9 @@ router.get('/get-list-user-id', function (req, res) {
 router.get('/get-last-message', function (req, res) {
   chats.find({ $or: [{ to: req.query.from, from: req.query.to }, { to: req.query.to, from: req.query.from }] }, function (err, chats) {
     if (err) console.log(err);
+    chats = chats.sort(function (a, b) {
+      return new Date(a.time) - new Date(b.time);
+    })
     var tmp = {};
     tmp.lastMessage = chats[chats.length - 1].detail
     tmp.lastImg = chats[chats.length - 1].linkImg

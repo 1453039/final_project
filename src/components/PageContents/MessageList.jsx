@@ -67,6 +67,11 @@ class MessageList extends PureComponent {
         e.setState({ messages });
 
         window.socket.on('updateMessage', (msg) => {
+          console.log(JSON.stringify(msg.to));
+          console.log(JSON.stringify(this.state.fromUser._id));
+          if (JSON.stringify(msg.to) == JSON.stringify(this.state.fromUser._id)) {
+            this.notifyMe(msg.detail, this.state.toUser);
+          }
           messages = [...e.state.messages, msg]
           e.setState({ messages });
         })
@@ -87,7 +92,7 @@ class MessageList extends PureComponent {
     messageInfo.detail = this.state.message;
     messageInfo.linkImg = '';
     window.socket.emit('chat', messageInfo);
-    this.setState({ message: ''});
+    this.setState({ message: '' });
   }
 
   componentWillUnmount() {
@@ -136,7 +141,45 @@ class MessageList extends PureComponent {
     messageInfo.detail = '';
     messageInfo.linkImg = selectedImage;
     window.socket.emit('chat', messageInfo);
-  }  
+  }
+
+  sortByDate(array) {
+    let sortedArray = array.sort(function (a, b) {
+      return new Date(a.time) - new Date(b.time);
+    })
+    return sortedArray
+  }
+
+  notifyMe(message, toUser) {
+    if (!("Notification" in window)) {
+      alert("This browser does not support desktop notification");
+    }
+    else if (Notification.permission === "granted") {
+      var options = {
+        body: message,
+        icon: toUser.avatar,
+        dir: "ltr"
+      };
+      var notification = new Notification(toUser.name, options);
+    }
+    else if (Notification.permission !== 'denied') {
+      Notification.requestPermission(function (permission) {
+        if (!('permission' in Notification)) {
+          Notification.permission = permission;
+        }
+
+        if (permission === "granted") {
+          var options = {
+            body: message,
+            icon: toUser.avatar,
+            dir: "ltr"
+          };
+          var notification = new Notification(toUser.name, options);
+        }
+      });
+    }
+  }
+
   render() {
     if (!_.isEmpty(this.state.toUser))
       return pug`
@@ -146,14 +189,15 @@ class MessageList extends PureComponent {
               #contact-1.tab-pane.active
                 .chat-body
                   ul.chat-message
-                    each message in this.state.messages
+                    each message in this.sortByDate(this.state.messages)
                       div(key=message._id)
                         if (message.from == this.state.toUser._id)
                           li.left
                             img(src=this.state.toUser.avatar, alt='').profile-photo-sm.pull-left
                             .chat-item
                               .chat-item-header
-                                h5 #{this.state.toUser.name}
+                                h5 
+                                  strong #{this.state.toUser.name}
                                 small.text-muted #{this.handlePostTime(message.time)}
                               p #{message.detail}
                               if (message.linkImg)
@@ -163,7 +207,8 @@ class MessageList extends PureComponent {
                             img(src=this.state.fromUser.avatar, alt='').profile-photo-sm.pull-right
                             .chat-item
                               .chat-item-header
-                                h5 #{this.state.fromUser.name}
+                                h5 
+                                  strong #{this.state.fromUser.name}
                                 small.text-muted #{this.handlePostTime(message.time)}
                               p #{message.detail}
                               if (message.linkImg)

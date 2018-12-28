@@ -9,7 +9,7 @@ class BillDetail extends React.Component {
   constructor(){
     super();
     this.state={
-      role: 'admin',
+      role: 'member',
       isClickPay: false,
       isClickAddBill: false,
       date: 'January 2018',

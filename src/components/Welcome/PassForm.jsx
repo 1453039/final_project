@@ -58,12 +58,12 @@ class PassForm extends React.Component {
     await axios.post("/user/login", {
         id : seft.state.id_user,
         password: seft.state.password
-    }).then((response) => {
+    }).then(async (response) => {
       const success = response.data.success
       if (success) {
         console.log(response.data.message);
-        seft.saveToSession(seft);
-        seft.props.history.push('@'+ seft.state.id + '?newfeeds');
+        await seft.saveToSession(seft);
+        await seft.props.history.push('@'+ seft.state.id + '?newfeeds');
       } else {
         seft.setState({ errors: response.data.errors });
       }

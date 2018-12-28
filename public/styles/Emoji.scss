@@ -24,8 +24,9 @@
 
 .emoji-table {
   position: absolute;
-  bottom: 30px;
+  bottom: 35px;
   right: 82px;
+  z-index: 2;
 }
 
 $padding_emoji: 20px;
