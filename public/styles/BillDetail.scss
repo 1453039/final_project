@@ -14,8 +14,7 @@
     clear: both;
     overflow: hidden;
     .pre-month, .next-month {
-      outline: none;
-      float: left;
+      outline: none;      float: left;
       padding: 0 7px;
       border: 1px solid #ccc;
       background: #fff;
@@ -52,7 +51,7 @@
     }
   }
   h4#total {
-    margin: 20px 0 0 !important;
+    margin: 10px 0 0 !important;
     float: right;
      span {
       margin-left: 20px;
@@ -172,5 +171,15 @@
     h3 {
       text-align: center;
     }
+  }
+}
+
+.payment-button {
+  clear: both;
+  text-align: center !important;
+  margin-top: 40px;
+  span {
+    font-size: 16px !important;
+    padding: 0 30px !important;
   }
 }

@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react';
+import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 import ImageLoader from './ImageLoader.jsx'
 
 class CreatePopup extends PureComponent {
@@ -16,7 +18,7 @@ class CreatePopup extends PureComponent {
       type: this.props.type,
       serviceName: '',
       unit: '',
-      fee: '',
+      fee: 0,
       page: 'create-popup'    
     }
     this.handleTextAreaChange = this.handleTextAreaChange.bind(this)
@@ -24,6 +26,7 @@ class CreatePopup extends PureComponent {
     this.handleInputChange = this.handleInputChange.bind(this)
     this.onClickPublish = this.onClickPublish.bind(this)
     this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.handleAddService = this.handleAddService.bind(this)
   }
 
   handleTextAreaChange(e) {
@@ -41,8 +44,9 @@ class CreatePopup extends PureComponent {
   handleInputChange(e) {
     if (e.target.name == "event-name")
       this.setState({ eventName: e.target.value })
-    if (e.target.name == "date")
+    if (e.target.name == "date") {
       this.setState({ day: e.target.value })
+    }
     if (e.target.name == "time")
       this.setState({ time: e.target.value })
     if (e.target.name == "cost")
@@ -54,13 +58,31 @@ class CreatePopup extends PureComponent {
     if (e.target.name == "service-item")
       this.setState({ serviceName: e.target.value })
     if (e.target.name == "unit")
-      this.setState({ unit: parseInt(e.target.value) })
+      this.setState({ unit: e.target.value })
     if (e.target.name == "fee")
-      this.setState({ fee: parseInt(e.target.value) })  }
+      this.setState({ fee: parseInt(e.target.value) })  
+  }
 
   onClickPublish() {
-    this.props.handlePopupSubmit(this.state.description, this.state.linkImg, new Date(this.state.day + ' ' + this.state.time), this.state.cost, this.state.itemName, this.state.eventName, this.state.price);
+    this.props.handlePopupSubmit(this.state.description, this.state.linkImg, new Date(this.state.day + ' ' + this.state.time), this.state.cost, this.state.itemName, this.state.price);
     this.props.closePopup()
+  }
+
+  async handleAddService(e) {
+    e.preventDefault();
+    let seft = this;
+    await axios.post("/service/insert", {
+      apartment: seft.props.match.params.id,
+      name: seft.state.serviceName,
+      description: '',
+      fee: seft.state.fee,
+      unit: seft.state.unit
+    }).then(response => {
+      alert(response.data);
+      this.props.closePopup();
+    }).catch(err => {
+      console.log('err', err);
+    })
   }
 
   getNow() {
@@ -80,6 +102,7 @@ class CreatePopup extends PureComponent {
     const disabled = (this.state.type=='Event') ? (!this.state.description || !this.state.linkImg || !this.state.day || !this.state.time) 
     : ((this.state.type=='Trading') ? (!this.state.description || !this.state.linkImg || !this.state.itemName) 
     : (!this.state.description || !this.state.linkImg))
+    const disabledService = !this.state.serviceName || !this.state.unit || this.state.fee <= 0 || !this.state.fee
     return pug`
       .popup
         form.popup-inner
@@ -90,14 +113,14 @@ class CreatePopup extends PureComponent {
               h3 Add service
               .form-group
                 label(for='service-item') Service:
-                input#service-item.form-control(type='text', name='service-item', onChange=this.handleInputChange, placeholder='Service Name')
+                input#service-item.form-control(type='text', name='service-item', value=this.state.serviceName, onChange=this.handleInputChange, placeholder='Service Name')
               .form-group
                 label(for='unit') Unit:
-                input#unit.form-control(type='text', name='unit', onChange=this.handleInputChange, placeholder='Unit')
+                input#unit.form-control(type='text', name='unit', value=this.state.unit, onChange=this.handleInputChange, placeholder='Unit')
               .form-group
                 label(for='fee') Fee:
-                input#fee.form-control(type='number', name='fee', onChange=this.handleInputChange, placeholder='Fee')
-            button#publish.btn.btn-primary.pull-right(onClick=this.onClickPublish, disabled=disabled) Add service
+                input#fee.form-control(type='number', name='fee', value=this.state.fee, onChange=this.handleInputChange, placeholder='Fee')
+            button#publish.btn.btn-primary.pull-right(onClick=this.handleAddService, disabled=disabledService) Add service
           else
             if (page == '?services')
               .add-service-form
@@ -145,4 +168,4 @@ class CreatePopup extends PureComponent {
   }
 }
 
-export default CreatePopup;
+export default withRouter(CreatePopup);

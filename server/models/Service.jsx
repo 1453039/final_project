@@ -4,7 +4,8 @@ import apartments from './Apartment';
 
 const ServiceSchema = new Schema({
 	apartment: {type: Schema.Types.ObjectId, ref: apartments},
-	name: String,
+  name: String,
+  description: String,
   fee: {type: Number, default: 0},
   unit: String
 });

@@ -6,7 +6,6 @@ import bills from './Bill'
 
 const BillDetailSchema = new Schema({
   service: {type: Schema.Types.ObjectId, ref: services},
-  seller: {type: Schema.Types.ObjectId, ref: users},
   bill: {type: Schema.Types.ObjectId, ref: bills},
   amount: {type: Number, default: 0}
 });

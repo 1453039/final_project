@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import AdminView from './AdminView.jsx';
 import MemberView from './MemberView.jsx';
-import PayOnline from './PayOnline.jsx';
 import AddBill from './AddBill.jsx';
 
 class BillDetail extends React.Component {
   constructor(){
     super();
     this.state={
-      role: 'admin',
-      isClickPay: false,
+      user: [],
       isClickAddBill: false,
       date: 'January 2018',
       list:[
@@ -28,17 +27,10 @@ class BillDetail extends React.Component {
             },
             {
               id: 1,
-              name: '',
+              name: 'bbbbbbbbbbbb',
               fee: 20,
               unit: '',
               amount: 1
-            },
-            {
-              id: 2,
-              name: '',
-              fee: '',
-              unit: '',
-              amount: ''
             }
           ]
         },
@@ -72,15 +64,24 @@ class BillDetail extends React.Component {
         }
       ]
     }
-    this.handleClickPay = this.handleClickPay.bind(this);
     this.calculateBill = this.calculateBill.bind(this);
     this.handleClickAddBill = this.handleClickAddBill.bind(this);
   }
-  handleClickPay() {
-    this.setState({
-      isClickPay: true
+
+  componentDidMount() {
+    this.getUserFromSession(this);
+  }
+
+  async getUserFromSession(e) {
+    await axios.get("/user/get_user_from_session").then((response) => {
+      e.setState({
+        user: response.data
+      })
+    }).catch(err =>{
+      console.log("err", err);
     })
   }
+
   handleClickAddBill() {
     this.setState({
       isClickAddBill: true
@@ -97,11 +98,8 @@ class BillDetail extends React.Component {
   render() {
     return pug`
       .payment-block
-        if (this.state.role == 'admin')
-          if(!this.state.isClickPay)
-            MemberView(detail=this.state, handleClickPay=this.handleClickPay, calculateBill=this.calculateBill)
-          else 
-            PayOnline
+        if (!this.state.user.isAdmin)
+          MemberView(detail=this.state, calculateBill=this.calculateBill)
         else 
           if(!this.state.isClickAddBill)
             AdminView(detail=this.state, handleClickAddBill=this.handleClickAddBill, calculateBill=this.calculateBill)

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PayOnline from './PayOnline.jsx';
 
 class MemberView extends React.Component {
   constructor(props) {
@@ -7,7 +8,6 @@ class MemberView extends React.Component {
     this.state = {
       detail: this.props.detail
     }
-    this.handleClickPay = this.props.handleClickPay;
     this.calculateBill = this.props.calculateBill;
   }
   render() {
@@ -35,9 +35,9 @@ class MemberView extends React.Component {
                 td.unit #{item.unit}
                 td.amount #{item.amount}
         h4.grey#total Total: 
-          span #{this.calculateBill(0)} VND
-        if !this.state.detail.isClickpay
-          button#pay.btn-primary(type='button', onClick=this.handleClickPay) Pay
+          span #{this.calculateBill(0).toLocaleString()} VND
+        .payment-button
+          PayOnline(email='cquyen0403@gmail.com', amount=this.calculateBill(0), description='Flat ' + this.state.detail.list[0].flat + ' - ' + this.state.detail.date)
     `;
   }
 }
