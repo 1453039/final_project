@@ -1,0 +1,40 @@
+.service-list {
+  padding: 20px;
+  button.add-service.btn-primary {
+    border-radius: 4px;
+    padding: 0 10px;
+    float: left;
+  }
+  h3.page-title {
+    text-align: center;
+  }
+  .service-box {
+    .service-item {
+      background-color: #f8f8f8;
+      margin: 10px 0;
+      padding: 20px 0;
+      .service-img {
+        width: 100%;
+      }
+      .service-detail {
+        padding: 0 10px;
+        p.service-price {
+          font-size: 15px;
+        }
+        button.book-service {
+          float: right;
+          margin: 0 30px;
+          outline: none;
+        }
+      }
+    }
+  }
+  .popup {
+    h3 {
+      text-align: center;
+    }
+    input.form-control {
+      width: 70% !important;
+    }
+  }
+}

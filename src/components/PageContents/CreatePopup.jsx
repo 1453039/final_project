@@ -96,34 +96,51 @@ class CreatePopup extends PureComponent {
                 input#unit.form-control(type='text', name='unit', onChange=this.handleInputChange, placeholder='Unit')
               .form-group
                 label(for='fee') Fee:
-                input#fee.form-control(type='text', name='fee', onChange=this.handleInputChange, placeholder='Fee')
+                input#fee.form-control(type='number', name='fee', onChange=this.handleInputChange, placeholder='Fee')
             button#publish.btn.btn-primary.pull-right(onClick=this.onClickPublish, disabled=disabled) Add service
           else
-            .form-group
-              img.profile-photo-md(src=this.props.avatar, alt="Your avatar")
-              textarea.form-control(name="texts", cols="30", rows="1", placeholder="Write what you want", value=this.state.description, onChange=this.handleTextAreaChange)
-            ImageLoader(page=this.state.page, handleImgChange=this.handleImgChange) 
-            if(this.state.type=='Event')
+            if (page == '?services')
+              .add-service-form
+                h3 Add service
+                .form-group
+                  label(for='service-item') Service:
+                  input#service-item.form-control(type='text', name='service-item', onChange=this.handleInputChange, placeholder='Service Name')
+                .form-group
+                  label(for='service-decs') Detail:
+                  input#service-decs.form-control(type='text', name='service-decs', onChange=this.handleInputChange, placeholder='Service Detail')
+                .form-group
+                  label(for='unit') Unit:
+                  input#unit.form-control(type='text', name='unit', onChange=this.handleInputChange, placeholder='Unit')
+                .form-group
+                  label(for='fee') Fee:
+                  input#fee.form-control(type='number', name='fee', onChange=this.handleInputChange, placeholder='Fee')
+              button#publish.btn.btn-primary.pull-right(onClick=this.onClickPublish, disabled=disabled) Add service
+            else
               .form-group
-                label(for='event-name') Event:
-                input#event-name.input-event-info.form-control(type='text', name='event-name', value=this.state.eventName, onChange=this.handleInputChange, placeholder='Event Name')
-              .form-group
-                label(for='celebration-day') Date:
-                input#celebration-day.input-event-info.form-control(type='date', name='date', min='2018-12-27', value=this.state.day, onKeyDown=this.handleKeyDown, onChange=this.handleInputChange)
-              .form-group
-                label(for='celebration-time') Time:
-                input#celebration-time.input-event-info.form-control(type='time', name='time', value=this.state.time, onChange=this.handleInputChange)
-              .form-group
-                label(for='cost') Cost:
-                input#cost.input-event-info.form-control(type='number', name='cost', min='0', value=this.state.cost, onChange=this.handleInputChange, required)
-            if(this.state.type=='Trading')
-              .form-group
-                label(for='item-name') Item:
-                input#item-name.input-event-info.form-control(type='text', name='item-name', placeholder='Item Name', value=this.state.itemName, onChange=this.handleInputChange)
-              .form-group
-                label(for='price') Price:
-                input#price.input-event-info.form-control(type='number', name='price', min='0', placeholder='Price', value=this.state.price, onChange=this.handleInputChange, required)
-            button#publish.btn.btn-primary.pull-right(onClick=this.onClickPublish, disabled=disabled) Publish
+                img.profile-photo-md(src=this.props.avatar, alt="Your avatar")
+                textarea.form-control(name="texts", cols="30", rows="1", placeholder="Write what you want", value=this.state.description, onChange=this.handleTextAreaChange)
+              ImageLoader(page=this.state.page, handleImgChange=this.handleImgChange) 
+              if(this.state.type=='Event')
+                .form-group
+                  label(for='event-name') Event:
+                  input#event-name.input-event-info.form-control(type='text', name='event-name', value=this.state.eventName, onChange=this.handleInputChange, placeholder='Event Name')
+                .form-group
+                  label(for='celebration-day') Date:
+                  input#celebration-day.input-event-info.form-control(type='date', name='date', min='2018-12-27', value=this.state.day, onKeyDown=this.handleKeyDown, onChange=this.handleInputChange)
+                .form-group
+                  label(for='celebration-time') Time:
+                  input#celebration-time.input-event-info.form-control(type='time', name='time', value=this.state.time, onChange=this.handleInputChange)
+                .form-group
+                  label(for='cost') Cost:
+                  input#cost.input-event-info.form-control(type='number', name='cost', min='0', value=this.state.cost, onChange=this.handleInputChange, required)
+              if(this.state.type=='Trading')
+                .form-group
+                  label(for='item-name') Item:
+                  input#item-name.input-event-info.form-control(type='text', name='item-name', placeholder='Item Name', value=this.state.itemName, onChange=this.handleInputChange)
+                .form-group
+                  label(for='price') Price:
+                  input#price.input-event-info.form-control(type='number', name='price', min='0', placeholder='Price', value=this.state.price, onChange=this.handleInputChange, required)
+              button#publish.btn.btn-primary.pull-right(onClick=this.onClickPublish, disabled=disabled) Publish
     `;
   }
 }

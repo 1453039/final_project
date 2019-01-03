@@ -13,9 +13,11 @@ class MemberView extends React.Component {
   render() {
     return pug`
       .bill-detail
-        h3.grey#payment-title Monthly Bill 
-        h4.grey.payment-detail Flat: #{this.state.detail.list[0].flat} 
-        h4.grey.payment-detail Month: #{this.state.detail.date}
+        .payment-title
+            button.pre-month &larr;
+            h3.grey Bills On #{this.state.detail.date}
+            button.next-month &rarr;
+        h4.grey.payment-detail Flat: #{this.state.detail.list[0].flat}
         table.service-list
           thead
             tr

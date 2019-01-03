@@ -9,7 +9,7 @@ class BillDetail extends React.Component {
   constructor(){
     super();
     this.state={
-      role: 'member',
+      role: 'admin',
       isClickPay: false,
       isClickAddBill: false,
       date: 'January 2018',
@@ -97,7 +97,7 @@ class BillDetail extends React.Component {
   render() {
     return pug`
       .payment-block
-        if (this.state.role == 'member')
+        if (this.state.role == 'admin')
           if(!this.state.isClickPay)
             MemberView(detail=this.state, handleClickPay=this.handleClickPay, calculateBill=this.calculateBill)
           else 

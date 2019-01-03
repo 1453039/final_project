@@ -7,7 +7,6 @@ class PayOnline extends React.Component {
     this.reload = this.reloadPage.bind(this);
   }
   reloadPage() {
-    console.log(1);
     location.reload();
   }
   render() {
