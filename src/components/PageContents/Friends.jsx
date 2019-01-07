@@ -23,6 +23,7 @@ class Friends extends React.Component {
               .card-info
                 img(src=item.avatar, alt="user").profile-photo-lg
                 .friend-info
+                  Link(to='/').pull-right.text-green Delete
                   Link(to={search: '?messages', state: {toUser: item}}).pull-right.text-green Inbox
                   h5 #{item.name}
                   p Flat: 

@@ -118,7 +118,12 @@
 	    overflow: hidden;
 	    margin-bottom: 20px;
 	    .card-info {
-		    padding: 0 20px 10px;
+				padding: 0 20px 10px;
+				.friend-info {
+					a.pull-right.text-green {
+						margin-left: 10px;
+					}
+				}
 		    img.profile-photo-lg {
 			    margin-top: -60px;
 			    border: 7px solid #fff;

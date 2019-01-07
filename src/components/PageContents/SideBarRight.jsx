@@ -57,7 +57,7 @@ class SideBarRight extends React.Component {
     return pug`
       .col-md-2.static
         .suggestions#sticky-sidebar
-          h4.grey Who to Chat
+          h4.grey Chat to Admin
           each item in newFriends
             .follow-user(key=item.id)
               img(src=item.linkImg).profile-photo-sm.pull-left
