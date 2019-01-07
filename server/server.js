@@ -22,6 +22,7 @@ var report = require('./routes/report')
 var trade = require('./routes/trade')
 var payment = require('./routes/payment')
 var service = require('./routes/service')
+var bill = require('./routes/bill')
 
 /** Variables */
 let onlineUsers = [];
@@ -58,6 +59,7 @@ app.use('/report', report);
 app.use('/trade', trade);
 app.use('/payment', payment);
 app.use('/service', service);
+app.use('/bill', bill);
 
 /** SOCKET!!! */
 app.get('/connected/:socketId', function (req, res, next) {

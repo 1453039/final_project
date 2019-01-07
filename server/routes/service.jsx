@@ -15,4 +15,11 @@ router.post('/insert', (req, res) => {
   })
 })
 
+router.get('/get-services', (req, res) => {
+  services.find({apartment: req.query.apartment}, (err, services) => {
+    if (err) console.log(err);
+    res.json(services);
+  })
+})
+
 module.exports = router;

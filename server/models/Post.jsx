@@ -5,7 +5,7 @@ import users from './User'
 
 const PostSchema = new Schema({
 	apartment: {type: Schema.Types.ObjectId, ref: apartments},
-  author: {type: Schema.Types.ObjectId, ref: users},
+	author: {type: Schema.Types.ObjectId, ref: users},
 	isAdmin: Boolean,
 	time: {type: Date, default: Date.now},
 	description: String,
@@ -13,9 +13,10 @@ const PostSchema = new Schema({
 	dislike: [{type: Schema.Types.ObjectId, ref: users}],
 	linkImg: String,
 	linkVideo: String,
-  type: {type: String, enum: ['Post', 'Event']},
-	eventName: String,  date: Date,
-  cost: Number
+	type: {type: String, enum: ['Post', 'Event']},
+	eventName: String,  
+	date: Date,
+	cost: Number
 });
 
 module.exports = mongoose.model('posts', PostSchema);

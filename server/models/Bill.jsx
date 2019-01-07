@@ -3,10 +3,11 @@ var Schema = mongoose.Schema;
 import apartments from './Apartment';
 
 const BillSchema = new Schema({
-  apartment: {type: Schema.Types.ObjectId, ref: apartments},
+	apartment: {type: Schema.Types.ObjectId, ref: apartments},
   flat: String,
-  month: {type: Number, min: 0, max: 11},
-  total: Number,
+  month: {type: Number, min: 1, max: 12},
+  year: Number,
+	total: Number,
   date: {type: Date, default: Date.now},
   isPaid: {type: Boolean, default: false}
 });

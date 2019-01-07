@@ -63,9 +63,7 @@ class PageContents extends PureComponent {
 
   filterPostByType() {
     let posts = this.state.posts;
-    console.log("1", posts);
     posts = posts.filter(post => post.isAdmin == this.props.isAdmin)
-    console.log("2", posts);
     this.setState({ posts });
   }
 
