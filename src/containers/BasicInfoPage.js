@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Header from '../components/Header.jsx'
 import MyCover from '../components/PageContents/MyCover.jsx'
 import BasicInfo from '../components/PageContents/BasicInfo.jsx'
@@ -6,20 +6,39 @@ import Footer from '../components/Footer.jsx'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 
-class BasicInfoPage extends Component {
+class BasicInfoPage extends PureComponent {
   constructor() {
     super();
     this.state = {
+      user: [],
       loggedIn: false
     }
+    this.getUserFromSession = this.getUserFromSession.bind(this);
+    this.reloadUser = this.reloadUser.bind(this);
   }
-  componentDidMount() {
-    axios.get("/user/check-logged-in").then(response => {
+
+  async componentDidMount() {
+    await axios.get("/user/check-logged-in").then(response => {
       if (!response.data) {
         this.props.history.push('/');
       }
       else this.setState({ loggedIn: true })
     }).catch(err => console.log("err", err))
+    await this.getUserFromSession(this);
+  }
+
+  async getUserFromSession(e) {
+    await axios.get("/user/get_user_from_session").then((response) => {
+      e.setState({
+        user: response.data
+      })
+    }).catch(err =>{
+      console.log("err", err);
+    })
+  }
+
+  reloadUser() {
+    this.getUserFromSession(this);
   }
 
   render() {
@@ -29,8 +48,8 @@ class BasicInfoPage extends Component {
         div(className="BasicInfoPage")
           .container
             .timeline
-              MyCover
-              BasicInfo
+              MyCover(user = this.state.user)
+              BasicInfo(reloadUser = this.reloadUser)
         Footer
       `;
     else return pug``;

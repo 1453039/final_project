@@ -1,35 +1,24 @@
 import React, { PureComponent } from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../../../public/styles/ResidentList.scss';
 import axios from 'axios';
 import ImageLoader from './ImageLoader.jsx'
 
 class MyCover extends PureComponent {
-  constructor() {
-    super();
-    this.state={
-      user:[],
+  constructor(props) {
+    super(props);
+    this.state= {
+      user: this.props.user,
       page: 'info'
     }
-    this.getUserFromSession = this.getUserFromSession.bind(this);
   }
 
-  componentWillMount() {
-    this.getUserFromSession(this);
-  }
-
-  async getUserFromSession(e) {
-    await axios.get("/user/get_user_from_session").then((response) => {
-      e.setState({
-        user: response.data
-      })
-    }).catch(err =>{
-      console.log("err", err);
-    })
+  componentWillReceiveProps(nextProps) {
+    this.setState({ user: nextProps.user });
   }
 
   render() {
-    const page=window.location.search;
+    const page = window.location.search;
     return pug`
     .timeline-cover
       ImageLoader(page=this.state.page, id='cover')
@@ -93,4 +82,4 @@ class MyCover extends PureComponent {
   }
 }
 
-export default withRouter(MyCover);
+export default MyCover;

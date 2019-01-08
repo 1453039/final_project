@@ -58,10 +58,10 @@ class AddUser extends React.PureComponent {
         avatar: DEFAULT_AVATAR,
         cover: DEFAULT_COVER
       }).then(function (response) {
-        e.setState({
-          errors: response.data,
-          messageFromServer: response.message
-        });
+        let success = response.data.success
+        if (!success)
+        e.setState({ errors: response.data.errors });
+        else e.setState({ messageFromServer: response.data.message });
       })
     }
     catch (error) {

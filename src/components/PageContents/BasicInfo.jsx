@@ -5,8 +5,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 class MyInfo extends Component {
-	constructor(){
-		super();
+	constructor(props) {
+		super(props);
 		this.state= {
       user:[]
     }
@@ -70,7 +70,7 @@ class MyInfo extends Component {
       birthday: e.state.user.birthday,
       sex: e.state.user.sex
     }).then((response) => {
-      alert(response.data)
+      alert(response.data);
     }).catch(err => {
       console.log("err", err)
     })
@@ -79,6 +79,7 @@ class MyInfo extends Component {
   async onClickSaveChange(e) {
     e.preventDefault()
     await this.updateInfo(this);
+    this.props.reloadUser();
   }
 
   render() {

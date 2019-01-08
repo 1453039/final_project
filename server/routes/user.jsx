@@ -18,13 +18,13 @@ router.route('/insert')
     const { errors, isValid } = validateRegisterInput(body);
     // Check validation
     if (!isValid) {
-      return res.json(errors);
+      return res.send({success: false, errors: errors});
     }
     users.find({ email: email }, (err, user) => {
       if (err) console.log("err", err);
       if (!_.isEmpty(user)) {
         errors.email = "Email already exists";
-        return res.json(errors);
+        return res.send({success: false, errors: errors});
       } else {
         var user = new users();
         user.email = email.toLowerCase();
@@ -193,7 +193,7 @@ router.put('/update-cover', function (req, res) {
 
 router.get('/delete', function (req, res) {
   var id = req.query.id;
-  users.find({ _id: id }).remove().exec(function (err, result) {
+  users.find({ _id: id }).remove().exec(function (err) {
     if (err)
       res.send(err)
     res.send('User successfully deleted!');
