@@ -13,7 +13,6 @@ const UserSchema = new Schema({
   avatar: String,
   cover: String,
 	flat: String,
-	status: {type: Boolean, default: false},
 	isAdmin: {type: Boolean, default: false},
 });
 

@@ -1,22 +1,13 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
+import axios from 'axios';
 
-class SideBarRight extends React.Component {
+class SideBarRight extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      newFriends: [
-				{
-					id: 0,
-					name: 'Nguyễn Phạm Song Huy',
-					linkImg: 'http://placehold.it/300x300'
-				},
-				{
-					id: 1,
-					name: 'Nguyễn Minh Chánh',
-					linkImg: 'http://placehold.it/300x300'
-				},
-      ],
+      user: [],
+      admins: [],
 			info: [
         {
           id: 0,
@@ -51,20 +42,49 @@ class SideBarRight extends React.Component {
       ]
     }
   }
+  async componentDidMount() {
+    await this.getUserFromSession(this);
+    await this.getAdmins(this);
+  }
+
+  async getUserFromSession(e) {
+    await axios.get("/user/get_user_from_session").then((response) => {
+      e.setState({
+        user: response.data
+      })
+    }).catch(err => {
+      console.log("err", err);
+    })
+  }
+
+  async getAdmins(e) {
+    await axios.get("/user/get-resident-of-apartment", {
+      params: {
+        id: e.props.match.params.id,
+        userId: e.state.user._id
+      }
+    }).then(response => {
+      e.setState({admins: response.data});
+    }).catch(err => {
+      console.log("err", err);
+    })
+  }
 
   render() {
-    const {newFriends, info} = this.state;
+    const {info} = this.state;
     return pug`
       .col-md-2.static
         .suggestions#sticky-sidebar
           h4.grey Chat to Admin
-          each item in newFriends
-            .follow-user(key=item.id)
-              img(src=item.linkImg).profile-photo-sm.pull-left
-              div
-                h5
-                  Link(to='?timeline') #{item.name}
-                Link(to='?messages').text-green Chat now
+          each item in this.state.admins
+            div(key=item._id)
+              if(item.isAdmin)
+                .follow-user
+                  img(src=item.avatar).profile-photo-sm.pull-left
+                  div
+                    h5
+                      Link(to='?timeline') #{item.name}
+                    Link(to={search: "?messages", state: {toUser: item}}, title=item.name).text-green Chat now
         .footer.hidden-sm.hidden-xs
           ul
             each item in info
@@ -76,4 +96,4 @@ class SideBarRight extends React.Component {
   }
 }
 
-export default SideBarRight;
+export default withRouter(SideBarRight);

@@ -58,7 +58,18 @@
       margin-left: 20px;
      }
   }
+  h4.payment-detail {
+    float: left;
+  }
+  .edit-bill {
+    float: right;
+    text-decoration: underline;
+    color: #27aae1;
+    margin: 15px 0;
+    cursor: pointer;
+  }
   table {
+    clear: both;
     margin-top: 20px;
     width: 100%;
     th, td {
@@ -101,7 +112,12 @@
     padding: 0 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    color: #808080;
+    background-color: #fff;
+    &:hover{
+      background-color: #27aae1;
+      color: #fff;
+      border-color: #27aae1; 
+    }
   }
   .add-service {
     position: absolute;
@@ -112,7 +128,7 @@
   }
   .line-divide {
     border: 1px solid #ccc;
-    margin: 35px;
+    margin: 35px 35px 15px;
   }
   .add-bill-form {
     border: 1px dashed #ccc;
@@ -126,6 +142,23 @@
   }
   form {
     clear: both;
+    .service-item {
+      .form-group {
+        clear: both;
+      }
+    }
+    .delete-service-item {
+      background-color: #fff;
+      margin-bottom: 15px;
+      padding: 0 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      &:hover{
+        background-color: #27aae1;
+        color: #fff;
+        border-color: #27aae1; 
+      }
+    }
   }
   label {
     display: inline-block;

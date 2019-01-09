@@ -84,9 +84,10 @@ class BillDetail extends React.Component {
 
   handleClickAddBill() {
     this.setState({
-      isClickAddBill: !this.state.isClickAddBill
+      isClickAddBill: true
     })
   }
+  
   calculateBill(num) {
     let sum = 0;
     const arr = this.state.list[num].service;
@@ -104,7 +105,7 @@ class BillDetail extends React.Component {
           if(!this.state.isClickAddBill)
             AdminView(detail=this.state, handleClickAddBill=this.handleClickAddBill, calculateBill=this.calculateBill)
           else
-            AddBill(onClickCancel=this.handleClickAddBill)
+            AddBill
     `;
   }
 }
