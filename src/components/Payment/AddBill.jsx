@@ -9,7 +9,6 @@ class AddBill extends React.PureComponent {
     super(props);
     this.state = {
       addedBill: false,
-      amountService: [],
       billDetails: [],
       showPopup: false,
       flatName: '',
@@ -29,6 +28,7 @@ class AddBill extends React.PureComponent {
     this.handleAddBilDetail = this.handleAddBilDetail.bind(this);
     this.reloadServices = this.reloadServices.bind(this);
     this.calculateTotal = this.calculateTotal.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
   }
 
   componentDidMount() {
@@ -93,9 +93,6 @@ class AddBill extends React.PureComponent {
     e.preventDefault();
     await this.getBill(this);
     await this.addBillDetail(this);
-    this.calculateTotal();
-    await this.updateBill(this);
-    this.setState({ addedBill: !this.state.addedBill, flatName: '' });
   }
 
   async addBillDetail(e) {
@@ -103,12 +100,15 @@ class AddBill extends React.PureComponent {
       apartment: e.props.match.params.id,
       bill: e.state.bill._id,
       billDetails: e.state.billDetails
-    }).then(response => {
+    }).then(async response => {
       let success = response.data.success
       if (!success) {
         e.setState({ errors: response.data.errors });
       } else {
         alert(response.data.message);
+        this.calculateTotal();
+        await this.updateBill(this);
+        this.setState({ addedBill: !this.state.addedBill, flatName: '' });
       }
     })
   }
@@ -169,15 +169,10 @@ class AddBill extends React.PureComponent {
   }
 
   handleClickAddService() {
-    let num = {}
     let billDetail = {}
     billDetail.serviceName = ''
     billDetail.amount = 0
-    let amountService = this.state.amountService.slice(0)
-    num.id = this.state.amountService.length;
-    amountService.push(num);
     this.setState({
-      amountService,
       billDetails: [...this.state.billDetails, billDetail]
     })
   }
@@ -209,7 +204,15 @@ class AddBill extends React.PureComponent {
     this.setState({ addedBill: !this.state.addedBill, flatName: '' });
   }
 
+  onClickDelete(e) {
+    e.preventDefault();
+    let i = e.target.id
+    this.state.billDetails.splice(i, 1);
+    this.setState({ billDetails: [...this.state.billDetails]});
+  }
+
   render() {
+    console.log('this.state', this.state.amountService, this.state.billDetails, this.state.errors);
     return pug`
     .add-bill-detail
       h3.grey Add Bill 
@@ -238,21 +241,22 @@ class AddBill extends React.PureComponent {
           button.btn.btn-primary#add(type='submit', onClick=this.handleAddBill) Add Bill
         else 
           .line-divide
-          each item in this.state.amountService
-            .service-item(key=item.id)
+          each item, index in this.state.billDetails
+            .service-item(key=index)
+              button.delete-service-item.pull-right(id=index, onClick=this.onClickDelete) x
               .form-group
-                label(for=item.id) Service Name:
-                select.form-control(id=item.id, type='text', name='servicename', value=this.state.billDetails[item.id].serviceName, onChange=this.handleTextChange)
+                label(for=index) Service Name:
+                select.form-control(id=index, type='text', name='servicename', value=item.serviceName, onChange=this.handleTextChange)
                   option(value="", disabled) -- Select service --
                   each item in this.state.service
                     option(key=item._id, value=item.name) #{item.name}
-                if (this.state.errors[item.id])
-                  span.error #{this.state.errors[item.id].serviceName}
+                if (this.state.errors[index])
+                  span.error #{this.state.errors[index].serviceName}
               .form-group
-                label(for=item.id) Amount:
-                input.form-control(id=item.id, type='text', name='amount', placeholder='Amount', value=this.state.billDetails[item.id].amount, onChange=this.handleTextChange)
-                if (this.state.errors[item.id])
-                  span.error #{this.state.errors[item.id].amount}
+                label(for=index) Amount:
+                input.form-control(id=index, type='text', name='amount', placeholder='Amount', value=item.amount, onChange=this.handleTextChange)
+                if (this.state.errors[index])
+                  span.error #{this.state.errors[index].amount}
               .line-divide
           .add-bill-form(onClick=this.handleClickAddService)
             i.ion-android-add

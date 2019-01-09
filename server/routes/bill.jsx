@@ -74,10 +74,24 @@ router.put("/update-bill", (req, res) => {
   })
 })
 
+router.get("/get-list", (req, res) => {
+  bills.find({$and: [{ apartment: req.query.apartment, month: req.query.month, year: req.query.year }]}, (err, bills) => {
+    if (err) console.log(err);
+    res.json(bills);
+  })
+})
+
 router.get("/get-bill", (req, res) => {
   bills.findOne({$and: [{ flat: req.query.flatName, month: req.query.month, year: req.query.year }]}, (err, bill) => {
     if (err) console.log(err);
     res.json(bill);
+  })
+})
+
+router.get("/get-bill-detail", (req, res) => {
+  bill_details.find({ bill: req.query.bill }, (err, bill_details) => {
+    if (err) console.log(err);
+    res.json(bill_details);
   })
 })
 

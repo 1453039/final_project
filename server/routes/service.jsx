@@ -22,4 +22,11 @@ router.get('/get-services', (req, res) => {
   })
 })
 
+router.get('/get-service', (req, res) => {
+  services.findOne({_id: req.query.id}, (err, service) => {
+    if (err) console.log(err);
+    res.json(service);
+  })
+})
+
 module.exports = router;

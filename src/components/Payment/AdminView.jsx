@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import axios from 'axios';
 
-class AdminView extends React.Component {
+class AdminView extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -9,16 +10,39 @@ class AdminView extends React.Component {
       month: '',
       year: ''
     }
-    this.calculateBill = this.props.calculateBill;
     this.handleClickAddBill = this.props.handleClickAddBill;
+    this.getMonthOfBill = this.getMonthOfBill.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    let now = new Date();
+    let currentMonth = now.getMonth() + 1
+    if (currentMonth == 1) {
+      await this.setState({ month: 12, year: now.getFullYear() - 1 })
+    } else {
+      await this.setState({ month: currentMonth - 1, year: now.getFullYear() });
+    }
+    await this.getBills(this);
+  }
 
+  async getBills(e) {
+    await axios.get("/bill/get-list", {
+      params: {
+        apartment: e.props.match.params.id,
+        month: e.state.month,
+        year: e.state.year
+      }
+    }).then(response => {
+      e.setState({ bills: response.data });
+    }).catch(err => console.log("err", err));
+  }
+  
+  getMonthOfBill() {
+    let arr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    return arr[this.state.month - 1] + " " + this.state.year;
   }
 
   render() {
-    const {detail} = this.props;
     return pug`
       .bill-detail  
         button.btn.btn-primary#add-bill(onClick=this.handleClickAddBill) Add Bill
@@ -31,7 +55,7 @@ class AdminView extends React.Component {
             input(type="text", placeholder="Search flat...")
         .payment-title
           button.pre-month &larr;
-          h3.grey Bills On #{detail.date}
+          h3.grey Bills On #{this.getMonthOfBill()}
           button.next-month &rarr;
         table.bill-list
           thead
@@ -41,13 +65,13 @@ class AdminView extends React.Component {
               th Total
               th Paid
           tbody
-            each mem in detail.list
-              tr(key=mem.id)
-                td.id #{mem.id + 1}
+            each bill, index in this.state.bills
+              tr(key=bill._id)
+                td.id #{index + 1}
                 td.flat-num 
-                  Link(to='/') #{mem.flat}
-                td.total #{this.calculateBill(mem.id)} VND
-                td.isPaid #{mem.isPaid}
+                  Link(to='/') #{bill.flat}
+                td.total #{bill.total.toLocaleString()} VND
+                td.isPaid #{bill.date}
       .pagi-block
         ul.pagination
           li.page-item.disabled
@@ -65,4 +89,4 @@ class AdminView extends React.Component {
   }
 }
 
-export default AdminView;
+export default withRouter(AdminView);
