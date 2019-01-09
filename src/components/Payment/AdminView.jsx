@@ -4,9 +4,19 @@ import { Link } from 'react-router-dom';
 class AdminView extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      bills: [],
+      month: '',
+      year: ''
+    }
     this.calculateBill = this.props.calculateBill;
     this.handleClickAddBill = this.props.handleClickAddBill;
   }
+
+  componentDidMount() {
+
+  }
+
   render() {
     const {detail} = this.props;
     return pug`

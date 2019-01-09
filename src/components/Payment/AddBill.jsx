@@ -9,7 +9,6 @@ class AddBill extends React.PureComponent {
     super(props);
     this.state = {
       addedBill: false,
-      addedBillDetail: false,
       amountService: [],
       billDetails: [],
       showPopup: false,
