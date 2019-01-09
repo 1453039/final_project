@@ -3,6 +3,7 @@ const isEmpty = require("is-empty");
 
 module.exports = function validateBillDetailInput(data) {
   let errors = [];
+  let isValid = true;
   for (var i in data.billDetails) {
     errors[i] = {};
     //Check Validation
@@ -12,9 +13,11 @@ module.exports = function validateBillDetailInput(data) {
     if (data.billDetails[i].amount <= 0) {
       errors[i].amount = "Amount must be greater than 0";
     }
+    if (!isEmpty(errors[i]))
+      isValid = false;
   }
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid
   };
 }

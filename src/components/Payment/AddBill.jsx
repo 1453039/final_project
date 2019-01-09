@@ -28,6 +28,8 @@ class AddBill extends React.PureComponent {
     this.getMonthOfBill = this.getMonthOfBill.bind(this);
     this.onClickCancel = this.onClickCancel.bind(this);
     this.handleAddBilDetail = this.handleAddBilDetail.bind(this);
+    this.reloadServices = this.reloadServices.bind(this);
+    this.calculateTotal = this.calculateTotal.bind(this);
   }
 
   componentDidMount() {
@@ -58,9 +60,14 @@ class AddBill extends React.PureComponent {
     })
   }
 
+  reloadServices() {
+    this.getServices(this);
+  }
+
   handleAddBill(e) {
     e.preventDefault();
     this.addBill(this);
+    this.setState({errors: []});
   }
 
   async addBill(e) {
@@ -75,7 +82,7 @@ class AddBill extends React.PureComponent {
         e.setState({ errors: response.data.errors })
       else {
         alert(response.data.message);
-        this.setState({ 
+        this.setState({
           addedBill: !this.state.addedBill,
           billDetails: []
         })
@@ -87,6 +94,9 @@ class AddBill extends React.PureComponent {
     e.preventDefault();
     await this.getBill(this);
     await this.addBillDetail(this);
+    this.calculateTotal();
+    await this.updateBill(this);
+    this.setState({ addedBill: !this.state.addedBill, flatName: '' });
   }
 
   async addBillDetail(e) {
@@ -137,6 +147,28 @@ class AddBill extends React.PureComponent {
     return arr[this.state.month - 1] + " " + this.state.year;
   }
 
+  async updateBill(e) {
+    await axios.put("/bill/update-bill", {
+      id: e.state.bill._id,
+      total: e.state.total
+    }).then(response => {
+      alert(response.data);
+    }).catch(err => {
+      console.log('err', err);
+    })
+  }
+
+  calculateTotal() {
+    let total = 0
+    this.state.billDetails.forEach(billDetail => {
+      let i = _.findIndex(this.state.service, function (service) {
+        return service.name === billDetail.serviceName
+      })
+      total += billDetail.amount * this.state.service[i].fee
+    })
+    this.setState({total});
+  }
+
   handleClickAddService() {
     let num = {}
     let billDetail = {}
@@ -175,7 +207,7 @@ class AddBill extends React.PureComponent {
 
   onClickCancel() {
     this.deleteBill(this);
-    this.setState({ addedBill: !this.state.addedBill , flatName: '' });
+    this.setState({ addedBill: !this.state.addedBill, flatName: '' });
   }
 
   render() {
@@ -191,7 +223,7 @@ class AddBill extends React.PureComponent {
       if (this.state.addedBill)
         button.add-service.btn-primary(onClick = this.togglePopup) +
         if(this.state.showPopup)
-          CreatePopup(closePopup=this.togglePopup)
+          CreatePopup(closePopup=this.togglePopup, reloadServices = this.reloadServices)
       form
         if (this.state.errors)
           span.error #{this.state.errors.bill}

@@ -53,8 +53,7 @@ router.post("/bill-detail/insert", (req, res) => {
     return res.send({ success: false, errors: errors });
   }
   billDetails.forEach(billDetail => {
-    console.log(billDetail);
-    services.find({ apartment: apartment, name: billDetail.serviceName}, (err, service) => {
+    services.findOne({$and: [{ apartment: apartment, name: billDetail.serviceName}]}, (err, service) => {
       if (err) console.log(err);
       let bill_detail = new bill_details()
       bill_detail.service = service._id
@@ -66,6 +65,13 @@ router.post("/bill-detail/insert", (req, res) => {
     })
   });
   res.send({success: true, message: "Add bill detail successfully!"});
+})
+
+router.put("/update-bill", (req, res) => {
+  bills.updateOne({ _id: req.body.id }, { $set: { total: req.body.total }}, (err) => {
+    if (err) console.log(err);
+    res.send("Bill updated successfully!");
+  })
 })
 
 router.get("/get-bill", (req, res) => {

@@ -10,16 +10,28 @@ class MyProductsPage extends Component {
   constructor() {
     super();
     this.state = {
+      user: [],
       loggedIn: false
     }
   }
-  componentDidMount() {
-    axios.get("/user/check-logged-in").then(response => {
+  async componentDidMount() {
+    await axios.get("/user/check-logged-in").then(response => {
       if (!response.data) {
         this.props.history.push('/');
       }
       else this.setState({ loggedIn: true })
     }).catch(err => console.log("err", err))
+    await this.getUserFromSession(this);
+  }
+  
+  async getUserFromSession(e) {
+    await axios.get("/user/get_user_from_session").then((response) => {
+      e.setState({
+        user: response.data
+      })
+    }).catch(err =>{
+      console.log("err", err);
+    })
   }
 
   render() {
@@ -29,7 +41,7 @@ class MyProductsPage extends Component {
         div(className="MyProductsPage")
           .container
             .timeline
-              MyCover
+              MyCover(user = this.state.user)
               MyProducts
         Footer
       `;

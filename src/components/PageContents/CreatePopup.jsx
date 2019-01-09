@@ -79,6 +79,7 @@ class CreatePopup extends PureComponent {
       unit: seft.state.unit
     }).then(response => {
       alert(response.data);
+      this.props.reloadServices();
       this.props.closePopup();
     }).catch(err => {
       console.log('err', err);
