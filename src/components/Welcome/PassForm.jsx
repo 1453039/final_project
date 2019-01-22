@@ -25,6 +25,7 @@ class PassForm extends React.Component {
   handlePassChange (e) {
     this.setState ({
       password: e.target.value,
+      errors: {}
     });
   }
 
@@ -75,21 +76,23 @@ class PassForm extends React.Component {
   render() {
     const {apartment, password} = this.state
     let disabled = password ? false : true
-    return pug`
-      .login-form.col-md-5.col-sm-5
-        #wrapper
-          h2.text-white Welcome to #{apartment.name}
-          .line-divider
-          h2.text-white Enter your password
-          form(onSubmit=this.handleClickNext)
-            fieldset.form-group
-              input.form-control#example-email(type="password", placeholder="Your password", onChange=this.handlePassChange)
-            if (this.state.errors)
-              span.error 
-                strong #{this.state.errors.password}
-            button.btn-secondary(disabled=disabled)
-              span Next
-    `;
+    if (this.state.id_user)
+      return pug`
+        .login-form.col-md-5.col-sm-5
+          #wrapper
+            h2.text-white Welcome to #{apartment.name}
+            .line-divider
+            h2.text-white Enter your password
+            form(onSubmit=this.handleClickNext)
+              fieldset.form-group
+                input.form-control#example-email(type="password", placeholder="Your password", onChange=this.handlePassChange)
+              if (this.state.errors)
+                span.error 
+                  strong #{this.state.errors.password}
+              button.btn-secondary(disabled=disabled)
+                span Next
+      `;
+    else this.props.history.push('/');
   }
 }
 

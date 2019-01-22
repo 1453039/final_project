@@ -25,6 +25,22 @@ class MessageBarLeft extends PureComponent {
     await this.getUserIdList()
     await this.getUserList(this)
     await this.getUserChatList(this)
+    if (!_.isEmpty(this.state.toUser)) {
+      let id = this.state.toUser._id
+      let index = await _.findIndex(this.state.userChatList, function (chat) {
+        return chat._id === id
+      })
+      if (index == -1) {
+        var tmp = {};
+        tmp._id = this.state.toUser._id
+        tmp.name = this.state.toUser.name
+        tmp.avatar = this.state.toUser.avatar
+        tmp.lastMessage = ''
+        tmp.time = ''
+        this.setState({ userChatList: [...this.state.userChatList, tmp] });
+        this.setState({ userChatList: [...this.state.userChatList.reverse()] });
+      }
+    }
   }
 
   async componentWillReceiveProps(nextProps) {
@@ -63,9 +79,9 @@ class MessageBarLeft extends PureComponent {
         id: this.state.user._id
       }
     }).then((response) => {
-      this.setState({
-        userIdList: response.data
-      })
+        this.setState({
+          userIdList: response.data
+        })
     })
   }
 
@@ -132,15 +148,21 @@ class MessageBarLeft extends PureComponent {
     }
   }
 
+  sortChatByTime(array) {
+    return array.sort(function (a, b) {
+      return new Date(b.time) - new Date(a.time);
+    })
+  }
+
   render() {
     if (this.state.userChatList)
       return pug`
       .col-sm-5
         .scroll-wrapper.nav.nav-tabs.contact-list.scrollbar-wrapper.scrollbar-outer
           ul.nav.nav-tabs.contact-list.scrollbar-wrapper.scrollbar-outer.scroll-content.croll-scrolly_visible
-            each item in this.state.userChatList
+            each item in this.sortChatByTime(this.state.userChatList)
               li(key=item._id)
-                Link(to={pathname: '@' + this.props.match.params.id ,search: '?messages', state: {toUser: item}})(data-toggle='tab')
+                Link(className=item._id == this.state.toUser._id ? 'active' : '',to={pathname: '@' + this.props.match.params.id ,search: '?messages', state: {toUser: item, message: ''}})(data-toggle='tab')
                   .contact
                     img(src=item.avatar, alt='').profile-photo-sm.pull-left
                     .msg-preview
@@ -152,14 +174,6 @@ class MessageBarLeft extends PureComponent {
                       else 
                         p.text-muted #{item.lastMessage}
                       small.text-muted #{this.handlePostTime(item.time)}
-                      // if(item.contents[item.contents.length - 1].status=='seen')
-                      //   .seen
-                      //     i.icon.ion-checkmark-round
-                      // else if(item.contents[item.contents.length - 1].status=='chat-alert')
-                      //   .chat-alert 1
-                      // else
-                      //   .replied
-                      //     i.icon.ion-reply
     `;
     else
       return pug`

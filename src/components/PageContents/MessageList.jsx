@@ -23,7 +23,7 @@ class MessageList extends PureComponent {
       fromUser: [],
       toUser: this.props.history.location.state ? this.props.history.location.state.toUser : [],
       messages: [],
-      message: this.props.history.location.state && this.props.history.location.state.itemName ? '[' + this.props.history.location.state.itemName + '] ' : '',
+      message: this.props.history.location.state && this.props.history.location.state.message ? '[' + this.props.history.location.state.message + '] ' : '',
       emojiShown: false
     }
     this.getUserFromSession = this.getUserFromSession.bind(this)
@@ -41,8 +41,10 @@ class MessageList extends PureComponent {
   }
 
   async componentWillReceiveProps(nextProps) {
-    await this.setState({ toUser: nextProps.history.location.state.toUser, rerender: true });
-    await this.getMessages(this)
+    if (nextProps.history.location.state.toUser._id != this.state.toUser._id) {
+      await this.setState({ toUser: nextProps.history.location.state.toUser, message: '', rerender: true });
+      await this.getMessages(this)
+    }
   }
 
   async getUserFromSession(e) {
@@ -67,12 +69,10 @@ class MessageList extends PureComponent {
         e.setState({ messages });
 
         window.socket.on('updateMessage', (msg) => {
-          console.log(JSON.stringify(msg.to));
-          console.log(JSON.stringify(this.state.fromUser._id));
-          if (JSON.stringify(msg.to) == JSON.stringify(this.state.fromUser._id)) {
+          if (msg.to == this.state.fromUser._id) {
             this.notifyMe(msg.detail, this.state.toUser);
           }
-          messages = [...e.state.messages, msg]
+          messages = [...messages, msg]
           e.setState({ messages });
         })
       }).catch(err => {
@@ -219,7 +219,7 @@ class MessageList extends PureComponent {
                   Emoji(handleEmojiClick = this.handleEmojiClick, toogleEmojiState = this.toogleEmojiState, emojiShown= this.state.emojiShown)
                   ImageLoader(page='?messages', handleChooseImgBtn = this.handleChooseImgBtn)                 
                   span.input-group-btn
-                    button.btn.btn-primary(type="button", onClick=this.handleSendMessage) Send
+                    button.btn.btn-primary(type="button", onClick=this.handleSendMessage, disabled=!this.state.message || !this.state.message.replace(/\s/g, '').length) Send
       `;
     else
       return pug`

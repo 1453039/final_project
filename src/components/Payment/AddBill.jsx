@@ -8,6 +8,7 @@ class AddBill extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      user: [],
       addedBill: false,
       billDetails: [],
       showPopup: false,
@@ -33,6 +34,7 @@ class AddBill extends React.PureComponent {
 
   componentDidMount() {
     this.getServices(this);
+    this.getUserFromSession(this);
     let now = new Date();
     let currentMonth = now.getMonth() + 1
     if (currentMonth == 1) {
@@ -47,13 +49,24 @@ class AddBill extends React.PureComponent {
     }
   }
 
+  async getUserFromSession(e) {
+    await axios.get("/user/get_user_from_session").then((response) => {
+      e.setState({
+        user: response.data
+      })
+    }).catch(err =>{
+      console.log("err", err);
+    })
+  }
+
   async getServices(e) {
     await axios.get("/service/get-services", {
       params: {
         apartment: e.props.match.params.id
       }
     }).then(response => {
-      e.setState({ service: response.data });
+      let services = response.data.filter(item => item.description == '');
+      e.setState({ service: services });
     }).catch(err => {
       console.log(err);
     })
@@ -212,7 +225,6 @@ class AddBill extends React.PureComponent {
   }
 
   render() {
-    console.log('this.state', this.state.amountService, this.state.billDetails, this.state.errors);
     return pug`
     .add-bill-detail
       h3.grey Add Bill 
@@ -225,7 +237,7 @@ class AddBill extends React.PureComponent {
       if (this.state.addedBill)
         button.add-service.btn-primary(onClick = this.togglePopup) +
         if(this.state.showPopup)
-          CreatePopup(closePopup=this.togglePopup, reloadServices = this.reloadServices)
+          CreatePopup(closePopup=this.togglePopup, reloadServices = this.reloadServices, admin=this.state.user._id)
       form
         if (this.state.errors)
           span.error #{this.state.errors.bill}

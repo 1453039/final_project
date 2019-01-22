@@ -50,6 +50,22 @@ class ResidentList extends PureComponent {
     this.getMemberList(this)
   }
 
+  sortByName(array) {
+    return array.sort(function(a, b) {
+      if (a.name < b.name) { return -1; }
+      if (a.name > b.name) { return 1; }
+      return 0;
+    })
+  }
+
+  sortMemberByType(array) {
+    let adminArray = array.filter(item => item.isAdmin == true)
+    adminArray = this.sortByName(adminArray);
+    let memberArray = array.filter(item => item.isAdmin == false)
+    memberArray = this.sortByName(memberArray);
+    return adminArray.concat(memberArray);
+  }
+
   render() {
 		return pug`
 			#page-contents
@@ -59,7 +75,7 @@ class ResidentList extends PureComponent {
 							AddUser(reloadMemberList = this.reloadMemberList)
 					.col-md-9
 						.friend-list
-							Friends(friends=this.state.friends)
+							Friends(friends=this.sortMemberByType(this.state.friends))
 		`;
   }
 }

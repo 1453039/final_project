@@ -73,10 +73,12 @@ class CreatePopup extends PureComponent {
     let seft = this;
     await axios.post("/service/insert", {
       apartment: seft.props.match.params.id,
+      admin: seft.props.admin,
       name: seft.state.serviceName,
-      description: '',
+      description: seft.state.description,
       fee: seft.state.fee,
-      unit: seft.state.unit
+      unit: seft.state.unit,
+      img: seft.state.linkImg
     }).then(response => {
       alert(response.data);
       this.props.reloadServices();
@@ -100,10 +102,11 @@ class CreatePopup extends PureComponent {
 
   render() {
     const page = window.location.search;
-    const disabled = (this.state.type=='Event') ? (!this.state.description || !this.state.linkImg || !this.state.day || !this.state.time) 
+    const disabledPost = (this.state.type=='Event') ? (!this.state.description || !this.state.linkImg || !this.state.day || !this.state.time) 
     : ((this.state.type=='Trading') ? (!this.state.description || !this.state.linkImg || !this.state.itemName) 
     : (!this.state.description || !this.state.linkImg))
-    const disabledService = !this.state.serviceName || !this.state.unit || this.state.fee <= 0 || !this.state.fee
+    const disabledService1 = !this.state.serviceName || !this.state.unit || this.state.fee <= 0 || !this.state.fee
+    const disabledService2 = !this.state.serviceName || !this.state.unit || this.state.fee <= 0 || !this.state.fee || !this.state.linkImg || !this.state.description
     return pug`
       .popup
         form.popup-inner
@@ -121,24 +124,25 @@ class CreatePopup extends PureComponent {
               .form-group
                 label(for='fee') Fee:
                 input#fee.form-control(type='number', name='fee', value=this.state.fee, onChange=this.handleInputChange, placeholder='Fee')
-            button#publish.btn.btn-primary.pull-right(onClick=this.handleAddService, disabled=disabledService) Add service
+            button#publish.btn.btn-primary.pull-right(onClick=this.handleAddService, disabled=disabledService1) Add service
           else
             if (page == '?services')
               .add-service-form
                 h3 Add service
+                ImageLoader(page=this.state.page, handleImgChange=this.handleImgChange)
                 .form-group
                   label(for='service-item') Service:
-                  input#service-item.form-control(type='text', name='service-item', onChange=this.handleInputChange, placeholder='Service Name')
+                  input#service-item.form-control(type='text', name='service-item', value=this.state.serviceName, onChange=this.handleInputChange, placeholder='Service Name')
                 .form-group
                   label(for='service-decs') Detail:
-                  input#service-decs.form-control(type='text', name='service-decs', onChange=this.handleInputChange, placeholder='Service Detail')
+                  input#service-decs.form-control(type='text', name='service-decs', value=this.state.description, onChange=this.handleTextAreaChange, placeholder='Service Detail')
                 .form-group
                   label(for='unit') Unit:
-                  input#unit.form-control(type='text', name='unit', onChange=this.handleInputChange, placeholder='Unit')
+                  input#unit.form-control(type='text', name='unit', value=this.state.unit, onChange=this.handleInputChange, placeholder='Unit')
                 .form-group
                   label(for='fee') Fee:
-                  input#fee.form-control(type='number', name='fee', onChange=this.handleInputChange, placeholder='Fee')
-              button#publish.btn.btn-primary.pull-right(onClick=this.onClickPublish, disabled=disabled) Add service
+                  input#fee.form-control(type='number', name='fee', value=this.state.fee, onChange=this.handleInputChange, placeholder='Fee')
+              button#publish.btn.btn-primary.pull-right(onClick=this.handleAddService, disabled=disabledService1) Add service
             else
               .form-group
                 img.profile-photo-md(src=this.props.avatar, alt="Your avatar")
@@ -164,7 +168,7 @@ class CreatePopup extends PureComponent {
                 .form-group
                   label(for='price') Price:
                   input#price.input-event-info.form-control(type='number', name='price', min='0', placeholder='Price', value=this.state.price, onChange=this.handleInputChange, required)
-              button#publish.btn.btn-primary.pull-right(onClick=this.onClickPublish, disabled=disabled) Publish
+              button#publish.btn.btn-primary.pull-right(onClick=this.onClickPublish, disabled=disabledPost) Publish
     `;
   }
 }

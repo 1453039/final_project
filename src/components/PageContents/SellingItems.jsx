@@ -43,7 +43,7 @@ constructor(props) {
                 if(this.state.item.isAdmin)
                   i.icon.ion-android-checkmark-circle
             if(page=='?tradings')
-              Link.reaction(to={search: "?messages", state: {toUser: this.state.postUser, itemName: this.state.item.name}})
+              Link.reaction(to={search: "?messages", state: {toUser: this.state.postUser, message: this.state.item.name}})
                 .text-green.btn.chat-online
                   span Chat Online
             p.desc.grey #{this.state.item.description}

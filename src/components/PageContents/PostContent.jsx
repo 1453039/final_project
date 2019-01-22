@@ -84,7 +84,7 @@ class PostContent extends PureComponent {
   async getComments(e) {
     await axios.get("/post/get-comment", {
       params: {
-        post: this.state.post._id
+        post: e.state.post._id
       }
     }).then(async response1 => {
       if (!_.isEmpty(response1.data)) {

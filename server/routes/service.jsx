@@ -5,10 +5,12 @@ var services = require('../models/Service')
 router.post('/insert', (req, res) => {
   let service = new services();
   service.apartment = req.body.apartment
+  service.admin = req.body.admin
   service.name = req.body.name
   service.description = req.body.description
   service.fee = req.body.fee
   service.unit = req.body.unit
+  service.img = req.body.img
   service.save((err) => {
     if (err) res.send(err);
     res.send("Add service successfully!");
