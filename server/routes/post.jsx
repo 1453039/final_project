@@ -59,21 +59,6 @@ router.get('/get-comment', function(req, res) {
   })
 })
 
-/* SAVE COMMENT */
-router.post('/insert-comment', function(req, res) {
-  var comment = new comments()
-  var now = new Date()
-  comment.author = req.body.author
-  comment.post = req.body.post
-  comment.description = req.body.description
-  comment.time = now
-  comment.save(function (err) {
-    if (err)
-      console.log(err);
-    res.json("Create post sucessfully!");
-  });
-});
-
 /* UPDATE POST LiKE*/
 router.put('/update-like', function(req, res) {
   console.log("req.query", req.query)

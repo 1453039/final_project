@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var chats = require('../models/Chat.jsx');
+var _ = require('lodash');
 
 /* GET LIST CHAT PEOPLE OF A USER */
 router.get('/get-list-user-id', function (req, res) {

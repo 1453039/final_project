@@ -198,6 +198,7 @@ router.get('/delete', function (req, res) {
       res.send(err)
     res.send('User successfully deleted!');
   })
+
 });
 
 router.get('/getAll', function (req, res) {
@@ -226,6 +227,14 @@ router.get('/get-resident-of-apartment', function (req, res) {
     res.json(users);
   });
 });
+
+router.get('/search', (req, res) => {
+  users.find({$and: [{$or:[{name:{$regex:".*"+req.query.search+".*",$options: 'i'}},{flat:{$regex:".*"+req.query.search +".*", $options:'i'}}]}, {apartment: req.query.id}]}, (err, users) => {
+    if (err)
+      console.log(err);
+    res.json(users);
+  })
+})
 
 router.post('/save_to_session', function (req, res) {
   const id = req.body.id;

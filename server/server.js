@@ -27,6 +27,7 @@ var bill = require('./routes/bill')
 /** Variables */
 let onlineUsers = [];
 var chats = require('./models/Chat.jsx');
+var comments = require('./models/Comment.jsx');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '../public'));
@@ -103,12 +104,26 @@ io.on('connection', function (socket) {
     chat.linkImg = data.linkImg
     chat.time = now
     chat.save(function (err) {
-    if (err)
-      res.json(err);
+      if (err)
+        res.json(err);
     });
     data = chat
     io.sockets.emit('updateMessage', data);
   });
+
+  socket.on('comment', function (data, id) {
+    var comment = new comments()
+    comment.author = data.author
+    comment.post = data.post
+    comment.description = data.description
+    comment.time = new Date()
+    comment.save(err => {
+      if (err)
+        console.log(err);
+    })
+    data = comment
+    io.sockets.emit('updateComment', data, id);
+  })
 });
 
 // catch 404 and forward to error handler

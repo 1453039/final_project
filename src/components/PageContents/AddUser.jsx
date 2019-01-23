@@ -52,7 +52,7 @@ class AddUser extends React.PureComponent {
     try {
       await axios.post('/user/insert', {
         email: e.state.email,
-        flat: e.state.flat,
+        flat: e.state.isAdmin ? '' : e.state.flat,
         isAdmin: e.state.isAdmin,
         id: e.state.id,
         avatar: DEFAULT_AVATAR,
@@ -136,7 +136,7 @@ class AddUser extends React.PureComponent {
                   if (this.state.errors)
                     span.error #{this.state.errors.email}
                   label(for="flat").full-screen Flat:
-                    input(type="text", name="flat", value=this.state.flat, onChange=this.handleTextChange)#room.form-control.input-group-lg
+                    input(type="text", name="flat", value=this.state.isAdmin ? '' : this.state.flat, onChange=this.handleTextChange, disabled=this.state.isAdmin)#room.form-control.input-group-lg
                   .form-group.isAdmin
                     span.custom-label 
                       strong Admin:  

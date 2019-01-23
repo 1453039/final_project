@@ -15,6 +15,7 @@ class MemberView extends React.Component {
       services: []
     }
     this.getMonthOfBill = this.getMonthOfBill.bind(this);
+    this.getServices = this.getServices.bind(this);
   }
   
   async componentDidMount() {
@@ -66,15 +67,17 @@ class MemberView extends React.Component {
   }
 
   async getServices(e) {
-    await e.state.details.forEach(detail => {
-      axios.get("/service/get-service", {
+    var services = []
+    for (var i in e.state.details)
+      await axios.get("/service/get-service", {
         params: {
-          id: detail.service
+          id: e.state.details[i].service
         }
       }).then(response => {
-        e.setState({services: [...e.state.services, response.data]});
+        services = [...services, response.data]
       }).catch(err => console.log("err", err));
-    })
+    console.log("services", services)
+    await e.setState({ services });
   }
 
   getMonthOfBill() {
@@ -83,7 +86,7 @@ class MemberView extends React.Component {
   }
 
   render() {
-    console.log('this.state', this.state.details, this.state.month)
+    console.log('this.state.services', this.state.services)
     return pug`
       .bill-detail
         .payment-title
@@ -105,9 +108,9 @@ class MemberView extends React.Component {
             each item, index in this.state.details
               tr(key=item._id)
                 td.id #{index + 1}
-                td.service-name #{this.state.services[index].name}
-                td.fee #{this.state.services[index].fee}
-                td.unit #{this.state.services[index].unit}
+                td.service-name abc
+                td.fee abc
+                td.unit abc
                 td.amount #{item.amount}
         h4.grey#total Total: 
           span #{this.state.bill.total} VND

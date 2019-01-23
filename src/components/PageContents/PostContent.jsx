@@ -87,24 +87,42 @@ class PostContent extends PureComponent {
         post: e.state.post._id
       }
     }).then(async response1 => {
-      if (!_.isEmpty(response1.data)) {
-        for (var i in response1.data)
+      var comments = []
+      for (var i in response1.data)
+        await axios.get("/user/get-user", {
+          params: {
+            id: response1.data[i].author
+          }
+        }).then(response => {
+          let comment = {}
+          comment._id = response1.data[i]._id
+          comment.name = response.data.name
+          comment.avatar = response.data.avatar
+          comment.description = response1.data[i].description
+          comment.time = response1.data[i].time
+          comments = [...comments, comment];
+        }).catch(err => {
+          console.log("err", err)
+        })
+      e.setState({ comments });
+      window.socket.on('updateComment', async (data, id) => {
+        if (id == e.state.post._id)
           await axios.get("/user/get-user", {
             params: {
-              id: response1.data[i].author
+              id: data.author
             }
           }).then(response => {
             let comment = {}
-            comment._id = response1.data[i]._id
             comment.name = response.data.name
             comment.avatar = response.data.avatar
-            comment.description = response1.data[i].description
-            comment.time = response1.data[i].time
-            e.setState({ comments: [...e.state.comments, comment] });
+            comment.description = data.description
+            comment.time = data.time
+            comments = [...comments, comment];
+            e.setState({ comments });
           }).catch(err => {
             console.log("err", err)
           })
-      }
+      })
     }).catch(err => {
       console.log("err", err)
     })
@@ -197,9 +215,17 @@ class PostContent extends PureComponent {
   }
 
   async handleSendComment(e) {
-    await this.createComment(this);
-    await this.getComments(this);
+    e.preventDefault();
+    let comment = {}
+    comment.author = this.state.currentUser._id
+    comment.post = this.state.post._id,
+      comment.description = this.state.comment
+    window.socket.emit('comment', comment, e.target.id);
     this.setState({ comment: '' });
+  }
+
+  componentWillUnmount() {
+    window.socket.off('comment');
   }
 
   //displays emoji inside the input window
@@ -251,11 +277,11 @@ class PostContent extends PureComponent {
                 span.text-mute #{this.handlePostTime(comment.time)}
                 p #{comment.description}
             .post-comment
-              .input-group
+              form.input-group(onSubmit=this.handleSendComment)
                 input.form-control(type="text", placeholder="Post a comment", value=this.state.comment, onChange=this.OnChangeComment)
                 Emoji(handleEmojiClick = this.handleEmojiClick, toogleEmojiState = this.toogleEmojiState, emojiShown= this.state.emojiShown)
                 span.input-group-btn
-                  button.btn.btn-primary(type="button", onClick=this.handleSendComment) Send
+                  button.btn.btn-primary(id=this.state.post._id, type="submit", onClick=this.handleSendComment, disabled=!this.state.comment || !this.state.comment.replace(/\s/g, '').length) Send
     `;
   }
 }

@@ -8,40 +8,23 @@ class Search extends Component {
       query: '',
       results: [],
     };
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  getInfo () {
-    axios
-      .get (`${API_URL}?api_key=${API_KEY}&prefix=${this.state.query}&limit=7`)
-      .then (({data}) => {
-        this.setState ({
-          results: data.data,
-        });
-      });
+  handleInputChange (e) {
+    this.setState ({ query: e.target.value });
   }
 
-  handleInputChange () {
-    this.setState (
-      {
-        query: this.search.value,
-      },
-      () => {
-        if (this.state.query && this.state.query.length > 1) {
-          if (this.state.query.length % 2 === 0) {
-            this.getInfo ();
-          }
-        } else if (!this.state.query) {
-        }
-      }
-    );
+  async handleSearch(e) {
+    e.preventDefault(); 
   }
 
   render () {
     return pug`
-      form.navbar-form.navbar-right.hidden-sm
+      form.navbar-form.navbar-right.hidden-sm(onSubmit=this.handleSearch)
         div.form-group
           i.icon.ion-android-search
-          input.form-control(type="text", placeholder="Search post...", onChange=this.handleInputChange)
+          input.form-control(type="text", placeholder="Search post...", value=this.state.query, onChange=this.handleInputChange)
     `;
   }
 }
