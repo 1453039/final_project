@@ -14,7 +14,9 @@ import PaymentPage from './containers/PaymentPage';
 import EventPage from './containers/EventPage';
 import TradingPage from './containers/TradingPage';
 import MyProductsPage from './containers/MyProductsPage';
-import ServicesPage from './containers/ServicesPage'
+import ServicesPage from './containers/ServicesPage';
+import FriendsTimelinePage from './containers/FriendsTimelinePage';
+
 class Root extends React.Component {
   componentWillMount() {
     let patch = window.location.search
@@ -36,6 +38,10 @@ class Root extends React.Component {
       case "?timeline":
         return pug`
           MyTimelinePage
+        `
+      case "?friends-timeline":
+        return pug`
+          FriendsTimelinePage
         `
       case "?members":
         return pug`

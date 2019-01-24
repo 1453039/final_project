@@ -64,7 +64,7 @@ class CreatePopup extends PureComponent {
   }
 
   onClickPublish() {
-    this.props.handlePopupSubmit(this.state.description, this.state.linkImg, new Date(this.state.day + ' ' + this.state.time), this.state.cost, this.state.itemName, this.state.price);
+    this.props.handlePopupSubmit(this.state.description, this.state.linkImg, new Date(this.state.day + ' ' + this.state.time), this.state.cost, this.state.itemName, this.state.eventName, this.state.price);
     this.props.closePopup()
   }
 

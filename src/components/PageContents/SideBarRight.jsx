@@ -83,7 +83,7 @@ class SideBarRight extends React.PureComponent {
                   img(src=item.avatar).profile-photo-sm.pull-left
                   div
                     h5
-                      Link(to='?timeline') #{item.name}
+                      Link(to='?friends-timeline') #{item.name}
                     Link(to={search: "?messages", state: {toUser: item}}, title=item.name).text-green Chat now
         .footer.hidden-sm.hidden-xs
           ul

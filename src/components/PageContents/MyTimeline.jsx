@@ -63,7 +63,8 @@ class MyTimeline extends PureComponent {
         .row
           .col-md-3
           .col-md-7
-            PostCreateBox(reloadPostList = this.reloadPostList)
+            if(window.location.search == '?timeline')
+              PostCreateBox(reloadPostList = this.reloadPostList)
             each post in this.sortPostByDate(this.state.posts)
               PostContent(key=post._id, post=post)
     `;

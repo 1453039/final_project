@@ -126,7 +126,7 @@ class Friends extends React.PureComponent {
                   if(this.state.user.isAdmin)
                     Link(to='?members', id=item._id, onClick=this.confirmDelete).pull-right.text-green Delete
                   Link(to={search: '?messages', state: {toUser: item}}).pull-right.text-green Inbox
-                  h5 #{item.name}
+                  Link(to='?friends-timeline') #{item.name}
                   if (!item.isAdmin)
                     p Flat: 
                       span #{item.flat}
