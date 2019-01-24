@@ -15,6 +15,10 @@ class PayOnline extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ description: nextProps.description , amount: nextProps.amount });
+  }
+
   successPayment = data => {
     alert('Payment Successful');
     console.log(data);

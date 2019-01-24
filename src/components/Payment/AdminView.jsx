@@ -69,7 +69,7 @@ class AdminView extends React.PureComponent {
               tr(key=bill._id)
                 td.id #{index + 1}
                 td.flat-num 
-                  Link(to='/') #{bill.flat}
+                  Link(to={search: '?payments', state: {isAdminViewDetail: true, flat: bill.flat}}) #{bill.flat}
                 td.total #{bill.total.toLocaleString()} VND
                 td.isPaid #{bill.date}
       .pagi-block

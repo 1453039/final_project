@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PayOnline from './PayOnline.jsx';
+import _ from 'lodash';
 import axios from 'axios';
 
 class MemberView extends React.Component {
@@ -11,6 +12,7 @@ class MemberView extends React.Component {
       bill: [],
       month: '',
       year: '',
+      flat: this.props.flat,
       details: [],
       services: []
     }
@@ -32,6 +34,10 @@ class MemberView extends React.Component {
     await this.getServices(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ flat: nextProps.flat });
+  }
+
   async getUserFromSession(e) {
     await axios.get("/user/get_user_from_session").then((response) => {
       e.setState({
@@ -45,7 +51,7 @@ class MemberView extends React.Component {
   async getBill(e) {
     await axios.get("/bill/get-bill", {
       params: {
-        flatName: e.state.user.flat,
+        flatName: e.state.user.isAdmin ? e.state.flat : e.state.user.flat,
         month: e.state.month,
         year: e.state.year
       }
@@ -76,7 +82,6 @@ class MemberView extends React.Component {
       }).then(response => {
         services = [...services, response.data]
       }).catch(err => console.log("err", err));
-    console.log("services", services)
     await e.setState({ services });
   }
 
@@ -86,9 +91,10 @@ class MemberView extends React.Component {
   }
 
   render() {
-    console.log('this.state.services', this.state.services)
     return pug`
       .bill-detail
+        if (this.state.user.isAdmin)
+          button.cancel(onClick = this.props.handleClickBack) Back
         .payment-title
             button.pre-month &larr;
             h3.grey Bills On #{this.getMonthOfBill()}
@@ -104,16 +110,18 @@ class MemberView extends React.Component {
               th Fee
               th Unit
               th Amount
-          tbody
-            each item, index in this.state.details
-              tr(key=item._id)
-                td.id #{index + 1}
-                td.service-name abc
-                td.fee abc
-                td.unit abc
-                td.amount #{item.amount}
-        h4.grey#total Total: 
-          span #{this.state.bill.total} VND
+          if (!_.isEmpty(this.state.services))
+            tbody
+              each item, index in this.state.details
+                tr(key=item._id)
+                  td.id #{index + 1}
+                  td.service-name #{this.state.services[index].name}
+                  td.fee #{this.state.services[index].fee.toLocaleString()}
+                  td.unit #{this.state.services[index].unit}
+                  td.amount #{item.amount}
+        h4.grey#total Total:
+          if (this.state.bill.total)
+            span #{this.state.bill.total.toLocaleString()} VND
         if(!this.state.user.isAdmin)
           .payment-button
             PayOnline(email='cquyen0403@gmail.com', amount=this.state.bill.total, description='Flat ' + this.state.bill.flat + ' - ' + this.getMonthOfBill())

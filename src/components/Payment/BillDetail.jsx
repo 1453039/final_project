@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import AdminView from './AdminView.jsx';
 import MemberView from './MemberView.jsx';
@@ -11,12 +11,19 @@ class BillDetail extends React.Component {
     this.state={
       user: [],
       isClickAddBill: false,
+      isAdminViewDetail: false,
+      flat: ''
     }
     this.handleClickAddBill = this.handleClickAddBill.bind(this);
+    this.handleClickBack = this.handleClickBack.bind(this);
   }
 
   componentDidMount() {
     this.getUserFromSession(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ isAdminViewDetail: nextProps.location.state.isAdminViewDetail, flat: nextProps.location.state.flat })
   }
 
   async getUserFromSession(e) {
@@ -35,11 +42,15 @@ class BillDetail extends React.Component {
     })
   }
 
+  handleClickBack() {
+    this.setState({ isAdminViewDetail: false })
+  }
+
   render() {
     return pug`
       .payment-block
-        if (!this.state.user.isAdmin)
-          MemberView
+        if (!this.state.user.isAdmin || this.state.isAdminViewDetail)
+          MemberView(flat=this.state.flat, handleClickBack = this.handleClickBack)
         else 
           if(!this.state.isClickAddBill)
             AdminView(handleClickAddBill=this.handleClickAddBill, calculateBill=this.calculateBill)
@@ -49,4 +60,4 @@ class BillDetail extends React.Component {
   }
 }
 
-export default BillDetail;
+export default withRouter(BillDetail);
