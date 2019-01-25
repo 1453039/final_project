@@ -20,7 +20,7 @@ class PayOnline extends React.Component {
   }
 
   successPayment = data => {
-    alert('Payment Successful');
+    this.props.handleClickPay();
     console.log(data);
   }
 

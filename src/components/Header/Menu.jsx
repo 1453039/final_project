@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import Dropdown from '../Common/Dropdown.jsx';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import { Link, withRouter } from 'react-router-dom';
 
 class Menu extends React.Component {
@@ -33,13 +31,5 @@ class Menu extends React.Component {
     `;
   }
 }
-function mapStateToProps(state) {
-	return {
-		home: state.header.home,
-		newfeeds: state.header.newfeeds,
-		timeline: state.header.timeline,
-		allpage: state.header.allpage
-	};
-}
 
-export default connect(mapStateToProps)(withRouter(Menu));
+export default withRouter(Menu);

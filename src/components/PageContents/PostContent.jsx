@@ -96,8 +96,7 @@ class PostContent extends PureComponent {
         }).then(response => {
           let comment = {}
           comment._id = response1.data[i]._id
-          comment.name = response.data.name
-          comment.avatar = response.data.avatar
+          comment.user = response.data
           comment.description = response1.data[i].description
           comment.time = response1.data[i].time
           comments = [...comments, comment];
@@ -113,8 +112,7 @@ class PostContent extends PureComponent {
             }
           }).then(response => {
             let comment = {}
-            comment.name = response.data.name
-            comment.avatar = response.data.avatar
+            comment.user = response.data
             comment.description = data.description
             comment.time = data.time
             comments = [...comments, comment];
@@ -219,7 +217,7 @@ class PostContent extends PureComponent {
     let comment = {}
     comment.author = this.state.currentUser._id
     comment.post = this.state.post._id,
-      comment.description = this.state.comment
+    comment.description = this.state.comment
     window.socket.emit('comment', comment, e.target.id);
     this.setState({ comment: '' });
   }
@@ -251,7 +249,10 @@ class PostContent extends PureComponent {
           .post-detail
             .user-info
               h5
-                Link.profile-link(to="/") #{this.state.postUser.name}
+                if (this.state.currentUser._id == this.state.postUser._id)
+                  Link.profile-link(to="?timeline") #{this.state.postUser.name}
+                else
+                  Link.profile-link(to={search: "?friends-timeline", state: {user: this.state.postUser}}) #{this.state.postUser.name}
                 if(this.state.post.isAdmin)
                   i.icon.ion-android-checkmark-circle
                 p.text-muted #{this.handlePostTime(this.state.post.time)}
@@ -272,8 +273,11 @@ class PostContent extends PureComponent {
                 source(src=this.state.post.linkVideo, type="video/mp4")
             each comment in this.state.comments
               .post-comment(key=comment._id)
-                img.profile-photo-sm(src=comment.avatar, alt="")
-                Link.profile-link(to="/") #{comment.name}
+                img.profile-photo-sm(src=comment.user.avatar, alt="")
+                if (this.state.currentUser._id == comment.user._id)
+                  Link.profile-link(to="?timeline") #{comment.user.name}
+                else
+                  Link.profile-link(to={search: "?friends-timeline", state: {user: comment.user}}) #{comment.user.name}
                 span.text-mute #{this.handlePostTime(comment.time)}
                 p #{comment.description}
             .post-comment

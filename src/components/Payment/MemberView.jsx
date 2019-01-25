@@ -18,6 +18,7 @@ class MemberView extends React.Component {
     }
     this.getMonthOfBill = this.getMonthOfBill.bind(this);
     this.getServices = this.getServices.bind(this);
+    this.handleClickPay = this.handleClickPay.bind(this);
   }
   
   async componentDidMount() {
@@ -90,6 +91,18 @@ class MemberView extends React.Component {
     return arr[this.state.month - 1] + " " + this.state.year;
   }
 
+  handleClickPay() {
+    let bill = this.state.bill
+    bill.isPaid = true
+    bill.date = new Date()
+    this.setState({ bill });
+    axios.put("/bill/update-paid-bill", {
+      bill: bill
+    }).then(response => {
+      alert(response.data)
+    }).catch(err => console.log('err', err));
+  }
+
   render() {
     return pug`
       .bill-detail
@@ -101,7 +114,10 @@ class MemberView extends React.Component {
             button.next-month &rarr;
         h4.grey.payment-detail Flat: #{this.state.bill.flat}
         if(this.state.user.isAdmin)
-          p.edit-bill Edit Bill
+          if (this.state.bill.isPaid)
+            p.edit-bill.text-muted Edit Bill
+          else
+            p.edit-bill Edit Bill
         table.service-list
           thead
             tr
@@ -123,8 +139,12 @@ class MemberView extends React.Component {
           if (this.state.bill.total)
             span #{this.state.bill.total.toLocaleString()} VND
         if(!this.state.user.isAdmin)
-          .payment-button
-            PayOnline(email='cquyen0403@gmail.com', amount=this.state.bill.total, description='Flat ' + this.state.bill.flat + ' - ' + this.getMonthOfBill())
+          if (!this.state.bill.isPaid)
+            .payment-button
+              PayOnline(handleClickPay = this.handleClickPay, email='cquyen0403@gmail.com', amount=this.state.bill.total, description='Flat ' + this.state.bill.flat + ' - ' + this.getMonthOfBill())
+          else
+            .payment-button
+              button.paid(disabled) Paid
     `;
   }
 }

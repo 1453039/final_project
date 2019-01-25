@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import _ from 'lodash'
 import axios from 'axios';
 
 class AdminView extends React.PureComponent {
@@ -42,6 +43,11 @@ class AdminView extends React.PureComponent {
     return arr[this.state.month - 1] + " " + this.state.year;
   }
 
+  handlePaidDate(time) {
+    let date = new Date(time)
+    return date.getDate() + '/' + date.getMonth() + 1 + '/' + date.getFullYear()
+  }
+
   render() {
     return pug`
       .bill-detail  
@@ -71,7 +77,10 @@ class AdminView extends React.PureComponent {
                 td.flat-num 
                   Link(to={search: '?payments', state: {isAdminViewDetail: true, flat: bill.flat}}) #{bill.flat}
                 td.total #{bill.total.toLocaleString()} VND
-                td.isPaid #{bill.date}
+                if (bill.date)
+                  td.isPaid #{this.handlePaidDate(bill.date)}
+                else
+                  td.isPaid
       .pagi-block
         ul.pagination
           li.page-item.disabled

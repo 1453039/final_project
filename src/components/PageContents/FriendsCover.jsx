@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import '../../../public/styles/ResidentList.scss';
 import axios from 'axios';
 
@@ -7,13 +7,12 @@ class FriendsCover extends PureComponent {
   constructor(props) {
     super(props);
     this.state= {
-      user: this.props.user,
-      page: 'info'
+      user: this.props.user
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ user: nextProps.user });
+    this.setState({ user: nextProps.location.state.user });
   }
 
   render() {
@@ -42,30 +41,8 @@ class FriendsCover extends PureComponent {
           else 
             p.text-muted 
               strong Admin
-        .mobile-menu
-          ul.list-inline
-            li
-              if(page=='?timeline')
-                Link.active(to="?timeline") My Timeline
-              else
-                Link(to="?timeline") My Timeline
-            li
-              if(page=='?my-products')
-                Link.active(to="?my-products") My Products
-              else
-                Link(to="?my-products") My Products
-            li
-              if(page=='?info')
-                Link.active(to="?info") My Account
-              else
-                Link(to="?info") My Account
-            li
-              if(page=='?members')
-                Link.active(to="?members") Members
-              else
-                Link(to="?members") Members
     `;
   }
 }
 
-export default FriendsCover;
+export default withRouter(FriendsCover);

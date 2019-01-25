@@ -74,6 +74,14 @@ router.put("/update-bill", (req, res) => {
   })
 })
 
+router.put("/update-paid-bill", (req, res) => {
+  let bill = req.body.bill
+  bills.updateOne({ _id: bill._id}, bill, (err) => {
+    if (err) console.log(err);
+    res.json('Payment Successful');
+  })
+})
+
 router.get("/get-list", (req, res) => {
   bills.find({$and: [{ apartment: req.query.apartment, month: req.query.month, year: req.query.year }]}, (err, bills) => {
     if (err) console.log(err);

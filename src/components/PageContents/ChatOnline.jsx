@@ -12,7 +12,6 @@ class ChatOnline extends React.PureComponent {
       onlineUsers: []
     }
     window.socket = getSocket();
-    
     this.getOnlineUser = this.getOnlineUser.bind(this)
     this.getUserFromSession = this.getUserFromSession.bind(this)
   }

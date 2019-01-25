@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import PostCreateBox from './PostCreateBox.jsx'
 import PostContent from './PostContent.jsx'
+import { withRouter } from 'react-router-dom'
 import axios from 'axios'
+import { getSocket } from '../../socket'
 
 class MyTimeline extends PureComponent {
   constructor (props){
@@ -10,6 +12,7 @@ class MyTimeline extends PureComponent {
       user: [],
       posts: []
     }
+    window.socket = getSocket();
     this.getUserPost = this.getUserPost.bind(this)
     this.reloadPostList = this.reloadPostList.bind(this)
     this.getUserFromSession = this.getUserFromSession.bind(this)
@@ -19,6 +22,11 @@ class MyTimeline extends PureComponent {
   async componentDidMount() {
     await this.getUserFromSession(this)
     await this.getUserPost(this)
+  }
+  
+  async componentWillReceiveProps(nextProps) {
+    await this.setState({ user: nextProps.location.state.user });
+    await this.getUserPost(this);
   }
 
   reloadPostList() {
@@ -71,4 +79,4 @@ class MyTimeline extends PureComponent {
   }
 }
 
-export default MyTimeline;
+export default withRouter(MyTimeline);

@@ -9,7 +9,6 @@ import Event from './PageContents/Event.jsx';
 import SellingItems from './PageContents/SellingItems.jsx'
 import '../../public/styles/PageContents.scss';
 
-
 class PageContents extends PureComponent {
   constructor(props) {
     super(props);

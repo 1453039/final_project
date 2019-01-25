@@ -21,8 +21,7 @@
       color: #fff;
       border-color: #27aae1; 
     }
-  }
-  .payment-title {
+  }  .payment-title {
     width: 65%;
     margin: 15px auto;
     clear: both;
@@ -100,7 +99,7 @@
       width: 20%;
     } 
     td.amount, td.isPaid {
-      width: 15%;
+      width: 20%;
     }
   } 
   button#pay {
@@ -241,5 +240,19 @@
     text-shadow: none !important;
     border-radius: 30px !important;
     padding: 2px !important;
+  }
+  button.paid {
+    width: 100%;
+    height: 35px;
+    font-size: 14px;
+    font-weight: bold;
+    background-image: none;
+    background-color: #ccc;
+    box-shadow: none;
+    outline: none;
+    text-shadow: none;
+    border-radius: 30px;
+    padding: 2px;
+    border: 0;
   }
 }

@@ -25,7 +25,6 @@ constructor(props) {
       ]
     }
     this.handleAttendent = this.handleAttendent.bind(this);
-    this.toggleList = this.toggleList.bind (this);
   }
 
   async componentDidMount() {
@@ -112,7 +111,10 @@ constructor(props) {
           .post-detail
             .author-info
               h5#author-name
-                Link.profile-link(to="/") #{this.state.postUser.name}
+                if (this.state.currentUser._id == this.state.postUser._id)
+                  Link.profile-link(to="?timeline") #{this.state.postUser.name}
+                else
+                  Link.profile-link(to={search: "?friends-timeline", state: {user: this.state.postUser}}) #{this.state.postUser.name}
                 if(this.state.postUser.isAdmin)
                   i.icon.ion-android-checkmark-circle
             .dropdown
@@ -122,8 +124,7 @@ constructor(props) {
                   ul.dropdown-menu
                     each item in this.state.attendentList
                       li(key=item.id)
-                        Link(to='?friends-timeline') #{item.name}
-            .reaction
+                        Link(to='?friends-timeline') #{item.name}            .reaction
               if(this.state.isAttending)
                 .text-green.btn.attending#attendent(onClick=this.handleAttendent)
                   i.icon.ion-checkmark
@@ -132,7 +133,6 @@ constructor(props) {
                 .text-green.btn#attendent(onClick=this.handleAttendent)
                   i.icon.ion-checkmark
                   span#like #{this.state.event.like.length}
-            
             p.desc.grey #{this.state.event.description}
             img.img-responsive.event-image(src=this.state.event.linkImg, alt="event-image")
             .event-text

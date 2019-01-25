@@ -8,25 +8,37 @@ constructor(props) {
     super(props);
     this.state = {
       postUser: [],
+      currentUser: [],
       item: this.props.item
     }
   }
 
   componentDidMount() {
     this.getPostUser(this)
+    this.getUserFromSession(this)
   }
 
-  async getPostUser(e) {
-    await axios.get("/user/get-user", {
+  getPostUser(e) {
+    axios.get("/user/get-user", {
       params: {
         id: e.state.item.seller
       }
-    }).then(async (response) => {
-      await e.setState({
+    }).then((response) => {
+      e.setState({
         postUser: response.data
       })
     }).catch(err => {
       console.log("err", err)
+    })
+  }
+
+  getUserFromSession(e) {
+    axios.get("/user/get_user_from_session").then((response) => {
+      e.setState({
+        currentUser: response.data
+      })
+    }).catch(err => {
+      console.log("err", err);
     })
   }
 
@@ -39,7 +51,10 @@ constructor(props) {
           .post-detail
             .seller-info
               h5#seller-name
-                Link.profile-link(to="/") #{this.state.postUser.name}
+                if (this.state.currentUser._id == this.state.postUser._id)
+                  Link.profile-link(to="?timeline") #{this.state.postUser.name}
+                else
+                  Link.profile-link(to={search: "?friends-timeline", state: {user: this.state.postUser}}) #{this.state.postUser.name}
                 if(this.state.item.isAdmin)
                   i.icon.ion-android-checkmark-circle
             if(page=='?tradings')
