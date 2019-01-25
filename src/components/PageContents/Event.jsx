@@ -13,19 +13,11 @@ constructor(props) {
       currentUser: [],
       event: this.props.event,
       isAttending: false,
-      attendentList: [
-        {
-          id: 0,
-          name: 'Nguyen Pham Song Huy'
-        },
-        {
-          id: 0,
-          name: 'Vo Tran Chau'
-        }
-      ]
+      attendentList: []
     }
     this.handleAttendent = this.handleAttendent.bind(this);
     this.toggleList = this.toggleList.bind(this);
+    this.disabledAttending = this.disabledAttending.bind(this);
   }
 
   async componentDidMount() {
@@ -37,6 +29,7 @@ constructor(props) {
     })
     if (indexOfAttend >= 0)
       this.setState({ isAttending: true })
+    await this.getAttendentList(this)
   }
 
   async updateReaction(e) {
@@ -51,6 +44,19 @@ constructor(props) {
     })
   }
 
+  async getAttendentList(e) {
+    let attendentList = []
+    for (var i in e.state.event.like)
+      await axios.get("/user/get-user", {
+        params: {
+          id: e.state.event.like[i]
+        }
+      }).then(response => {
+        attendentList= [...attendentList, response.data ];
+      }).catch(err => console.log("err", err));
+    e.setState({ attendentList });
+  }
+
   async handleAttendent() {
     let currentUserId = this.state.currentUser._id
     let indexOfAttend = _.findIndex(this.state.event.like, function (id) {
@@ -62,6 +68,7 @@ constructor(props) {
     this.setState({isAttending: !this.state.isAttending})
     await this.updateReaction(this)
     await this.getPostUser(this)
+    await this.getAttendentList(this)
   }
   
   async getPostUser(e) {
@@ -104,6 +111,14 @@ constructor(props) {
     });
   }
 
+  disabledAttending() {
+    let now = new Date()
+    let date = new Date(this.state.event.date)
+    if (date < now)
+      return true
+    else return false
+  }
+
   render() {
     return pug`
       .post-content
@@ -122,13 +137,17 @@ constructor(props) {
               div.dropdown-toggle(onClick=this.toggleList) Attendent
                 span.caret
                 if (this.state.isOpen)
-                  ul.dropdown-menu
-                    each item in this.state.attendentList
-                      li(key=item.id)
-                        Link(to='?friends-timeline') #{item.name}            
+                  if (!_.isEmpty(this.state.attendentList))
+                    ul.dropdown-menu
+                      each item in this.state.attendentList
+                        li(key=item._id)
+                          if (this.state.currentUser._id == item._id)
+                            Link.profile-link(to="?timeline") #{item.name}
+                          else
+                            Link.profile-link(to={search: "?friends-timeline", state: {user: item}}) #{item.name}            
             .reaction
               if(this.state.isAttending)
-                .text-green.btn.attending#attendent(onClick=this.handleAttendent)
+                button.text-green.btn.attending#attendent(onClick=this.handleAttendent, disabled=this.disabledAttending())
                   i.icon.ion-checkmark
                   span#like #{this.state.event.like.length}
               else
