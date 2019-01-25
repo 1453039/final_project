@@ -105,7 +105,6 @@ constructor(props) {
   }
 
   render() {
-    console.log(this.state.attendentList, this.state.isOpen);
     return pug`
       .post-content
         .post-container
