@@ -94,7 +94,7 @@ class MemberView extends React.Component {
     return pug`
       .bill-detail
         if (this.state.user.isAdmin)
-          button.cancel(onClick = this.props.handleClickBack) Back
+          button.btn-back(onClick = this.props.handleClickBack) Back
         .payment-title
             button.pre-month &larr;
             h3.grey Bills On #{this.getMonthOfBill()}

@@ -8,18 +8,24 @@ class Events extends React.Component {
 constructor(props) {
     super(props);
     this.state= {
+      isOpen: false,
       postUser: [],
       currentUser: [],
       event: this.props.event,
       isAttending: false,
-      list: [
+      attendentList: [
         {
           id: 0,
-          name: 'AAAAA'
+          name: 'Nguyen Pham Song Huy'
+        },
+        {
+          id: 0,
+          name: 'Vo Tran Chau'
         }
       ]
     }
     this.handleAttendent = this.handleAttendent.bind(this);
+    this.toggleList = this.toggleList.bind (this);
   }
 
   async componentDidMount() {
@@ -92,7 +98,14 @@ constructor(props) {
     return (monthNames[month] + ' ' + day + ' at ' + hour + ':' + minute)
   }
 
+  toggleList () {
+    this.setState ({
+      isOpen: !this.state.isOpen,
+    });
+  }
+
   render() {
+    console.log(this.state.attendentList, this.state.isOpen);
     return pug`
       .post-content
         .post-container
@@ -103,6 +116,14 @@ constructor(props) {
                 Link.profile-link(to="/") #{this.state.postUser.name}
                 if(this.state.postUser.isAdmin)
                   i.icon.ion-android-checkmark-circle
+            .dropdown
+              div.dropdown-toggle(onClick=this.toggleList) Attendent
+                span.caret
+                if (this.state.isOpen)
+                  ul.dropdown-menu
+                    each item in this.state.attendentList
+                      li(key=item.id)
+                        Link(to='?friends-timeline') #{item.name}
             .reaction
               if(this.state.isAttending)
                 .text-green.btn.attending#attendent(onClick=this.handleAttendent)
@@ -112,12 +133,7 @@ constructor(props) {
                 .text-green.btn#attendent(onClick=this.handleAttendent)
                   i.icon.ion-checkmark
                   span#like #{this.state.event.like.length}
-            .dropdown
-              button.btn.btn-secondary.dropdown-toggle(type='button', data-toggle="dropdown") Attendent List
-               span.caret
-              ul.dropdown-menu
-                each item in this.state.list
-                  li.dropdown-item(key=item.id) #{item.name}
+            
             p.desc.grey #{this.state.event.description}
             img.img-responsive.event-image(src=this.state.event.linkImg, alt="event-image")
             .event-text

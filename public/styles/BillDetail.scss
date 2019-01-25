@@ -8,6 +8,20 @@
     padding: 4px 15px;
     outline: none;
   }
+  .btn-back {
+    position: absolute;
+    left: 40px;
+    top: 0;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    &:hover{
+      background-color: #27aae1;
+      color: #fff;
+      border-color: #27aae1; 
+    }
+  }
   .payment-title {
     width: 65%;
     margin: 15px auto;

@@ -3,6 +3,30 @@
 }
 .post-detail {
   position: relative;
+  .dropdown {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+    color: #8dc63f;
+    margin: 10px 0;
+    float: right;
+    .dropdown-toggle {
+      padding: 3px;
+      cursor: pointer;
+    }
+    .dropdown-menu {
+      float:  !important;
+      display: block !important;
+      li {
+        list-style-image: none;
+        a {
+          &:hover {
+            color: #8dc63f;
+          } 
+        }
+      }
+    }
+  }
   .author-info {
     float: left;
     h5#author-name {
@@ -15,6 +39,9 @@
     width: 100%
   }
   .reaction {
+    float: right;
+    position: relative !important;
+    margin: 0 10px !important;
     .attending {
       background-color: #8dc63f !important;
       color: #fff !important;
