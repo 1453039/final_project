@@ -25,6 +25,7 @@ constructor(props) {
       ]
     }
     this.handleAttendent = this.handleAttendent.bind(this);
+    this.toggleList = this.toggleList.bind(this);
   }
 
   async componentDidMount() {
@@ -124,7 +125,8 @@ constructor(props) {
                   ul.dropdown-menu
                     each item in this.state.attendentList
                       li(key=item.id)
-                        Link(to='?friends-timeline') #{item.name}            .reaction
+                        Link(to='?friends-timeline') #{item.name}            
+            .reaction
               if(this.state.isAttending)
                 .text-green.btn.attending#attendent(onClick=this.handleAttendent)
                   i.icon.ion-checkmark
