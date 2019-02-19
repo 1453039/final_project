@@ -4,6 +4,8 @@ import PageContents from '../components/PageContents.jsx'
 import Footer from '../components/Footer.jsx'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
+import FAVICON from '../../public/images/fav.png'
 
 class MemsNotiPage extends Component {
   constructor() {
@@ -24,6 +26,9 @@ class MemsNotiPage extends Component {
   render() {
     if (this.state.loggedIn)
       return pug`
+        Helmet
+          title Member Notifications
+          link(rel="icon", type="image/png", href=FAVICON, sizes="16x16")
         Header
         div(className="MemsNotiPage")
           PageContents(isAdmin=false)

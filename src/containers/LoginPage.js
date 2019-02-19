@@ -4,7 +4,9 @@ import PassForm from '../components/Welcome/PassForm.jsx';
 import '../../public/styles/Welcome.scss';
 import _ from 'lodash';
 import axios from 'axios'
+import { Helmet } from 'react-helmet'
 import { withRouter } from 'react-router-dom';
+import FAVICON from '../../public/images/fav.png'
 
 class LoginPage extends Component {
   constructor(props) {
@@ -36,6 +38,9 @@ class LoginPage extends Component {
     if (!_.isEmpty(this.state.apartment))
       return pug`
         #welcome(style={ backgroundImage: 'url(' + this.state.apartment.background + ')'})
+          Helmet
+            title Welcome to #{this.state.apartment.name}
+            link(rel="icon", type="image/png", href=FAVICON, sizes="16x16")
           PassForm
           Banner
       `;

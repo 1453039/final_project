@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import '../../../public/styles/ResidentList.scss';
 import axios from 'axios';
+import { Helmet } from 'react-helmet'
 
 class FriendsCover extends PureComponent {
   constructor(props) {
@@ -18,6 +19,8 @@ class FriendsCover extends PureComponent {
   render() {
     const page = window.location.search;
     return pug`
+    Helmet
+      title #{this.state.user.name}
     .timeline-cover
       img(src=this.state.user.cover)
       .timeline-nav-bar.hidden-sm.hidden-xs

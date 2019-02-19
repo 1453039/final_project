@@ -13,6 +13,8 @@ class AdminView extends React.PureComponent {
     }
     this.handleClickAddBill = this.props.handleClickAddBill;
     this.getMonthOfBill = this.getMonthOfBill.bind(this);
+    this.onClickPreviousMonth = this.onClickPreviousMonth.bind(this);
+    this.onClickNextMonth = this.onClickNextMonth.bind(this);
   }
 
   async componentDidMount() {
@@ -48,6 +50,18 @@ class AdminView extends React.PureComponent {
     return date.getDate() + '/' + date.getMonth() + 1 + '/' + date.getFullYear()
   }
 
+  async onClickPreviousMonth() {
+    await this.setState({ year: this.state.month == 1 ? this.state.year - 1 : this.state.year})
+    await this.setState({ month: this.state.month == 1 ? 12 : this.state.month - 1 })
+    await this.getBills(this);
+  }
+
+  async onClickNextMonth() {
+    await this.setState({ year: this.state.month == 12 ? this.state.year + 1 : this.state.year})
+    await this.setState({ month: this.state.month == 12 ? 1 : this.state.month + 1 })
+    await this.getBills(this);
+  }
+
   render() {
     return pug`
       .bill-detail  
@@ -60,9 +74,9 @@ class AdminView extends React.PureComponent {
           div.form-group
             input(type="text", placeholder="Search flat...")
         .payment-title
-          button.pre-month &larr;
+          button.pre-month(onClick= this.onClickPreviousMonth) &larr;
           h3.grey Bills On #{this.getMonthOfBill()}
-          button.next-month &rarr;
+          button.next-month(onClick= this.onClickNextMonth) &rarr;
         table.bill-list
           thead
             tr
@@ -75,7 +89,7 @@ class AdminView extends React.PureComponent {
               tr(key=bill._id)
                 td.id #{index + 1}
                 td.flat-num 
-                  Link(to={search: '?payments', state: {isAdminViewDetail: true, flat: bill.flat}}) #{bill.flat}
+                  Link(to={search: '?payments', state: {isAdminViewDetail: true, flat: bill.flat, month: this.state.month, year: this.state.year}}) #{bill.flat}
                 td.total #{bill.total.toLocaleString()} VND
                 if (bill.date)
                   td.isPaid #{this.handlePaidDate(bill.date)}

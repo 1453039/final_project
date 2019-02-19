@@ -7,6 +7,8 @@ import MessageList from '../components/PageContents/MessageList.jsx'
 import MessageBarLeft from '../components/PageContents/MessageBarLeft.jsx'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
+import FAVICON from '../../public/images/fav.png'
 
 class MessagePage extends Component {
   constructor() {
@@ -27,6 +29,9 @@ class MessagePage extends Component {
   render() {
     if (this.state.loggedIn)
       return pug`
+        Helmet
+          title Messages
+          link(rel="icon", type="image/png", href=FAVICON, sizes="16x16")
         Header
         #page-contents
           .container

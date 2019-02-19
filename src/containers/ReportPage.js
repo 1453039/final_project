@@ -7,6 +7,8 @@ import SideBarRight from '../components/PageContents/SideBarRight.jsx'
 import '../../public/styles/ReportForm.scss';
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
+import FAVICON from '../../public/images/fav.png'
 
 
 class ReportPage extends Component {
@@ -28,6 +30,9 @@ class ReportPage extends Component {
   render() {
     if (this.state.loggedIn)
       return pug`
+        Helmet
+          title Report
+          link(rel="icon", type="image/png", href=FAVICON, sizes="16x16")
         Header
         #page-contents
           .container

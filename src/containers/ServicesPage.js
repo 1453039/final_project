@@ -6,6 +6,8 @@ import Services from '../components/PageContents/Services.jsx'
 import Footer from '../components/Footer.jsx'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
+import FAVICON from '../../public/images/fav.png'
 
 class ServicesPage extends Component {
   constructor() {
@@ -26,6 +28,9 @@ class ServicesPage extends Component {
   render() {
     if (this.state.loggedIn)
       return pug`
+        Helmet
+          title Services
+          link(rel="icon", type="image/png", href=FAVICON, sizes="16x16")
         Header
         #page-contents
           .container

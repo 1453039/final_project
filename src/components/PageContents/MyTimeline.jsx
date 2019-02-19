@@ -25,8 +25,10 @@ class MyTimeline extends PureComponent {
   }
   
   async componentWillReceiveProps(nextProps) {
-    await this.setState({ user: nextProps.location.state.user });
-    await this.getUserPost(this);
+    if (nextProps.location.state) {
+      await this.setState({ user: nextProps.location.state.user });
+      await this.getUserPost(this);
+    }
   }
 
   reloadPostList() {

@@ -4,6 +4,8 @@ import Footer from '../components/Footer.jsx'
 import PageContents from '../components/PageContents.jsx'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
+import FAVICON from '../../public/images/fav.png'
 
 class EventPage extends Component {
   constructor() {
@@ -24,6 +26,9 @@ class EventPage extends Component {
   render() {
     if(this.state.loggedIn)
       return pug`
+        Helmet
+          title Events
+          link(rel="icon", type="image/png", href=FAVICON, sizes="16x16")
         Header
         div(className="EventPage")
           PageContents

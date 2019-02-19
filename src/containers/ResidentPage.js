@@ -5,6 +5,8 @@ import ResidentList from '../components/PageContents/ResidentList.jsx'
 import Footer from '../components/Footer.jsx'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
+import FAVICON from '../../public/images/fav.png'
 
 class Resident extends Component {
   constructor() {
@@ -37,6 +39,9 @@ class Resident extends Component {
   render() {
     if (this.state.loggedIn)
       return pug`
+        Helmet
+          title Residents
+          link(rel="icon", type="image/png", href=FAVICON, sizes="16x16")
         Header
         div(className="Resident")
           .container

@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { Helmet } from 'react-helmet'
 import axios from 'axios';
 import _ from 'lodash';
 import '../../../public/styles/Message.scss';
@@ -183,6 +184,8 @@ class MessageList extends PureComponent {
   render() {
     if (!_.isEmpty(this.state.toUser))
       return pug`
+        Helmet
+          title Messages - #{this.state.toUser.name}
         .col-sm-7
           .scroll-wrapper.tab-content.scrollbar-wrapper.wrapper.scrollbar-outer
             .tab-content.scrollbar-wrapper.wrapper.scrollbar-outer.scroll-content.scroll-scrolly_visible

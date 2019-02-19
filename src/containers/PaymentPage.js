@@ -7,6 +7,8 @@ import BillDetail from '../components/Payment/BillDetail.jsx'
 import '../../public/styles/BillDetail.scss';
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
+import FAVICON from '../../public/images/fav.png'
 
 class PaymentPage extends Component {
   constructor() {
@@ -27,6 +29,9 @@ class PaymentPage extends Component {
   render() {
     if (this.state.loggedIn)
       return pug`
+        Helmet
+          title Payment
+          link(rel="icon", type="image/png", href=FAVICON, sizes="16x16")
         Header
         #page-contents
           .container

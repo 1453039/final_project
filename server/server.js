@@ -38,8 +38,8 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
 
 
 /** Connect Mongodb */
-mongoose.connect('mongodb://1453039:chautinhtri123@ds145083.mlab.com:45083/apartment_social_network', { useNewUrlParser: true });
-// mongoose.connect('mongodb://localhost:27017/apartment-social-network', { useNewUrlParser: true });
+//mongoose.connect('mongodb://1453039:chautinhtri123@ds145083.mlab.com:45083/apartment_social_network', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/apartment_social_network', { useNewUrlParser: true });
 
 app.use(session({
   secret: 'MySuperSecret',
