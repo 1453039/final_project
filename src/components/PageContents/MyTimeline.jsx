@@ -68,6 +68,9 @@ class MyTimeline extends PureComponent {
   }
 
   render() {
+    let posts = this.state.posts;
+    if (this.state.user.isAdmin)
+      posts = posts.filter(post => post.isAdmin == false);
     return pug`
       #page-contents
         .row
@@ -75,7 +78,7 @@ class MyTimeline extends PureComponent {
           .col-md-7
             if(window.location.search == '?timeline')
               PostCreateBox(reloadPostList = this.reloadPostList)
-            each post in this.sortPostByDate(this.state.posts)
+            each post in this.sortPostByDate(posts)
               PostContent(key=post._id, post=post)
     `;
   }

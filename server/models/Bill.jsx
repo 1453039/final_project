@@ -9,7 +9,8 @@ const BillSchema = new Schema({
   year: Number,
 	total: Number,
   date: {type: Date, default: Date.now},
-  isPaid: {type: Boolean, default: false}
+  isPaid: {type: Boolean, default: false},
+  isExported: {type: Boolean, default: false}
 });
 
 module.exports = mongoose.model('bills', BillSchema);

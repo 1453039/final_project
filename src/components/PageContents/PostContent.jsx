@@ -4,6 +4,7 @@ import axios from 'axios'
 import _ from 'lodash'
 import Emoji from './Emoji.jsx';
 import JSEMOJI from 'emoji-js';
+import ContentLoader from "react-content-loader"
 
 //emoji set up
 let jsemoji = new JSEMOJI();
@@ -14,10 +15,37 @@ jsemoji.img_sets.emojione.path = 'https://cdn.jsdelivr.net/emojione/assets/3.0/p
 // some more settings...
 jsemoji.replace_mode = 'unified';
 
+// Define the loader
+const PostLoader = () => pug`
+  ContentLoader(height=160, width=400, speed=2, primaryColor="#f3f3f3", secondaryColor="#ecebeb")
+    rect(x="70" y="15" rx="4" ry="4" width="117" height="6.4")
+    rect(x="70" y="35" rx="3" ry="3" width="85" height="6.4")
+    rect(x="0" y="80" rx="3" ry="3" width="350" height="6.4")
+    rect(x="0" y="100" rx="3" ry="3" width="380" height="6.4")
+    rect(x="0", y="120", rx="3", ry="3", width="201", height="6.4") 
+    circle(cx="30", cy="30", r="30")
+`;
+
+const PostWithImgLoader = () => pug`
+  ContentLoader(height=475, width=590, speed=2, primaryColor="#f3f3f3", secondaryColor="#ecebeb")
+    circle(cx="42.6" cy="35.59" r="24.6")
+    rect(x="72" y="16.67" rx="4" ry="4" width="100" height="12.35")
+    rect(x="73" y="39" rx="4" ry="4" width="50" height="8")
+    rect(x="75" y="139" rx="5" ry="5" width="496" height="400")
+    rect(x="490.69" y="16.91" rx="0" ry="0" width="57" height="34.84")
+    rect(x="544.69" y="42.67" rx="0" ry="0" width="3" height="3")
+    rect(x="426.69" y="15.67" rx="0" ry="0" width="54.9" height="33.04")
+    rect(x="73.69" y="65.64" rx="0" ry="0" width="498.94" height="3.03")
+    rect(x="75.69" y="83.46" rx="0" ry="0" width="497.76" height="11.2")
+    rect(x="77.31" y="98.67" rx="0" ry="0" width="26.38" height="0")
+    rect(x="73.69" y="107.45" rx="0" ry="0" width="499.8" height="11.22")
+`;
+
 class PostContent extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      apartment: [],
       postUser: [],
       currentUser: [],
       post: this.props.post,
@@ -26,7 +54,8 @@ class PostContent extends PureComponent {
       comment: '',
       like: '',
       dislike: '',
-      emojiShown: false
+      emojiShown: false,
+      loading: true
     }
     this.onClickReaction = this.onClickReaction.bind(this)
     this.initializeState = this.initializeState.bind(this)
@@ -39,8 +68,10 @@ class PostContent extends PureComponent {
   async componentDidMount() {
     await this.getPostUser(this)
     await this.getUserFromSession(this)
+    await this.getApartment(this)
     this.initializeState()
     await this.getComments(this)
+    this.setState({ loading: false });
   }
 
   initializeState() {
@@ -79,6 +110,23 @@ class PostContent extends PureComponent {
     }).catch(err => {
       console.log("err", err);
     })
+  }
+
+  async getApartment (e) {
+    await axios
+      .get ('/apartment/get-apartment', {
+        params: {
+          id_apartment: e.props.match.params.id,
+        },
+      })
+      .then (response => {
+        e.setState ({
+          apartment: response.data,
+        });
+      })
+      .catch (err => {
+        console.log ('err', err);
+      });
   }
 
   async getComments(e) {
@@ -242,51 +290,70 @@ class PostContent extends PureComponent {
   }
 
   render() {
-    return pug`
-      .post-content
-        .post-container
-          img.profile-photo-md.pull-left(src=this.state.postUser.avatar, alt="user")
-          .post-detail
-            .user-info
-              h5
-                if (this.state.currentUser._id == this.state.postUser._id)
-                  Link.profile-link(to="?timeline") #{this.state.postUser.name}
-                else
-                  Link.profile-link(to={search: "?friends-timeline", state: {user: this.state.postUser}}) #{this.state.postUser.name}
-                if(this.state.post.isAdmin)
-                  i.icon.ion-android-checkmark-circle
-                p.text-muted #{this.handlePostTime(this.state.post.time)}
-            .reaction
-              .btn.text-green#like(className=this.state.like, onClick=this.onClickReaction) 
-                i.fa.fa-thumbs-up#like 
-                span#like #{this.state.post.like.length}
-              .btn.text-red#dislike(className=this.state.dislike, onClick=this.onClickReaction) 
-                i.fa.fa-thumbs-down#dislike
-                span#dislike #{this.state.post.dislike.length}
-            .line-divider
-            .post-text
-              p #{this.state.post.description}
-            if this.state.post.linkImg
-              img.img-responsive.post-image(src=this.state.post.linkImg, alt="post-image")
-            if this.state.post.linkVideo
-              video.post-video(controls)
-                source(src=this.state.post.linkVideo, type="video/mp4")
-            each comment in this.state.comments
-              .post-comment(key=comment._id)
-                img.profile-photo-sm(src=comment.user.avatar, alt="")
-                if (this.state.currentUser._id == comment.user._id)
-                  Link.profile-link(to="?timeline") #{comment.user.name}
-                else
-                  Link.profile-link(to={search: "?friends-timeline", state: {user: comment.user}}) #{comment.user.name}
-                span.text-mute #{this.handlePostTime(comment.time)}
-                p #{comment.description}
-            .post-comment
-              form.input-group(onSubmit=this.handleSendComment)
-                input.form-control(type="text", placeholder="Post a comment", value=this.state.comment, onChange=this.OnChangeComment)
-                Emoji(handleEmojiClick = this.handleEmojiClick, toogleEmojiState = this.toogleEmojiState, emojiShown= this.state.emojiShown)
-                span.input-group-btn
-                  button.btn.btn-primary(id=this.state.post._id, type="submit", onClick=this.handleSendComment, disabled=!this.state.comment || !this.state.comment.replace(/\s/g, '').length) Send
-    `;
+    if (this.state.loading)
+      if (this.state.post.linkImg)
+        return pug`
+          PostWithImgLoader
+        `
+      else return pug`
+        PostLoader
+      `
+    else
+      return pug`
+        .post-content
+          .post-container
+            if(this.state.post.isAdmin) 
+              img.profile-photo-md.pull-left(src=this.state.apartment.background, alt="user")
+            else
+              img.profile-photo-md.pull-left(src=this.state.postUser.avatar, alt="user")
+            .post-detail
+              .user-info
+                h5
+                  if(this.state.post.isAdmin)
+                    strong #{this.state.apartment.name}
+                    if (this.state.currentUser.isAdmin)
+                      p.text-muted (Published by #{this.state.postUser.name})
+                  else
+                    if (this.state.currentUser._id == this.state.postUser._id)
+                      Link.profile-link(to="?timeline") #{this.state.postUser.name}
+                    else
+                      Link.profile-link(to={search: "?friends-timeline", state: {user: this.state.postUser}}) #{this.state.postUser.name}
+                    if (this.state.postUser.isAdmin)
+                      i.icon.ion-android-checkmark-circle
+                  p.text-muted #{this.handlePostTime(this.state.post.time)}
+              .reaction
+                .btn.text-green#like(className=this.state.like, onClick=this.onClickReaction) 
+                  i.fa.fa-thumbs-up#like 
+                  span#like #{this.state.post.like.length}
+                .btn.text-red#dislike(className=this.state.dislike, onClick=this.onClickReaction) 
+                  i.fa.fa-thumbs-down#dislike
+                  span#dislike #{this.state.post.dislike.length}
+              .line-divider
+              .post-text
+                p #{this.state.post.description}
+              if this.state.post.linkImg
+                img.img-responsive.post-image(src=this.state.post.linkImg, alt="post-image")
+              if this.state.post.linkVideo
+                video.post-video(controls)
+                  source(src=this.state.post.linkVideo, type="video/mp4")
+              each comment in this.state.comments
+                .post-comment(key=comment._id)
+                  img.profile-photo-sm(src=comment.user.avatar, alt="")
+                  if (this.state.currentUser._id == comment.user._id)
+                    Link.profile-link(to="?timeline") #{comment.user.name}
+                  else
+                    Link.profile-link(to={search: "?friends-timeline", state: {user: comment.user}}) #{comment.user.name}
+                  if (comment.user.isAdmin)
+                    i.icon.ion-android-checkmark-circle
+                  span.text-mute #{this.handlePostTime(comment.time)}
+                  p #{comment.description}
+              .post-comment
+                form.input-group(onSubmit=this.handleSendComment)
+                  input.form-control(type="text", placeholder="Post a comment", value=this.state.comment, onChange=this.OnChangeComment)
+                  Emoji(handleEmojiClick = this.handleEmojiClick, toogleEmojiState = this.toogleEmojiState, emojiShown= this.state.emojiShown)
+                  span.input-group-btn
+                    button.btn.btn-primary(id=this.state.post._id, type="submit", onClick=this.handleSendComment, disabled=!this.state.comment || !this.state.comment.replace(/\s/g, '').length) Send
+      `;
   }
 }
 

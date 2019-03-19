@@ -19,7 +19,9 @@ class CreatePopup extends PureComponent {
       serviceName: '',
       unit: '',
       fee: 0,
-      page: 'create-popup'    
+      page: 'create-popup',
+      user: this.props.user,
+      isAdmin: false
     }
     this.handleTextAreaChange = this.handleTextAreaChange.bind(this)
     this.handleImgChange = this.handleImgChange.bind(this)
@@ -27,6 +29,7 @@ class CreatePopup extends PureComponent {
     this.onClickPublish = this.onClickPublish.bind(this)
     this.handleKeyDown = this.handleKeyDown.bind(this)
     this.handleAddService = this.handleAddService.bind(this)
+    this.handleCheckAdmin = this.handleCheckAdmin.bind(this)
   }
 
   handleTextAreaChange(e) {
@@ -64,7 +67,7 @@ class CreatePopup extends PureComponent {
   }
 
   onClickPublish() {
-    this.props.handlePopupSubmit(this.state.description, this.state.linkImg, new Date(this.state.day + ' ' + this.state.time), this.state.cost, this.state.itemName, this.state.eventName, this.state.price);
+    this.props.handlePopupSubmit(this.state.description, this.state.linkImg, new Date(this.state.day + ' ' + this.state.time), this.state.cost, this.state.itemName, this.state.eventName, this.state.price, this.state.isAdmin);
     this.props.closePopup()
   }
 
@@ -98,6 +101,10 @@ class CreatePopup extends PureComponent {
 
   handleKeyDown(e) {
     e.preventDefault();
+  }
+
+  handleCheckAdmin(e) {
+    this.setState({ isAdmin: e.target.checked });
   }
 
   render() {
@@ -145,8 +152,13 @@ class CreatePopup extends PureComponent {
               button#publish.btn.btn-primary.pull-right(onClick=this.handleAddService, disabled=disabledService1) Add service
             else
               .form-group
-                img.profile-photo-md(src=this.props.avatar, alt="Your avatar")
+                img.profile-photo-md(src=this.state.user.avatar, alt="Your avatar")
                 textarea.form-control(name="texts", cols="30", rows="1", placeholder="Write what you want", value=this.state.description, onChange=this.handleTextAreaChange)
+              if (this.state.type=='Post' && this.state.user.isAdmin==true)
+                .checkboxFive
+                  strong Admin
+                  input(type="checkbox", value="1", id="checkboxFiveInput", name="", onChange=this.handleCheckAdmin)
+                  label(for="checkboxFiveInput")
               ImageLoader(page=this.state.page, handleImgChange=this.handleImgChange) 
               if(this.state.type=='Event')
                 .form-group

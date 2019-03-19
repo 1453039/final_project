@@ -94,7 +94,7 @@ class ImageLoader extends React.PureComponent {
   render() {
     return pug`
       if(this.props.page == 'create-popup')
-        input#input-img.input-type-file(type='file', onChange=this.onImageChange)
+        input#input-img.input-type-file(type='file', name="pic" accept="image/*", onChange=this.onImageChange)
         label#upload-file(for='input-img')
           .btn-choose
             i.ion-images
@@ -102,18 +102,18 @@ class ImageLoader extends React.PureComponent {
         img.selectedFile(src=this.state.selectedFile)
       else
         if(this.props.page == '?messages')
-          input#message-img.input-type-file(type='file', onChange=this.onImageChange)
+          input#message-img.input-type-file(type='file', name="pic" accept="image/*", onChange=this.onImageChange)
           label#upload-file(for='message-img')
             .btn-choose
               i.ion-images
         else 
           if(this.props.page == 'info' && this.props.id == 'avt')
-            input#ava-img.input-type-file(type='file', onChange=this.onImageChange)
+            input#ava-img.input-type-file(type='file', name="pic" accept="image/*", onChange=this.onImageChange)
             label(for='ava-img')
               img(src=this.state.selectedFile, alt='Your Image').img-responsive.profile-photo
           else
             if(this.props.page == 'info' && this.props.id == 'cover')
-              input#cover-img.input-type-file(type='file', onChange=this.onImageChange)
+              input#cover-img.input-type-file(type='file', name="pic" accept="image/*", onChange=this.onImageChange)
               label(for='cover-img')
                 img(src=this.state.selectedFile, alt='Your Cover')
   `}

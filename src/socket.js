@@ -4,7 +4,6 @@ let socket;
 
 
 export function getSocket(){
-  console.log("socket console");
   if(socket){
     return socket
   }

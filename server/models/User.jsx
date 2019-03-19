@@ -14,6 +14,7 @@ const UserSchema = new Schema({
   cover: String,
 	flat: String,
 	isAdmin: {type: Boolean, default: false},
+	isValidated: {type: Boolean, default: false}
 });
 
 UserSchema.methods.encryptPassword = function(password) {

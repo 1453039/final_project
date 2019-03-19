@@ -10,39 +10,28 @@ var users = require('../models/User');
 const validateAddBillInput = require('../validation/addBill');
 const validateBillDetailInput = require('../validation/billDetail');
 
-router.post("/insert", (req, res) => {
-  users.find({ flat: req.body.flatName }, (err, result) => {
-    if (err) console.log(err);
-    const { errors, isValid } = validateAddBillInput(req.body);
-    // Check validation
-    if (!isValid) {
-      return res.send({ success: false, errors: errors });
-    }
-    if (_.isEmpty(result)) {
-      errors.flatName = "The flat is not exist";
-      res.send({ success: false, errors: errors });
-    } else {
-      bills.find({ $and: [{ flat: req.body.flatName, month: req.body.month, year: req.body.year }] }, (err, result) => {
+router.post("/init-bill", (req, res) => {
+  users.find({$and: [{ apartment: req.body.apartment, isAdmin: false }]}, (err, users) => {
+    let flats = []
+    users.forEach(user => {
+      flats.push(user.flat);
+    })
+    flats = [... new Set(flats)]
+    flats.forEach(flat => {
+      let bill = new bills();
+      bill.apartment = req.body.apartment
+      bill.flat = flat
+      bill.month = req.body.month
+      bill.year = req.body.year
+      bill.total = 0
+      bill.date = ''
+      bill.isPaid = false
+      bill.isExported = false
+      bill.save(err => {
         if (err) console.log(err);
-        if (!_.isEmpty(result)) {
-          errors.bill = "This bill was exist"
-          res.send({ success: false, errors: errors });
-        } else {
-          let bill = new bills();
-          bill.apartment = req.body.apartment
-          bill.flat = req.body.flatName
-          bill.month = req.body.month
-          bill.year = req.body.year
-          bill.total = 0
-          bill.date = ''
-          bill.isPaid = false
-          bill.save(err => {
-            if (err) console.log(err);
-            res.send({ success: true, message: "Add bill successfully!" });
-          })
-        }
       })
-    }
+    })
+    res.json('Init bill sucessfully!');
   })
 })
 
@@ -69,6 +58,13 @@ router.post("/bill-detail/insert", (req, res) => {
 
 router.put("/update-bill", (req, res) => {
   bills.updateOne({ _id: req.body.id }, { $set: { total: req.body.total }}, (err) => {
+    if (err) console.log(err);
+    res.send("Bill updated successfully!");
+  })
+})
+
+router.put("/export-bill", (req, res) => {
+  bills.updateOne({ _id: req.body.id }, { $set: { isExported: req.body.export }}, (err) => {
     if (err) console.log(err);
     res.send("Bill updated successfully!");
   })
@@ -110,6 +106,19 @@ router.delete("/delete", (req, res) => {
   })
 })
 
+router.delete("/delete-bill-details", (req, res) => {
+  bill_details.remove({ bill: req.query.bill }, (err) => {
+    if (err) console.log(err);
+    res.json("Clear bill details successfully!");
+  })
+})
 
+router.get("/search", (req, res) => {
+  bills.find({$and: [{flat:{$regex:".*"+req.query.search+".*",$options: 'i'}}, {apartment: req.query.id}, {month: req.query.month}, {year: req.query.year}]}, (err, bills) => {
+    if (err)
+      console.log(err);
+    res.json(bills);
+  })
+})
 
 module.exports = router;

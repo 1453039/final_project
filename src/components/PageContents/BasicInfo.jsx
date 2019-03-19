@@ -70,7 +70,7 @@ class MyInfo extends Component {
       birthday: e.state.user.birthday,
       sex: e.state.user.sex
     }).then((response) => {
-      alert(response.data);
+      console.log(response.data);
     }).catch(err => {
       console.log("err", err)
     })

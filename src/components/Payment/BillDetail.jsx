@@ -14,18 +14,20 @@ class BillDetail extends React.Component {
       isAdminViewDetail: false,
       flat: '',
       month: '',
-      year: ''
+      year: '',
+      loading: true
     }
     this.handleClickAddBill = this.handleClickAddBill.bind(this);
     this.handleClickBack = this.handleClickBack.bind(this);
   }
 
-  componentDidMount() {
-    this.getUserFromSession(this);
+  async componentDidMount() {
+    await this.getUserFromSession(this);
+    await this.setState({ loading: false });
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ isAdminViewDetail: nextProps.location.state.isAdminViewDetail, flat: nextProps.location.state.flat, month: nextProps.location.state.month, year: nextProps.location.state.year})
+    this.setState({ isAdminViewDetail: nextProps.location.state.isAdminViewDetail, isClickAddBill: nextProps.location.state.isClickAddBill, flat: nextProps.location.state.flat, month: nextProps.location.state.month, year: nextProps.location.state.year})
   }
 
   async getUserFromSession(e) {
@@ -51,13 +53,14 @@ class BillDetail extends React.Component {
   render() {
     return pug`
       .payment-block
-        if (!this.state.user.isAdmin || this.state.isAdminViewDetail)
-          MemberView(flat=this.state.flat, month=this.state.month, year=this.state.year, handleClickBack = this.handleClickBack)
-        else 
-          if(!this.state.isClickAddBill)
-            AdminView(handleClickAddBill=this.handleClickAddBill, calculateBill=this.calculateBill)
-          else
-            AddBill(onClickCancel=this.handleClickAddBill)
+        if (this.state.loading == false)
+          if (this.state.user.isAdmin == false || this.state.isAdminViewDetail)
+            MemberView(flat=this.state.flat, month=this.state.month, year=this.state.year, handleClickBack = this.handleClickBack)
+          else 
+            if(!this.state.isClickAddBill)
+              AdminView(calculateBill=this.calculateBill)
+            else
+              AddBill(onClickCancel=this.handleClickAddBill, flat=this.state.flat, month=this.state.month, year=this.state.year)
     `;
   }
 }

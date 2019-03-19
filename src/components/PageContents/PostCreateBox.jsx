@@ -18,6 +18,7 @@ class PostCreateBox extends React.PureComponent {
       name: '',
       eventName: '',
       price: 0,
+      isAdmin: false,
       showPopup: false
     };
     this.togglePopup = this.togglePopup.bind(this)
@@ -45,7 +46,7 @@ class PostCreateBox extends React.PureComponent {
     await axios.post("/post/insert", {
       apartment: e.state.user.apartment,
       author: e.state.user._id,
-      isAdmin: e.state.user.isAdmin,
+      isAdmin: e.state.isAdmin,
       description: e.state.description,
       linkImg: e.state.linkImg,
       linkVideo: e.state.linkVideo,
@@ -86,7 +87,7 @@ class PostCreateBox extends React.PureComponent {
     })
   }
 
-  async handlePopupSubmit(description, linkImg, date, cost, name, eventName, price) {
+  async handlePopupSubmit(description, linkImg, date, cost, name, eventName, price, isAdmin) {
     await this.setState({
       description: description,
       linkImg: linkImg,
@@ -94,7 +95,8 @@ class PostCreateBox extends React.PureComponent {
       cost: cost,
       name: name,
       eventName: eventName,
-      price: price
+      price: price,
+      isAdmin: isAdmin
     })
     if (this.state.type == "Trading")
       await this.createItem(this)
@@ -166,7 +168,7 @@ class PostCreateBox extends React.PureComponent {
                   i.ion-ios-cart#trading-post
               button#publish.btn.btn-primary.pull-right(type='submit', onClick=this.handleSubmit, disabled = this.state.description ? false : true) Publish
         if (this.state.showPopup) 
-          CreatePopup(closePopup=this.togglePopup, avatar=this.state.user.avatar, type = this.state.type, handlePopupSubmit = this.handlePopupSubmit)
+          CreatePopup(closePopup=this.togglePopup, user=this.state.user, type = this.state.type, handlePopupSubmit = this.handlePopupSubmit)
     `;
   }
 }

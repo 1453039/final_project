@@ -7,6 +7,7 @@
   margin: auto;
   z-index: 10;
   background-color: rgba(0, 0, 0, 0.5);
+
   .popup-inner {
     background-color: #F5F5F5;
     padding: 40px 20px;
@@ -17,6 +18,7 @@
     margin: auto;
     border: 1px solid #ccc;
     border-radius: 4px;
+
     #close-popup {
       outline: none;
       position: absolute;
@@ -25,16 +27,22 @@
       border: none;
       background: #F5F5F5;
     }
+
     button#publish.btn.btn-primary {
-      margin: 10px;
       outline: none;
+      position: absolute;
+      top: 100px;
+      right: 40px;
     }
+
     .input-type-file {
       display: none;
     }
+
     .form-group {
       clear: both;
       width: 100%;
+
       input.form-control {
         border: 1px solid #ccc;
         border-radius: 5px;
@@ -42,30 +50,98 @@
         float: right;
         width: 70%;
       }
+
       input[type=date]::-webkit-inner-spin-button,
       input[type=date]::-webkit-outer-spin-button {
         -webkit-appearance: none;
       }
+
       textarea.form-control {
         margin: 10px;
       }
     }
-    label#upload-file {
-      width: 30% !important;
+
+    .checkboxFive {
+      width: 25px;
+      position: relative;
+      margin-left: 60px;
+
+      strong {
+        font-size: 15px;
+      }
+
+      input {
+        display: none;
+      }
+
+      label {
+        cursor: pointer;
+        position: absolute;
+        float: left;
+        margin-left: 5px;
+        margin: 0;
+        padding: 0;
+        width: 25px;
+        height: 25px;
+        top: 0;
+        left: 50px;
+        background: #eee;
+        border: 1px solid #ddd;
+
+        &:after {
+          opacity: 0.2;
+          content: '';
+          position: absolute;
+          width: 9px;
+          height: 5px;
+          background: transparent;
+          top: 6px;
+          left: 7px;
+          border: 3px solid #333;
+          border-top: none;
+          border-right: none;
+
+          -webkit-transform: rotate(-45deg);
+          -moz-transform: rotate(-45deg);
+          -o-transform: rotate(-45deg);
+          -ms-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+        }
+
+        &:hover::after {
+          opacity: 0.5;
+        }
+      }
+
+      input[type=checkbox]:checked + label:after {
+        opacity: 1;
+      }
     }
+
+    label#upload-file {
+      width: 25% !important;
+
+      .btn-choose {
+        margin-left: 40px;
+      }
+    }
+
     label {
       margin: 10px;
       padding: 5px;
       float: left;
       width: 20%;
+
       i {
         color: #6d6e71;
         font-size: 30px;
         margin-right: 10px;
       }
     }
+
     .selectedFile {
       float: left;
+      margin: 20px 0;
       max-width: 50%;
       max-height: 50%;
     }

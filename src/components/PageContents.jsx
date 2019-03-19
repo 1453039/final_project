@@ -74,7 +74,8 @@ class PageContents extends PureComponent {
       }
     }).then((response) => {
       e.setState({
-        posts: response.data
+        posts: response.data,
+        loading: false
       })
     }).catch(err => {
       console.log("err", err)

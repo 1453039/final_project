@@ -236,12 +236,16 @@
       position: relative;
       .post-text {
         line-height: 24px;
-        margin: 0;
+        margin-bottom: 10px;
       }
       .user-info {
+        float: left;
         i {
           display: inline;
           margin: 0 10px;
+        }
+        p {
+          margin: 0;
         }
       }
       .reaction {
@@ -267,6 +271,9 @@
         #attendent {
           margin: 10px 0;
         }
+      }
+      .line-divider {
+        clear: both;
       }
       .post-comment {
         display: inline-block;

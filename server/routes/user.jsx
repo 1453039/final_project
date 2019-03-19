@@ -3,6 +3,7 @@ const router = express.Router();
 const nodemailer = require('nodemailer');
 const _ = require('lodash');
 const creds = require('../config/config');
+const Email = require('email-templates');
 
 // Load input validation
 const validateRegisterInput = require("../validation/register");
@@ -10,7 +11,14 @@ const validateLoginInput = require("../validation/login");
 
 // Load Model
 const users = require('../models/User');
+const posts = require('../models/Post');
+const reports = require('../models/Report');
+const services = require('../models/Service');
+const chats = require('../models/Chat');
+const comments = require('../models/Comment');
+const apartments = require('../models/Apartment');
 
+/* INSERTING AN USER TO DATABASE */
 router.route('/insert')
   .post(function (req, res) {
     const { body } = req;
@@ -20,7 +28,7 @@ router.route('/insert')
     if (!isValid) {
       return res.send({success: false, errors: errors});
     }
-    users.find({ email: email }, (err, user) => {
+    users.find({$and: [{email: email}, {apartment: id}]}, (err, user) => {
       if (err) console.log("err", err);
       if (!_.isEmpty(user)) {
         errors.email = "Email already exists";
@@ -38,6 +46,7 @@ router.route('/insert')
         user.flat = flat;
         user.status = false;
         user.isAdmin = isAdmin;
+        user.isValidated = false;
         user.save(function (err) {
           if (err)
             console.log("err", err);
@@ -49,6 +58,7 @@ router.route('/insert')
       }
     })
   })
+
 
 router.route('/login')
   .post(function (req, res) {
@@ -69,9 +79,8 @@ router.route('/send')
   .post(function (req, res) {
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      secureConnection: false,
       port: 587,
-      requiresAuth: true,
+      secure: false,
       domains: ["gmail.com", "googlemail.com"],
       auth: {
         user: creds.USER, // generated ethereal user
@@ -87,43 +96,40 @@ router.route('/send')
       }
     });
 
-    let text = "Your apartment domain is localhost:3000/@" + req.body.id
+    const email = new Email({
+      transport: transporter,
+      send: true,
+      preview: false
+    })
 
-    let mailOptions = {
-      from: creds.USER, // sender address
-      to: req.body.email,
-      subject: "Welcome to AP Social", // Subject line
-      text: text,
-      html: '<h1 style="text-align:center; font-weight: bold"> WELCOME TO APSOCIAL NETWORK</h1>'
-    };
-
-    transporter.sendMail(mailOptions, (err, data) => {
-      if (err) {
-        res.json({
-          msg: 'fail'
+    apartments.findById(req.body.id, function(err, apartment) {
+      if (err) console.log("err", err);
+      users.find({ email: req.body.email }, (err, user) => {
+        if (err) console.log("err", err);
+        email.send({ 
+          template: 'template',
+          message: {
+            from: "APSocial <no-reply@blog.com>",
+            to: req.body.email
+          },
+          locals: {
+            apartment: apartment.name,
+            link: 'http://localhost:3000/@' + req.body.id + '?_id=' + user[0]._id
+          }
+        }).then((data) => {
+          if (data) {
+            res.json({
+              msg: 'success'
+            })
+          } else {
+            res.json({
+              msg: 'fail'
+            })
+          }
         })
-      } else {
-        res.json({
-          msg: 'success'
-        })
-      }
+      })
     })
   })
-
-router.route('/update_password')
-  .post(function (req, res) {
-    const id = req.body.id
-    users.findById(id, function (err, user) {
-      if (err)
-        console.log(err);
-      const password = user.encryptPassword(req.body.password);
-      users.update({ _id: id }, { password: password }, function (err, result) {
-        if (err)
-          res.send(err);
-        res.send('User password successfully updated!');
-      });
-    })
-  });
 
 router.route('/change_password')
   .post(function (req, res) {
@@ -155,6 +161,21 @@ router.route('/change_password')
       }
     })
   })
+
+router.put('/update_password', function (req, res) {
+  const id = req.body.id
+  users.findById(id, function (err, user) {
+    if (err) console.log(err);
+    const { errors, isValid } = validateRegisterInput(req.body);
+    if (!isValid)
+      return res.send({ success: false, errors: errors });
+    const password = user.encryptPassword(req.body.password);
+    users.updateOne({ _id: id }, { $set: { password: password, isValidated: true }}, function (err, result) {
+      if (err) console.log(err, result);
+      res.send({ success: true, message: 'User password successfully updated!' });
+    })
+  })
+})
 
 router.route('/update-info')
   .put(function (req, res) {
@@ -191,14 +212,35 @@ router.put('/update-cover', function (req, res) {
   });
 })
 
+router.put('/update-name', function(req, res) {
+  let name = req.body.name
+  users.updateOne({ _id: req.body.id }, { $set: { name: name } }, function (err, result) {
+      if (err) console.log(err);
+      res.json('User name successfully updated!')
+  });
+})
+
 router.get('/delete', function (req, res) {
   var id = req.query.id;
-  users.find({ _id: id }).remove().exec(function (err) {
-    if (err)
-      res.send(err)
-    res.send('User successfully deleted!');
+  comments.remove({ author: id }, (err) => {
+    if (err) console.log(err);
+    posts.remove({ author: id }, (err) => {
+      if (err) console.log(err);
+      reports.remove({ author: id }, (err) => {
+        if (err) console.log(err);
+        chats.remove({ $or: [{ from: id, to: id}]}, (err) => {
+          if (err) console.log(err);
+          services.remove({ admin: id}, (err) => {
+            if (err) console.log(err);
+            users.remove({ _id: id }, (err) => {
+              if (err) console.log(err);
+              res.send('User successfully deleted!');
+            })
+          })
+        })
+      })
+    })
   })
-
 });
 
 router.get('/getAll', function (req, res) {

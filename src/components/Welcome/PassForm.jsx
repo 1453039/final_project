@@ -15,7 +15,6 @@ class PassForm extends React.Component {
     this.saveToSession = this.saveToSession.bind(this);
     this.handleClickNext = this.handleClickNext.bind(this);
     this.handlePassChange = this.handlePassChange.bind(this);
-    this.getApartment = this.getApartment.bind(this);
   }
   
   componentDidMount(){
@@ -62,7 +61,6 @@ class PassForm extends React.Component {
     }).then(async (response) => {
       const success = response.data.success
       if (success) {
-        console.log(response.data.message);
         await seft.saveToSession(seft);
         await seft.props.history.push('@'+ seft.state.id + '?newfeeds');
       } else {
@@ -82,8 +80,8 @@ class PassForm extends React.Component {
           #wrapper
             h2.text-white Welcome to #{apartment.name}
             .line-divider
-            h2.text-white Enter your password
             form(onSubmit=this.handleClickNext)
+              h2.text-white Enter your password
               fieldset.form-group
                 input.form-control#example-email(type="password", placeholder="Your password", onChange=this.handlePassChange)
               if (this.state.errors)

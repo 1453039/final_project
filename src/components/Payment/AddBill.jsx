@@ -9,12 +9,11 @@ class AddBill extends React.PureComponent {
     super(props);
     this.state = {
       user: [],
-      addedBill: false,
       billDetails: [],
       showPopup: false,
-      flatName: '',
-      month: '',
-      year: '',
+      flatName: this.props.flat,
+      month: this.props.month,
+      year: this.props.year,
       bill: {},
       service: [],
       errors: [],
@@ -22,31 +21,19 @@ class AddBill extends React.PureComponent {
     }
     this.handleClickAddService = this.handleClickAddService.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
-    this.handleAddBill = this.handleAddBill.bind(this);
     this.togglePopup = this.togglePopup.bind(this);
     this.getMonthOfBill = this.getMonthOfBill.bind(this);
-    this.onClickCancel = this.onClickCancel.bind(this);
     this.handleAddBilDetail = this.handleAddBilDetail.bind(this);
     this.reloadServices = this.reloadServices.bind(this);
     this.calculateTotal = this.calculateTotal.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getServices(this);
     this.getUserFromSession(this);
-    let now = new Date();
-    let currentMonth = now.getMonth() + 1
-    if (currentMonth == 1) {
-      this.setState({ month: 12, year: now.getFullYear() - 1 })
-    } else
-      this.setState({ month: currentMonth - 1, year: now.getFullYear() });
-    let myThis = this
-    window.onbeforeunload = function (e) {
-      e.preventDefault();
-      if (myThis.state.addedBill)
-        myThis.deleteBill(myThis);
-    }
+    await this.getBill(this);
+    await this.getBillDetails(this);
   }
 
   async getUserFromSession(e) {
@@ -76,36 +63,21 @@ class AddBill extends React.PureComponent {
     this.getServices(this);
   }
 
-  handleAddBill(e) {
-    e.preventDefault();
-    this.addBill(this);
-    this.setState({errors: []});
-  }
-
-  async addBill(e) {
-    await axios.post("/bill/insert", {
-      apartment: e.props.match.params.id,
-      flatName: e.state.flatName,
-      month: e.state.month,
-      year: e.state.year
-    }).then(response => {
-      let success = response.data.success
-      if (!success)
-        e.setState({ errors: response.data.errors })
-      else {
-        alert(response.data.message);
-        this.setState({
-          addedBill: !this.state.addedBill,
-          billDetails: []
-        })
-      }
-    })
-  }
-
   async handleAddBilDetail(e) {
     e.preventDefault();
-    await this.getBill(this);
+    await this.clearBillDetails(this);
     await this.addBillDetail(this);
+    await this.props.onClickCancel();
+  }
+
+  async clearBillDetails(e) {
+    await axios.delete("/bill/delete-bill-details", {
+      params: {
+        bill: e.state.bill._id
+      }
+    }).then(response => {
+      console.log(response.data);
+    }).catch(err => console.log(err));
   }
 
   async addBillDetail(e) {
@@ -121,7 +93,6 @@ class AddBill extends React.PureComponent {
         alert(response.data.message);
         this.calculateTotal();
         await this.updateBill(this);
-        this.setState({ addedBill: !this.state.addedBill, flatName: '' });
       }
     })
   }
@@ -140,18 +111,27 @@ class AddBill extends React.PureComponent {
     })
   }
 
-  async deleteBill(e) {
-    await axios.delete("/bill/delete", {
-      params: {
-        flatName: e.state.flatName,
-        month: e.state.month,
-        year: e.state.year
-      }
-    }).then(response => {
-      alert(response.data);
-    }).catch(err => {
-      console.log("err", err);
-    })
+  async getBillDetails (e) {
+    await axios
+      .get ('/bill/get-bill-detail', {
+        params: {
+          bill: e.state.bill._id,
+        },
+      })
+      .then (response => {
+        let details = response.data;
+        details.forEach(detail => {
+          let i = _.findIndex(e.state.service, function (item) {
+            return item._id === detail.service
+          })
+          console.log("i", i);
+          let billDetail = {}
+          billDetail.serviceName = e.state.service[i].name
+          billDetail.amount = detail.amount
+          e.setState({ billDetails: [...this.state.billDetails, billDetail] })
+        })
+      })
+      .catch (err => console.log ('err', err));
   }
 
   getMonthOfBill() {
@@ -212,11 +192,6 @@ class AddBill extends React.PureComponent {
     });
   }
 
-  onClickCancel() {
-    this.deleteBill(this);
-    this.setState({ addedBill: !this.state.addedBill, flatName: '' });
-  }
-
   onClickDelete(e) {
     e.preventDefault();
     let i = e.target.id
@@ -224,56 +199,56 @@ class AddBill extends React.PureComponent {
     this.setState({ billDetails: [...this.state.billDetails]});
   }
 
+  disabledOption(array, name) {
+    let i = _.findIndex(array, (item) => {
+      return item.serviceName === name
+    })
+    if (i >= 0)
+      return true;
+    else return false;
+  }
+
   render() {
     return pug`
     .add-bill-detail
-      h3.grey Add Bill 
-        if (this.state.addedBill)
-          | Detail
-      if (!this.state.addedBill)
-        button.cancel(onClick = this.props.onClickCancel) Cancel
-      else
-        button.cancel(onClick = this.onClickCancel) Cancel
-      if (this.state.addedBill)
-        button.add-service.btn-primary(onClick = this.togglePopup) +
-        if(this.state.showPopup)
+      h3.grey Change Bill Detail
+      button.cancel(onClick = this.props.onClickCancel) Cancel
+      button.add-service.btn-primary(onClick = this.togglePopup) +
+      if(this.state.showPopup)
           CreatePopup(closePopup=this.togglePopup, reloadServices = this.reloadServices, admin=this.state.user._id)
       form
         if (this.state.errors)
           span.error #{this.state.errors.bill}
-        .form-group 
+        .form-group.detail 
           label(for='flatname') Flat Name:
-          input#flatname.form-control(type='text', name='flatname', placeholder='Flat Name', value=this.state.flatName, onChange=this.handleTextChange, disabled=this.state.addedBill ? true : false)
+          span #{this.state.flatName}
           if (this.state.errors)
             span.error #{this.state.errors.flatName}
-        .form-group
+        .form-group.detail
           label(for='month') Bill Of Month:
           span #{this.getMonthOfBill()}
-        if (!this.state.addedBill)
-          button.btn.btn-primary#add(type='submit', onClick=this.handleAddBill) Add Bill
-        else 
-          .line-divide
-          each item, index in this.state.billDetails
-            .service-item(key=index)
-              button.delete-service-item.pull-right(id=index, onClick=this.onClickDelete) x
-              .form-group
-                label(for=index) Service Name:
-                select.form-control(id=index, type='text', name='servicename', value=item.serviceName, onChange=this.handleTextChange)
-                  option(value="", disabled) -- Select service --
-                  each item in this.state.service
-                    option(key=item._id, value=item.name) #{item.name}
-                if (this.state.errors[index])
-                  span.error #{this.state.errors[index].serviceName}
-              .form-group
-                label(for=index) Amount:
-                input.form-control(id=index, type='text', name='amount', placeholder='Amount', value=item.amount, onChange=this.handleTextChange)
-                if (this.state.errors[index])
-                  span.error #{this.state.errors[index].amount}
-              .line-divide
-          .add-bill-form(onClick=this.handleClickAddService)
-            i.ion-android-add
-            span Add Item ...
-          button.btn.btn-primary#add(type='submit', onClick=this.handleAddBilDetail, disabled=_.isEmpty(this.state.billDetails)) Add
+        .line-divide
+        each item, index in this.state.billDetails
+          .service-item(key=index)
+            button.delete-service-item.pull-right(id=index, onClick=this.onClickDelete) x
+            .form-group
+              label(for=index) Service Name:
+              select.form-control(id=index, type='text', name='servicename', value=item.serviceName, onChange=this.handleTextChange)
+                option(value="", disabled) -- Select service --
+                each service in this.state.service
+                  option(key=service._id, value=service.name, disabled=this.disabledOption(this.state.billDetails, service.name)) #{service.name}
+              if (this.state.errors[index])
+                span.error #{this.state.errors[index].serviceName}
+            .form-group
+              label(for=index) Amount:
+              input.form-control(id=index, type='text', name='amount', placeholder='Amount', value=item.amount, onChange=this.handleTextChange)
+              if (this.state.errors[index])
+                span.error #{this.state.errors[index].amount}
+            .line-divide
+        .add-bill-form(onClick=this.handleClickAddService)
+          i.ion-android-add
+          span Add Item ...
+        button.btn.btn-primary#add(type='submit', onClick=this.handleAddBilDetail, disabled=_.isEmpty(this.state.billDetails)) Save Change
     `;
   };
 }

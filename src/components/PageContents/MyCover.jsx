@@ -46,7 +46,7 @@ class MyCover extends PureComponent {
                 else
                   Link(to="?my-products") My Products
               li                
-                if(page=='?info')
+                if(page=='?info' || page=='?change-password')
                   Link.active(to="?info") My Account
                 else
                   Link(to="?info") My Account
@@ -77,7 +77,7 @@ class MyCover extends PureComponent {
               else
                 Link(to="?my-products") My Products
             li
-              if(page=='?info')
+              if(page=='?info' || page=='?change-password')
                 Link.active(to="?info") My Account
               else
                 Link(to="?info") My Account

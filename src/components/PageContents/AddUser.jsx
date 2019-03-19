@@ -45,7 +45,8 @@ class AddUser extends React.PureComponent {
   async onClick(e) {
     e.preventDefault();
     await this.insertNewUser(this);
-    // await this.sendMail(this);
+    if (this.state.messageFromServer)
+      await this.sendMail(this);
     await this.props.reloadMemberList();
   }
   async insertNewUser(e) {
@@ -75,9 +76,9 @@ class AddUser extends React.PureComponent {
         id: e.state.id
       }).then((response) => {
         if (response.data.msg === 'success') {
-          alert("Message Sent.");
+          console.log("Message Sent.");
         } else if (response.data.msg === 'fail') {
-          alert("Message failed to send.")
+          console.log("Message failed to send.")
         }
       })
     }

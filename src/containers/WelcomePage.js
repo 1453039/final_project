@@ -10,7 +10,7 @@ class Welcome extends Component {
     return pug`
 			#welcome
 				Helmet
-					title Welcome to DBSocial
+					title Welcome to APSocial
 					link(rel="icon", type="image/png", href=FAVICON, sizes="16x16")
 				LoginForm
 				Banner

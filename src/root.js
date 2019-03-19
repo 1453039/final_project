@@ -16,6 +16,7 @@ import TradingPage from './containers/TradingPage';
 import MyProductsPage from './containers/MyProductsPage';
 import ServicesPage from './containers/ServicesPage';
 import FriendsTimelinePage from './containers/FriendsTimelinePage';
+import FirstLoginPage from './containers/FirstLoginPage';
 
 class Root extends React.Component {
   componentWillMount() {
@@ -30,7 +31,12 @@ class Root extends React.Component {
   }
   
   render() {
-    switch (this.state.patch) {
+    if (this.state.patch.indexOf("?_id=") >= 0) {
+      return pug`
+        FirstLoginPage
+      `
+    }
+    else switch (this.state.patch) {
       case "?info":
         return pug`
           BasicInfoPage
@@ -90,7 +96,7 @@ class Root extends React.Component {
       case "?services":
         return pug`
           ServicesPage
-        `      
+        `
       default:
         return pug`
           LoginPage
